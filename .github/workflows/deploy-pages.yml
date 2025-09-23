@@ -1,12 +1,10 @@
 name: Build and Deploy Directory Listing
 
-# Pemicu: Workflow ini akan berjalan setiap kali ada 'push' ke branch 'main'
 on:
   push:
     branches:
-      - main  # Ganti dengan nama branch utama Anda jika bukan 'main'
+      - main
 
-# Izin yang diperlukan agar workflow bisa memodifikasi dan mendeploy
 permissions:
   contents: write
   pages: write
@@ -14,16 +12,19 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest # Menggunakan server virtual Ubuntu terbaru
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+  
+
     steps:
-      # Langkah 1: Mengunduh kode dari repositori Anda
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Langkah 2: Membuat file index.html secara dinamis
       - name: Generate Directory Listing
         run: |
-          # Mulai membuat file index.html dengan header
           echo '<!DOCTYPE html>' > index.html
           echo '<html lang="en">' >> index.html
           echo '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Daftar Modul Pembelajaran</title></head>' >> index.html
@@ -31,29 +32,21 @@ jobs:
           echo '<body>' >> index.html
           echo '<h1>📂 Daftar Modul Pembelajaran</h1>' >> index.html
           echo '<ul>' >> index.html
-          
-          # Loop melalui semua direktori di root, kecuali folder .git dan .github
           for d in */ ; do
-            # Hanya proses jika itu adalah direktori
             if [ -d "$d" ]; then
-              # Menghapus garis miring di akhir nama folder
               dirname=$(basename "$d")
               echo "  <li><a href=\"$dirname/\">$dirname</a></li>" >> index.html
             fi
           done
-          
-          # Menutup tag HTML
           echo '</ul>' >> index.html
           echo '</body>' >> index.html
           echo '</html>' >> index.html
 
-      # Langkah 3: Mengunggah artefak untuk GitHub Pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # Mengunggah seluruh isi direktori (termasuk index.html yang baru dibuat)
+          path: '.'
 
-      # Langkah 4: Mendeploy ke GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
