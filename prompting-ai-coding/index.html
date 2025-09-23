@@ -86,8 +86,8 @@
                     class="nav-btn px-6 py-2 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-gray-100">Template</button>
                 <button onclick="showSection('examples')"
                     class="nav-btn px-6 py-2 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-gray-100">Contoh</button>
-                <button onclick="showSection('generator')"
-                    class="nav-btn px-6 py-2 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-gray-100">Generator</button>
+                <!-- <button onclick="showSection('generator')"
+                    class="nav-btn px-6 py-2 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-gray-100">Generator</button> -->
             </div>
         </div>
     </nav>
@@ -355,111 +355,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- English Templates -->
-            <div id="templates-en" class="templates-content grid md:grid-cols-2 gap-8 hidden">
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Debugging Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Debug this [LANGUAGE] code that [PROBLEM]. The code should [GOAL]. Please explain the issue step by step and provide the corrected version with comments."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Optimization Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Optimize this [LANGUAGE] code for [CRITERIA: performance/memory/readability]. Current code: [CODE]. Make it more efficient and follow best practices."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Creation Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Create a [APPLICATION_TYPE] using [TECHNOLOGY] that can [MAIN_FEATURES]. Include [REQUIREMENTS] and make it [CHARACTERISTICS: responsive/secure/scalable]. Provide complete code with comments."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Conversion Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Convert this code from [SOURCE_LANGUAGE] to [TARGET_LANGUAGE]. Maintain the same functionality and improve it using [TARGET_LANGUAGE] best practices. Original code: [CODE]"
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">AI Role Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Act as a [SPECIFIC_ROLE] with [EXPERIENCE] years of experience. [SPECIFIC_TASK]. Focus on [IMPORTANT_ASPECTS] and ensure [DESIRED_QUALITY]."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Figma to HTML Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Act as a senior front-end developer. Convert this Figma design to pixel-perfect HTML/CSS using [FRAMEWORK]. Maintain responsive layout and integrate with existing [COMPONENTS]. Design details: [DESIGN_DESCRIPTION]"
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
         </section>
 
         <!-- Templates Section -->
@@ -486,7 +381,7 @@
                     <h3 class="text-lg font-medium text-gray-800 mb-4">Template Debugging</h3>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <code class="text-sm text-gray-700">
-                            "Debug this [BAHASA] code that [MASALAH]. The code should [TUJUAN]. Please explain the issue step by step and provide the corrected version with comments."
+                            "Debug kode [BAHASA] ini yang mengalami [MASALAH]. Kode ini seharusnya [TUJUAN]. Tolong jelaskan masalahnya langkah demi langkah dan berikan versi yang sudah diperbaiki dengan komentar."
                         </code>
                     </div>
                     <button onclick="copyTemplate(this)"
@@ -503,7 +398,7 @@
                     <h3 class="text-lg font-medium text-gray-800 mb-4">Template Optimasi</h3>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <code class="text-sm text-gray-700">
-                            "Optimize this [BAHASA] code for [KRITERIA: performance/memory/readability]. Current code: [KODE]. Make it more efficient and follow best practices."
+                            "Optimasi kode [BAHASA] ini untuk [KRITERIA: performa/memori/keterbacaan]. Kode saat ini: [KODE]. Buat lebih efisien dan ikuti praktik terbaik."
                         </code>
                     </div>
                     <button onclick="copyTemplate(this)"
@@ -520,7 +415,7 @@
                     <h3 class="text-lg font-medium text-gray-800 mb-4">Template Pembuatan</h3>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <code class="text-sm text-gray-700">
-                            "Create a [JENIS_APLIKASI] using [TEKNOLOGI] that can [FITUR_UTAMA]. Include [REQUIREMENTS] and make it [KARAKTERISTIK: responsive/secure/scalable]. Provide complete code with comments."
+                            "Buat [JENIS_APLIKASI] menggunakan [TEKNOLOGI] yang dapat [FITUR_UTAMA]. Sertakan [REQUIREMENTS] dan buat yang [KARAKTERISTIK: responsif/aman/skalabel]. Berikan kode lengkap dengan komentar."
                         </code>
                     </div>
                     <button onclick="copyTemplate(this)"
@@ -537,7 +432,7 @@
                     <h3 class="text-lg font-medium text-gray-800 mb-4">Template Konversi</h3>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <code class="text-sm text-gray-700">
-                            "Convert this code from [BAHASA_ASAL] to [BAHASA_TUJUAN]. Maintain the same functionality and improve it using [BAHASA_TUJUAN] best practices. Original code: [KODE]"
+                            "Ubah kode ini dari [BAHASA_ASAL] ke [BAHASA_TUJUAN]. Pertahankan fungsionalitas yang sama dan tingkatkan menggunakan praktik terbaik [BAHASA_TUJUAN]. Kode asli: [KODE]"
                         </code>
                     </div>
                     <button onclick="copyTemplate(this)"
@@ -554,7 +449,7 @@
                     <h3 class="text-lg font-medium text-gray-800 mb-4">Template Peran AI</h3>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <code class="text-sm text-gray-700">
-                            "Act as a [PERAN_SPESIFIK] with [PENGALAMAN] years of experience. [TUGAS_SPESIFIK]. Focus on [ASPEK_PENTING] and ensure [KUALITAS_YANG_DIINGINKAN]."
+                            "Berperan sebagai [PERAN_SPESIFIK] dengan pengalaman [PENGALAMAN] tahun. [TUGAS_SPESIFIK]. Fokus pada [ASPEK_PENTING] dan pastikan [KUALITAS_YANG_DIINGINKAN]."
                         </code>
                     </div>
                     <button onclick="copyTemplate(this)"
@@ -571,7 +466,7 @@
                     <h3 class="text-lg font-medium text-gray-800 mb-4">Template Figma to HTML</h3>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <code class="text-sm text-gray-700">
-                            "Act as a senior front-end developer. Convert this Figma design to pixel-perfect HTML/CSS using [FRAMEWORK]. Maintain responsive layout and integrate with existing [KOMPONEN]. Design details: [DESKRIPSI_DESIGN]"
+                            "Berperan sebagai front-end developer senior. Ubah desain Figma ini menjadi HTML/CSS yang pixel-perfect menggunakan [FRAMEWORK]. Pertahankan layout responsif dan integrasikan dengan [KOMPONEN] yang sudah ada. Detail desain: [DESKRIPSI_DESIGN]"
                         </code>
                     </div>
                     <button onclick="copyTemplate(this)"
@@ -772,111 +667,6 @@
                         integrasi yang dibutuhkan</p>
                 </div>
             </div>
-
-            <!-- English Templates -->
-            <div id="templates-en" class="templates-content grid md:grid-cols-2 gap-8 hidden">
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Debugging Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Debug this [LANGUAGE] code that [PROBLEM]. The code should [GOAL]. Please explain the issue step by step and provide the corrected version with comments."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Optimization Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Optimize this [LANGUAGE] code for [CRITERIA: performance/memory/readability]. Current code: [CODE]. Make it more efficient and follow best practices."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Creation Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Create a [APPLICATION_TYPE] using [TECHNOLOGY] that can [MAIN_FEATURES]. Include [REQUIREMENTS] and make it [CHARACTERISTICS: responsive/secure/scalable]. Provide complete code with comments."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Conversion Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Convert this code from [SOURCE_LANGUAGE] to [TARGET_LANGUAGE]. Maintain the same functionality and improve it using [TARGET_LANGUAGE] best practices. Original code: [CODE]"
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">AI Role Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Act as a [SPECIFIC_ROLE] with [EXPERIENCE] years of experience. [SPECIFIC_TASK]. Focus on [IMPORTANT_ASPECTS] and ensure [DESIRED_QUALITY]."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Figma to HTML Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Act as a senior front-end developer. Convert this Figma design to pixel-perfect HTML/CSS using [FRAMEWORK]. Maintain responsive layout and integrate with existing [COMPONENTS]. Design details: [DESIGN_DESCRIPTION]"
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
         </section>
 
         <!-- Generator Section -->
@@ -1000,111 +790,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- English Templates -->
-            <div id="templates-en" class="templates-content grid md:grid-cols-2 gap-8 hidden">
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Debugging Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Debug this [LANGUAGE] code that [PROBLEM]. The code should [GOAL]. Please explain the issue step by step and provide the corrected version with comments."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Optimization Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Optimize this [LANGUAGE] code for [CRITERIA: performance/memory/readability]. Current code: [CODE]. Make it more efficient and follow best practices."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Creation Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Create a [APPLICATION_TYPE] using [TECHNOLOGY] that can [MAIN_FEATURES]. Include [REQUIREMENTS] and make it [CHARACTERISTICS: responsive/secure/scalable]. Provide complete code with comments."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Conversion Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Convert this code from [SOURCE_LANGUAGE] to [TARGET_LANGUAGE]. Maintain the same functionality and improve it using [TARGET_LANGUAGE] best practices. Original code: [CODE]"
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">AI Role Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Act as a [SPECIFIC_ROLE] with [EXPERIENCE] years of experience. [SPECIFIC_TASK]. Focus on [IMPORTANT_ASPECTS] and ensure [DESIRED_QUALITY]."
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg p-6 shadow-sm card-hover border border-gray-100 relative">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">Figma to HTML Template</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <code class="text-sm text-gray-700">
-                            "Act as a senior front-end developer. Convert this Figma design to pixel-perfect HTML/CSS using [FRAMEWORK]. Maintain responsive layout and integrate with existing [COMPONENTS]. Design details: [DESIGN_DESCRIPTION]"
-                        </code>
-                    </div>
-                    <button onclick="copyTemplate(this)"
-                        class="copy-btn absolute top-4 right-4 p-2 rounded-md hover:bg-gray-100 transition-colors">
-                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
         </section>
     </main>
 
@@ -1152,13 +837,22 @@
 
         // Language switching functionality
         function switchLanguage(lang) {
-            // Hide all template contents
-            document.querySelectorAll('.templates-content').forEach(content => {
+            console.log('Switching to language:', lang);
+
+            // Hide all template contents within templates section only
+            const templatesSection = document.getElementById('templates');
+            templatesSection.querySelectorAll('.templates-content').forEach(content => {
                 content.classList.add('hidden');
             });
 
             // Show selected language content
-            document.getElementById(`templates-${lang}`).classList.remove('hidden');
+            const targetTemplate = document.getElementById(`templates-${lang}`);
+            if (targetTemplate) {
+                targetTemplate.classList.remove('hidden');
+                console.log('Showing template:', `templates-${lang}`);
+            } else {
+                console.error('Template not found:', `templates-${lang}`);
+            }
 
             // Update button states
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1166,8 +860,12 @@
                 btn.classList.add('text-gray-600', 'hover:text-gray-800');
             });
 
-            document.getElementById(`btn-${lang}`).classList.remove('text-gray-600', 'hover:text-gray-800');
-            document.getElementById(`btn-${lang}`).classList.add('bg-white', 'text-gray-800', 'shadow-sm');
+            const targetButton = document.getElementById(`btn-${lang}`);
+            if (targetButton) {
+                targetButton.classList.remove('text-gray-600', 'hover:text-gray-800');
+                targetButton.classList.add('bg-white', 'text-gray-800', 'shadow-sm');
+                console.log('Updated button:', `btn-${lang}`);
+            }
         }
 
         // Copy template functionality

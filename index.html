@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Modules - Koleksi Modul Pembelajaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .module-card {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .module-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            height: 80px;
+        }
+
+        .loading {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-loading {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-error {
+            background: #ef4444;
+            color: white;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6">
+                <span class="text-6xl">📚</span>
+            </div>
+            <h1 class="text-5xl font-bold mb-4">Learning Modules</h1>
+            <p class="text-xl opacity-90 max-w-2xl mx-auto">
+                Koleksi modul pembelajaran interaktif untuk meningkatkan kemampuan programming dan teknologi
+            </p>
+            <div class="mt-8">
+                <span class="inline-block bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm font-medium">
+                    🚀 Belajar • Praktik • Berkembang
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-16">
+        <!-- Stats Section -->
+        <div class="text-center mb-16">
+            <div class="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+                <div class="bg-white bg-opacity-80 backdrop-blur-sm rounded-xl p-6 card-hover">
+                    <div class="text-3xl font-bold text-blue-600" id="totalModules">-</div>
+                    <div class="text-gray-600 font-medium">Total Modul</div>
+                </div>
+                <div class="bg-white bg-opacity-80 backdrop-blur-sm rounded-xl p-6 card-hover">
+                    <div class="text-3xl font-bold text-green-600" id="availableModules">-</div>
+                    <div class="text-gray-600 font-medium">Tersedia</div>
+                </div>
+                <div class="bg-white bg-opacity-80 backdrop-blur-sm rounded-xl p-6 card-hover">
+                    <div class="text-3xl font-bold text-purple-600">∞</div>
+                    <div class="text-gray-600 font-medium">Kemungkinan</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules Grid -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Modul Pembelajaran</h2>
+            <div id="modulesContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Loading State -->
+                <div class="loading module-card card-hover p-6">
+                    <div class="module-icon text-white mb-4">
+                        <span>⏳</span>
+                    </div>
+                    <div class="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div class="h-3 bg-gray-100 rounded"></div>
+                </div>
+                <div class="loading module-card card-hover p-6">
+                    <div class="module-icon text-white mb-4">
+                        <span>⏳</span>
+                    </div>
+                    <div class="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div class="h-3 bg-gray-100 rounded"></div>
+                </div>
+                <div class="loading module-card card-hover p-6">
+                    <div class="module-icon text-white mb-4">
+                        <span>⏳</span>
+                    </div>
+                    <div class="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div class="h-3 bg-gray-100 rounded"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="bg-white bg-opacity-80 backdrop-blur-sm rounded-2xl p-8 card-hover">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Tentang Learning Modules</h3>
+            <p class="text-gray-600 text-center max-w-3xl mx-auto">
+                Koleksi ini berisi berbagai modul pembelajaran yang dirancang untuk membantu developer dalam
+                meningkatkan kemampuan programming, memahami best practices, dan menguasai teknologi terbaru.
+                Setiap modul dibuat dengan pendekatan praktis dan interaktif.
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6">
+                <span class="text-3xl">🎓</span>
+            </div>
+            <p class="text-gray-300 mb-4">
+                © 2024 Learning Modules - Belajar tanpa batas! 🚀
+            </p>
+            <div class="flex justify-center space-x-4 text-sm text-gray-400">
+                <span>📱 Responsive</span>
+                <span>•</span>
+                <span>🔄 Auto-Update</span>
+                <span>•</span>
+                <span>🎯 Interactive</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Konfigurasi modul yang diketahui
+        const knownModules = {
+            'mengenal-penulisan-case': {
+                title: 'Mengenal Penulisan Case',
+                description: 'Pelajari berbagai jenis penulisan case dalam programming',
+                icon: '📝',
+                category: 'Fundamental',
+                difficulty: 'Pemula'
+            },
+            'prompting-ai-coding': {
+                title: 'AI Coding Prompt Generator',
+                description: 'Tools untuk membuat prompt AI coding yang efektif',
+                icon: '🤖',
+                category: 'AI Tools',
+                difficulty: 'Menengah'
+            }
+        };
+
+        // Fungsi untuk mendapatkan ikon berdasarkan nama direktori
+        function getModuleIcon(dirName) {
+            const iconMap = {
+                'case': '📝',
+                'prompt': '🤖',
+                'ai': '🤖',
+                'coding': '💻',
+                'web': '🌐',
+                'javascript': '⚡',
+                'python': '🐍',
+                'react': '⚛️',
+                'css': '🎨',
+                'html': '📄',
+                'tutorial': '📚',
+                'guide': '📖',
+                'tool': '🔧',
+                'generator': '⚙️'
+            };
+
+            for (const [key, icon] of Object.entries(iconMap)) {
+                if (dirName.toLowerCase().includes(key)) {
+                    return icon;
+                }
+            }
+            return '📦'; // Default icon
+        }
+
+        // Fungsi untuk mendapatkan kategori berdasarkan nama direktori
+        function getModuleCategory(dirName) {
+            const categoryMap = {
+                'case': 'Fundamental',
+                'prompt': 'AI Tools',
+                'ai': 'AI Tools',
+                'web': 'Web Development',
+                'javascript': 'Programming',
+                'python': 'Programming',
+                'react': 'Framework',
+                'css': 'Styling',
+                'tutorial': 'Learning',
+                'guide': 'Learning',
+                'tool': 'Utility',
+                'generator': 'Utility'
+            };
+
+            for (const [key, category] of Object.entries(categoryMap)) {
+                if (dirName.toLowerCase().includes(key)) {
+                    return category;
+                }
+            }
+            return 'General';
+        }
+
+        // Fungsi untuk membuat title yang rapi dari nama direktori
+        function formatTitle(dirName) {
+            return dirName
+                .split('-')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Fungsi untuk cek ketersediaan modul
+        async function checkModuleAvailability(moduleName) {
+            try {
+                const response = await fetch(`${moduleName}/index.html`, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        // Fungsi untuk memuat modul
+        async function loadModules() {
+            const container = document.getElementById('modulesContainer');
+            const modules = [];
+
+            // Daftar modul yang diketahui ada
+            const moduleList = ['mengenal-penulisan-case', 'prompting-ai-coding'];
+
+            for (const moduleName of moduleList) {
+                const moduleInfo = knownModules[moduleName] || {
+                    title: formatTitle(moduleName),
+                    description: `Modul pembelajaran ${formatTitle(moduleName)}`,
+                    icon: getModuleIcon(moduleName),
+                    category: getModuleCategory(moduleName),
+                    difficulty: 'Menengah'
+                };
+
+                const isAvailable = await checkModuleAvailability(moduleName);
+
+                modules.push({
+                    name: moduleName,
+                    ...moduleInfo,
+                    available: isAvailable
+                });
+            }
+
+            // Render modul
+            container.innerHTML = modules.map(module => `
+                <div class="module-card card-hover bg-white">
+                    <div class="module-icon text-white">
+                        <span>${module.icon}</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-lg font-semibold text-gray-800">${module.title}</h3>
+                            <span class="status-badge ${module.available ? 'status-available' : 'status-error'}">
+                                ${module.available ? '✓ Tersedia' : '✗ Error'}
+                            </span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">${module.description}</p>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">${module.category}</span>
+                            <span class="text-xs text-gray-500">${module.difficulty}</span>
+                        </div>
+                        ${module.available ?
+                    `<a href="${module.name}/" class="block w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-2 px-4 rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                Buka Modul →
+                            </a>` :
+                    `<button class="w-full bg-gray-400 text-white py-2 px-4 rounded-lg cursor-not-allowed" disabled>
+                                Tidak Tersedia
+                            </button>`
+                }
+                    </div>
+                </div>
+            `).join('');
+
+            // Update statistik
+            const totalModules = modules.length;
+            const availableModules = modules.filter(m => m.available).length;
+
+            document.getElementById('totalModules').textContent = totalModules;
+            document.getElementById('availableModules').textContent = availableModules;
+        }
+
+        // Fungsi toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 transform transition-all duration-300 ${type === 'success' ? 'bg-green-500' :
+                    type === 'error' ? 'bg-red-500' :
+                        'bg-blue-500'
+                }`;
+            toast.textContent = message;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                loadModules();
+                showToast('Selamat datang di Learning Modules! 🎉', 'success');
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
