@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Modul Pembelajaran</title>
+    <style>
+        /* Mengimpor font dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        /* Reset dasar dan styling body */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Kontainer utama dengan efek kartu */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        /* Styling judul utama */
+        h1 {
+            font-weight: 600;
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        /* Styling daftar modul */
+        .module-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .module-list li {
+            margin-bottom: 15px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        /* Efek hover pada item daftar */
+        .module-list li:hover {
+            border-left-color: #3498db;
+            transform: translateX(5px);
+        }
+
+        /* Styling link modul */
+        .module-list a {
+            display: block;
+            padding: 15px 20px;
+            color: #34495e;
+            text-decoration: none;
+            font-size: 1.2em;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .module-list a:hover {
+            background-color: #ecf0f1;
+        }
+
+        /* Footer sederhana */
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>📚 Daftar Modul Pembelajaran</h1>
+
+        <ul class="module-list">
+            <li><a href="framework-laravel/">Framework Laravel</a></li>
+            <li><a href="mengenal-penulisan-case/">Mengenal Penulisan Case</a></li>
+            <li><a href="prompting-ai-coding/">Prompting AI for Coding</a></li>
+        </ul>
+
+        <footer>
+            <p>&copy; 2025 | Nama Anda atau Proyek Anda</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>
