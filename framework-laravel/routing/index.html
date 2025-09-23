@@ -414,6 +414,154 @@
                     </div>
                 </div>
 
+                <!-- Named Routes Section -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-purple-600">Named Routes - Penamaan Route</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        <strong>Named Routes</strong> adalah fitur Laravel yang memungkinkan kita memberikan nama pada
+                        route
+                        sehingga mudah direferensikan dalam aplikasi. Ini sangat berguna untuk membuat URL yang dapat
+                        berubah
+                        tanpa harus mengubah semua kode yang mereferensikannya.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-800 mb-2">✅ Keuntungan Named Routes:</h4>
+                            <ul class="text-sm text-purple-700 space-y-1">
+                                <li>• URL bisa berubah tanpa error</li>
+                                <li>• Code lebih mudah dibaca</li>
+                                <li>• Mudah maintenance dan refactoring</li>
+                                <li>• Auto-complete di IDE</li>
+                                <li>• Type safety di Laravel 12</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">🎯 Kapan Menggunakan:</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Link navigation menu</li>
+                                <li>• Form action URLs</li>
+                                <li>• Redirect dalam controller</li>
+                                <li>• Email templates</li>
+                                <li>• API documentation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                        <div><span class="comment">// Basic named route</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/dashboard'</span>, [<span
+                                class="class">DashboardController</span>::<span class="keyword">class</span>, <span
+                                class="string">'index'</span>])</div>
+                        <div class="ml-4">-><span class="method">name</span>(<span class="string">'dashboard'</span>);
+                        </div>
+                        <div class="mt-2"><span class="comment">// Named route dengan parameter</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/user/{id}/profile'</span>, [<span
+                                class="class">UserController</span>::<span class="keyword">class</span>, <span
+                                class="string">'profile'</span>])</div>
+                        <div class="ml-4">-><span class="method">name</span>(<span
+                                class="string">'user.profile'</span>);</div>
+                        <div class="mt-2"><span class="comment">// Resource routes dengan custom names</span></div>
+                        <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                class="string">'articles'</span>, <span class="class">ArticleController</span>::<span
+                                class="keyword">class</span>)</div>
+                        <div class="ml-4">-><span class="method">names</span>([</div>
+                        <div class="ml-8"><span class="string">'index'</span> => <span
+                                class="string">'articles.list'</span>,</div>
+                        <div class="ml-8"><span class="string">'show'</span> => <span
+                                class="string">'articles.detail'</span></div>
+                        <div class="ml-4">]);</div>
+                        <div class="mt-2"><span class="comment">// Route group dengan prefix nama</span></div>
+                        <div><span class="keyword">Route</span>::<span class="method">name</span>(<span
+                                class="string">'admin.'</span>)-><span class="method">group</span>(<span
+                                class="keyword">function</span> () {</div>
+                        <div class="ml-4"><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/users'</span>, <span class="keyword">function</span>(){})-><span
+                                class="method">name</span>(<span class="string">'users'</span>); <span
+                                class="comment">// admin.users</span></div>
+                        <div class="ml-4"><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/settings'</span>, <span class="keyword">function</span>(){})-><span
+                                class="method">name</span>(<span class="string">'settings'</span>); <span
+                                class="comment">// admin.settings</span></div>
+                        <div>});</div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-800 mb-2">Menggunakan dalam Blade:</h4>
+                            <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight">
+                                <div><span class="comment">{{-- Tanpa parameter --}}</span></div>
+                                <div>&lt;<span class="keyword">a</span> <span class="function">href</span>=<span
+                                        class="string">"{{ route('dashboard') }}"</span>&gt;</div>
+                                <div class="ml-4">Dashboard</div>
+                                <div>&lt;/<span class="keyword">a</span>&gt;</div>
+                                <div class="mt-2"><span class="comment">{{-- Dengan parameter --}}</span></div>
+                                <div>&lt;<span class="keyword">a</span> <span class="function">href</span>=<span
+                                        class="string">"{{ route('user.profile', $user->id) }}"</span>&gt;</div>
+                                <div class="ml-4">Profile</div>
+                                <div>&lt;/<span class="keyword">a</span>&gt;</div>
+                                <div class="mt-2"><span class="comment">{{-- Form action --}}</span></div>
+                                <div>&lt;<span class="keyword">form</span> <span class="function">action</span>=<span
+                                        class="string">"{{ route('articles.store') }}"</span>&gt;</div>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">Menggunakan dalam Controller:</h4>
+                            <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight">
+                                <div><span class="comment">// Redirect ke named route</span></div>
+                                <div><span class="keyword">return</span> <span class="function">redirect</span>()-><span
+                                        class="method">route</span>(<span class="string">'dashboard'</span>);</div>
+                                <div class="mt-2"><span class="comment">// Dengan parameter</span></div>
+                                <div><span class="keyword">return</span> <span class="function">redirect</span>()-><span
+                                        class="method">route</span>(<span class="string">'user.profile'</span>, $user);
+                                </div>
+                                <div class="mt-2"><span class="comment">// Generate URL</span></div>
+                                <div>$url = <span class="function">route</span>(<span
+                                        class="string">'user.profile'</span>, [<span class="string">'id'</span> =>
+                                    123]);</div>
+                                <div class="mt-2"><span class="comment">// Check current route</span></div>
+                                <div><span class="keyword">if</span> (<span class="function">request</span>()-><span
+                                        class="method">routeIs</span>(<span class="string">'dashboard'</span>)) {</div>
+                                <div class="ml-4"><span class="comment">// Do something</span></div>
+                                <div>}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border-2 border-purple-200 rounded-lg p-4">
+                        <h4 class="font-semibold mb-2 text-purple-800">Best Practices & Laravel 12 Features:</h4>
+                        <div class="grid md:grid-cols-2 gap-4 mb-3">
+                            <div class="bg-purple-50 p-3 rounded">
+                                <h5 class="font-medium text-purple-800 text-sm mb-1">📝 Naming Convention:</h5>
+                                <ul class="text-xs text-purple-700 space-y-1">
+                                    <li>• Gunakan dot notation: <code>user.profile</code></li>
+                                    <li>• Consistent dengan controller: <code>admin.users.index</code></li>
+                                    <li>• Hindari camelCase, gunakan snake_case</li>
+                                </ul>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded">
+                                <h5 class="font-medium text-blue-800 text-sm mb-1">🚀 Laravel 12 Features:</h5>
+                                <ul class="text-xs text-blue-700 space-y-1">
+                                    <li>• Route name auto-completion</li>
+                                    <li>• Better error messages</li>
+                                    <li>• Route caching improvements</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded">
+                            <h5 class="font-medium text-purple-800 text-sm mb-2">🔧 Debugging Named Routes:</h5>
+                            <div class="code-block rounded-lg p-2 text-white text-xs syntax-highlight">
+                                <div><span class="comment">// List semua named routes</span></div>
+                                <div>php artisan route:list --name</div>
+                                <div class="mt-1"><span class="comment">// Cari route dengan nama tertentu</span></div>
+                                <div>php artisan route:list --name=user</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Interactive Route Order Tester -->
                 <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
                     <h3 class="text-2xl font-semibold mb-6 text-center">🧪 Route Order Tester</h3>
@@ -465,6 +613,73 @@
 
                     <div id="routeOrderResult" class="mt-4 hidden">
                         <!-- Result will appear here -->
+                    </div>
+                </div>
+
+                <!-- Named Routes Demo -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">🏷️ Named Routes Generator</h3>
+                    <p class="text-gray-600 mb-6 text-center">Buat named route dan lihat bagaimana menggunakannya dalam
+                        berbagai konteks</p>
+
+                    <div class="grid md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Route Path:</label>
+                            <input type="text" id="namedRoutePath"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                placeholder="/user/{id}/profile" value="/user/{id}/profile">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Controller:</label>
+                            <input type="text" id="namedRouteController"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                placeholder="UserController::class, 'profile'" value="UserController::class, 'profile'">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Route Name:</label>
+                            <input type="text" id="namedRouteName"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                placeholder="user.profile" value="user.profile">
+                        </div>
+                    </div>
+
+                    <button onclick="generateNamedRoute()"
+                        class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors mb-6">
+                        Generate Named Route & Examples
+                    </button>
+
+                    <div id="namedRouteResults" class="hidden">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-purple-800 mb-2">Route Definition:</h4>
+                                <div id="namedRouteDefinition"
+                                    class="code-block rounded-lg p-3 text-white text-sm syntax-highlight">
+                                    <!-- Route definition will appear here -->
+                                </div>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2">Blade Template Usage:</h4>
+                                <div id="namedRouteBladeUsage"
+                                    class="code-block rounded-lg p-3 text-white text-sm syntax-highlight">
+                                    <!-- Blade usage will appear here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6 mt-4">
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-800 mb-2">Controller Usage:</h4>
+                                <div id="namedRouteControllerUsage"
+                                    class="code-block rounded-lg p-3 text-white text-sm syntax-highlight">
+                                    <!-- Controller usage will appear here -->
+                                </div>
+                            </div>
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-orange-800 mb-2">Generated URLs:</h4>
+                                <div id="namedRouteUrls" class="bg-white border rounded-lg p-3 text-sm">
+                                    <!-- Generated URLs will appear here -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1852,6 +2067,113 @@
             const resultDiv = document.getElementById('generatedRoute');
             resultDiv.innerHTML = routeCode.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
             resultDiv.classList.remove('hidden');
+        }
+
+        // Generate named route
+        function generateNamedRoute() {
+            const path = document.getElementById('namedRoutePath').value;
+            const controller = document.getElementById('namedRouteController').value;
+            const name = document.getElementById('namedRouteName').value;
+
+            if (!path || !controller || !name) {
+                alert('Mohon isi semua field terlebih dahulu!');
+                return;
+            }
+
+            // Generate route definition
+            const routeDefinition = `Route::get('${path}', [${controller}])
+    ->name('${name}');`;
+
+            // Generate Blade usage examples
+            const hasParams = path.includes('{');
+            let bladeUsage = '';
+            if (hasParams) {
+                bladeUsage = `{{-- Link tanpa parameter --}}
+<a href="{{ route('${name}', $user->id) }}">
+    View Profile
+</a>
+
+{{-- Form action --}}
+<form action="{{ route('${name}', $user) }}" method="GET">
+    {{-- Form content --}}
+</form>
+
+{{-- Conditional active link --}}
+<a href="{{ route('${name}', $user) }}" 
+   class="{{ request()->routeIs('${name}') ? 'active' : '' }}">
+    Profile
+</a>`;
+            } else {
+                bladeUsage = `{{-- Simple link --}}
+<a href="{{ route('${name}') }}">
+    Go to ${name.charAt(0).toUpperCase() + name.slice(1)}
+</a>
+
+{{-- Form action --}}
+<form action="{{ route('${name}') }}" method="POST">
+    @csrf
+    {{-- Form content --}}
+</form>
+
+{{-- Check if current route --}}
+@if(request()->routeIs('${name}'))
+    <span class="current">Current Page</span>
+@endif`;
+            }
+
+            // Generate controller usage
+            let controllerUsage = '';
+            if (hasParams) {
+                controllerUsage = `// Redirect with parameters
+return redirect()->route('${name}', $user->id);
+
+// Generate URL with parameters
+$url = route('${name}', ['id' => 123]);
+
+// Redirect with model binding
+return redirect()->route('${name}', $user);
+
+// Check current route with parameters
+if (request()->routeIs('${name}')) {
+    // Current route logic
+}`;
+            } else {
+                controllerUsage = `// Simple redirect
+return redirect()->route('${name}');
+
+// Generate URL
+$url = route('${name}');
+
+// Redirect with flash message
+return redirect()->route('${name}')
+    ->with('success', 'Action completed!');
+
+// Check current route
+if (request()->routeIs('${name}')) {
+    // Current route logic
+}`;
+            }
+
+            // Generate example URLs
+            let urls = '';
+            if (hasParams) {
+                urls = `<strong>Example URLs:</strong><br>
+• route('${name}', 1) → <code>${path.replace('{id}', '1').replace('{', '').replace('}', '')}</code><br>
+• route('${name}', $user) → <code>${path.replace('{id}', '$user->id').replace('{', '').replace('}', '')}</code><br>
+• route('${name}', ['id' => 123]) → <code>${path.replace('{id}', '123').replace('{', '').replace('}', '')}</code>`;
+            } else {
+                urls = `<strong>Example URLs:</strong><br>
+• route('${name}') → <code>${path}</code><br>
+• URL::route('${name}') → <code>${path}</code>`;
+            }
+
+            // Update DOM elements
+            document.getElementById('namedRouteDefinition').innerHTML = routeDefinition.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            document.getElementById('namedRouteBladeUsage').innerHTML = bladeUsage.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            document.getElementById('namedRouteControllerUsage').innerHTML = controllerUsage.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            document.getElementById('namedRouteUrls').innerHTML = urls;
+
+            document.getElementById('namedRouteResults').classList.remove('hidden');
         }
 
         // Test parameter route
