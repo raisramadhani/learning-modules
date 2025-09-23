@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS & Tailwind untuk Laravel - Modul Pembelajaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .code-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .section-bg {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-5xl font-bold mb-4 fade-in">CSS & Tailwind CSS</h1>
+            <p class="text-xl opacity-90 fade-in">Panduan Lengkap untuk Implementasi di Laravel</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-center space-x-8 py-4">
+                <button onclick="scrollToSection('css-basics')"
+                    class="nav-btn px-6 py-2 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors">
+                    Dasar CSS
+                </button>
+                <button onclick="scrollToSection('tailwind-intro')"
+                    class="nav-btn px-6 py-2 rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors">
+                    Pengenalan Tailwind
+                </button>
+                <button onclick="scrollToSection('components')"
+                    class="nav-btn px-6 py-2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition-colors">
+                    Komponen Tailwind
+                </button>
+                <button onclick="scrollToSection('interactive-practice')"
+                    class="nav-btn px-6 py-2 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors">
+                    Praktik Interaktif
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- CSS Basics Section -->
+        <section id="css-basics" class="mb-20 fade-in">
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Dasar-Dasar CSS</h2>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold text-blue-800 mb-4">Apa itu CSS?</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            CSS (Cascading Style Sheets) adalah bahasa stylesheet yang digunakan untuk mengatur tampilan
+                            dan format dokumen HTML. CSS memungkinkan kita untuk memisahkan konten dari presentasi,
+                            membuat website lebih fleksibel dan mudah dikelola.
+                        </p>
+                    </div>
+
+                    <div class="bg-green-50 p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold text-green-800 mb-4">Keuntungan CSS</h3>
+                        <ul class="text-gray-700 space-y-2">
+                            <li>• Pemisahan konten dan tampilan</li>
+                            <li>• Konsistensi desain di seluruh website</li>
+                            <li>• Kemudahan maintenance</li>
+                            <li>• Loading yang lebih cepat</li>
+                            <li>• Responsive design</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-highlight rounded-xl p-6 text-white mb-6">
+                    <h4 class="text-xl font-semibold mb-4">Contoh CSS Tradisional:</h4>
+                    <pre class="bg-black bg-opacity-30 p-4 rounded-lg overflow-x-auto"><code>.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.button {
+    background-color: #3b82f6;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tailwind Introduction -->
+        <section id="tailwind-intro" class="mb-20 fade-in">
+            <div class="section-bg rounded-2xl shadow-xl p-8 text-white">
+                <h2 class="text-4xl font-bold mb-8 text-center">Pengenalan Tailwind CSS</h2>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-white bg-opacity-20 p-6 rounded-xl backdrop-blur-sm">
+                        <h3 class="text-2xl font-semibold mb-4">Apa itu Tailwind CSS?</h3>
+                        <p class="leading-relaxed">
+                            Tailwind CSS adalah utility-first CSS framework yang menyediakan kelas-kelas siap pakai
+                            untuk membangun desain custom dengan cepat. Berbeda dengan framework tradisional, Tailwind
+                            memberikan building blocks tingkat rendah untuk membuat desain unik.
+                        </p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-20 p-6 rounded-xl backdrop-blur-sm">
+                        <h3 class="text-2xl font-semibold mb-4">Mengapa Tailwind?</h3>
+                        <ul class="space-y-2">
+                            <li>• Utility-first approach</li>
+                            <li>• Highly customizable</li>
+                            <li>• Responsive design built-in</li>
+                            <li>• Smaller CSS bundle</li>
+                            <li>• Consistent design system</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
+                    <h4 class="text-xl font-semibold mb-4">Perbandingan: CSS vs Tailwind</h4>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-red-500 bg-opacity-20 p-4 rounded-lg">
+                            <h5 class="font-semibold mb-2">CSS Tradisional:</h5>
+                            <pre class="text-sm"><code>&lt;button class="custom-button"&gt;
+  Klik Saya
+&lt;/button&gt;
+
+.custom-button {
+  background: blue;
+  padding: 12px 24px;
+  border-radius: 8px;
+}</code></pre>
+                        </div>
+                        <div class="bg-green-500 bg-opacity-20 p-4 rounded-lg">
+                            <h5 class="font-semibold mb-2">Tailwind CSS:</h5>
+                            <pre class="text-sm"><code>&lt;button class="bg-blue-500 px-6 py-3 rounded-lg"&gt;
+  Klik Saya
+&lt;/button&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tailwind Components -->
+        <section id="components" class="mb-20 fade-in">
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Komponen Tailwind CSS</h2>
+
+                <!-- Spacing -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-purple-800 mb-6">Spacing (Margin & Padding)</h3>
+
+                    <!-- Detailed Explanation -->
+                    <div class="bg-purple-100 p-6 rounded-xl mb-8">
+                        <h4 class="text-2xl font-semibold text-purple-800 mb-4">Penjelasan Detail Spacing</h4>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 rounded-lg">
+                                <h5 class="font-semibold text-purple-700 mb-3">Margin Top (mt-)</h5>
+                                <p class="text-gray-700 text-sm mb-3">
+                                    <strong>Margin top</strong> adalah ruang kosong di bagian atas elemen yang
+                                    memisahkan elemen tersebut dari elemen di atasnya. Margin top berguna untuk
+                                    memberikan jarak vertikal antar elemen.
+                                </p>
+                                <div class="bg-purple-50 p-3 rounded">
+                                    <code class="text-purple-600">mt-4</code> = margin-top: 1rem (16px)
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg">
+                                <h5 class="font-semibold text-purple-700 mb-3">Margin Bottom (mb-)</h5>
+                                <p class="text-gray-700 text-sm mb-3">
+                                    <strong>Margin bottom</strong> adalah ruang kosong di bagian bawah elemen yang
+                                    memisahkan elemen tersebut dari elemen di bawahnya. Sangat berguna untuk memberikan
+                                    jarak antar paragraf atau section.
+                                </p>
+                                <div class="bg-purple-50 p-3 rounded">
+                                    <code class="text-purple-600">mb-6</code> = margin-bottom: 1.5rem (24px)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-purple-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-purple-700">Margin Classes</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-purple-600 font-mono">m-0</code>
+                                        <span class="text-gray-600">margin: 0</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Menghilangkan semua margin</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-purple-600 font-mono">mt-4</code>
+                                        <span class="text-gray-600">margin-top: 1rem (16px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan jarak atas sebesar 16px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-purple-600 font-mono">mb-8</code>
+                                        <span class="text-gray-600">margin-bottom: 2rem (32px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan jarak bawah sebesar 32px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-purple-600 font-mono">ml-6</code>
+                                        <span class="text-gray-600">margin-left: 1.5rem (24px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan jarak kiri sebesar 24px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-purple-600 font-mono">mr-3</code>
+                                        <span class="text-gray-600">margin-right: 0.75rem (12px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan jarak kanan sebesar 12px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-purple-600 font-mono">mx-auto</code>
+                                        <span class="text-gray-600">margin-left & right: auto</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memusatkan elemen secara horizontal</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-purple-600 font-mono">my-12</code>
+                                        <span class="text-gray-600">margin-top & bottom: 3rem (48px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan jarak atas dan bawah sebesar 48px</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-blue-700">Padding Classes</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-blue-600 font-mono">p-0</code>
+                                        <span class="text-gray-600">padding: 0</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Menghilangkan semua padding</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-blue-600 font-mono">pt-2</code>
+                                        <span class="text-gray-600">padding-top: 0.5rem (8px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan ruang dalam atas sebesar 8px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-blue-600 font-mono">pb-6</code>
+                                        <span class="text-gray-600">padding-bottom: 1.5rem (24px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan ruang dalam bawah sebesar 24px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-blue-600 font-mono">pl-4</code>
+                                        <span class="text-gray-600">padding-left: 1rem (16px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan ruang dalam kiri sebesar 16px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-blue-600 font-mono">pr-8</code>
+                                        <span class="text-gray-600">padding-right: 2rem (32px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan ruang dalam kanan sebesar 32px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-blue-600 font-mono">px-5</code>
+                                        <span class="text-gray-600">padding-left & right: 1.25rem (20px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan ruang dalam kiri dan kanan sebesar 20px
+                                    </p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-blue-600 font-mono">py-10</code>
+                                        <span class="text-gray-600">padding-top & bottom: 2.5rem (40px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memberikan ruang dalam atas dan bawah sebesar 40px
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spacing Scale Reference -->
+                    <div class="bg-gray-50 p-6 rounded-xl mt-8">
+                        <h4 class="text-xl font-semibold mb-4 text-gray-800">Skala Spacing Tailwind</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+                            <div class="text-center">
+                                <div class="bg-purple-200 h-4 mb-2 rounded" style="width: 4px; margin: 0 auto;"></div>
+                                <code class="text-xs">1 = 4px</code>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-purple-300 h-4 mb-2 rounded" style="width: 8px; margin: 0 auto;"></div>
+                                <code class="text-xs">2 = 8px</code>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-purple-400 h-4 mb-2 rounded" style="width: 12px; margin: 0 auto;"></div>
+                                <code class="text-xs">3 = 12px</code>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-purple-500 h-4 mb-2 rounded" style="width: 16px; margin: 0 auto;"></div>
+                                <code class="text-xs">4 = 16px</code>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-purple-600 h-4 mb-2 rounded" style="width: 20px; margin: 0 auto;"></div>
+                                <code class="text-xs">5 = 20px</code>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-purple-700 h-4 mb-2 rounded" style="width: 24px; margin: 0 auto;"></div>
+                                <code class="text-xs">6 = 24px</code>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-purple-800 h-4 mb-2 rounded" style="width: 32px; margin: 0 auto;"></div>
+                                <code class="text-xs">8 = 32px</code>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-purple-900 h-4 mb-2 rounded" style="width: 48px; margin: 0 auto;"></div>
+                                <code class="text-xs">12 = 48px</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Responsive Design -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-green-800 mb-6">Responsive Breakpoints</h3>
+                    <div class="bg-green-50 p-6 rounded-xl">
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <code class="text-green-600 font-mono text-lg">sm:</code>
+                                <p class="text-gray-600 mt-2">≥ 640px</p>
+                                <p class="text-sm text-gray-500">Mobile landscape</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <code class="text-green-600 font-mono text-lg">md:</code>
+                                <p class="text-gray-600 mt-2">≥ 768px</p>
+                                <p class="text-sm text-gray-500">Tablet</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <code class="text-green-600 font-mono text-lg">lg:</code>
+                                <p class="text-gray-600 mt-2">≥ 1024px</p>
+                                <p class="text-sm text-gray-500">Desktop</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <code class="text-green-600 font-mono text-lg">xl:</code>
+                                <p class="text-gray-600 mt-2">≥ 1280px</p>
+                                <p class="text-sm text-gray-500">Large desktop</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">Contoh Penggunaan:</h4>
+                            <code class="text-green-600 bg-gray-100 p-2 rounded block">
+                                &lt;div class="w-full md:w-1/2 lg:w-1/3 p-4"&gt;...&lt;/div&gt;
+                            </code>
+                            <p class="text-sm text-gray-600 mt-2">
+                                Full width di mobile, setengah di tablet, sepertiga di desktop
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Demo -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-red-800 mb-6">Demo Interaktif</h3>
+                    <div class="bg-red-50 p-6 rounded-xl">
+                        <p class="text-gray-700 mb-4">Klik tombol di bawah untuk melihat efek berbagai kelas Tailwind:
+                        </p>
+                        <div class="flex flex-wrap gap-3 mb-6">
+                            <button onclick="applyClass('p-8 bg-blue-500 text-white rounded-lg')"
+                                class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors">
+                                Padding + Background
+                            </button>
+                            <button onclick="applyClass('m-6 border-4 border-green-500 p-4')"
+                                class="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors">
+                                Margin + Border
+                            </button>
+                            <button onclick="applyClass('rounded-full shadow-xl bg-purple-500 text-white p-6')"
+                                class="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors">
+                                Rounded + Shadow
+                            </button>
+                            <button
+                                onclick="applyClass('w-1/2 h-32 bg-gradient-to-r from-pink-500 to-yellow-500 flex items-center justify-center text-white font-bold rounded-xl')"
+                                class="px-4 py-2 bg-pink-100 text-pink-700 rounded-lg hover:bg-pink-200 transition-colors">
+                                Width + Height + Gradient
+                            </button>
+                            <button
+                                onclick="applyClass('transform hover:scale-110 transition-transform bg-indigo-500 text-white p-4 rounded-lg cursor-pointer')"
+                                class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors">
+                                Hover Transform
+                            </button>
+                            <button onclick="resetDemo()"
+                                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                                Reset
+                            </button>
+                        </div>
+                        <div id="demo-box" class="bg-gray-200 p-4 rounded-lg text-center transition-all duration-300">
+                            <p class="text-gray-700">Kotak Demo - Klik tombol di atas untuk melihat perubahan</p>
+                        </div>
+                        <div id="demo-classes" class="mt-4 p-3 bg-white rounded-lg">
+                            <strong>Kelas yang diterapkan:</strong> <span class="text-gray-600">Belum ada</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Width & Height -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-orange-800 mb-6">Width & Height (Sizing)</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-orange-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-orange-700">Width Classes</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-orange-600 font-mono">w-full</code>
+                                        <span class="text-gray-600">width: 100%</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Menggunakan seluruh lebar container</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-orange-600 font-mono">w-1/2</code>
+                                        <span class="text-gray-600">width: 50%</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Setengah dari lebar container</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-orange-600 font-mono">w-64</code>
+                                        <span class="text-gray-600">width: 16rem (256px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Lebar tetap 256px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-orange-600 font-mono">w-screen</code>
+                                        <span class="text-gray-600">width: 100vw</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Selebar viewport/layar</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-teal-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-teal-700">Height Classes</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-teal-600 font-mono">h-full</code>
+                                        <span class="text-gray-600">height: 100%</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Menggunakan seluruh tinggi container</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-teal-600 font-mono">h-screen</code>
+                                        <span class="text-gray-600">height: 100vh</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Setinggi viewport/layar</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-teal-600 font-mono">h-32</code>
+                                        <span class="text-gray-600">height: 8rem (128px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Tinggi tetap 128px</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-teal-600 font-mono">h-auto</code>
+                                        <span class="text-gray-600">height: auto</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Tinggi menyesuaikan konten</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flexbox & Grid -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-cyan-800 mb-6">Flexbox & Grid Layout</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-cyan-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-cyan-700">Flexbox Classes</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-cyan-600 font-mono">flex</code>
+                                        <span class="text-gray-600">display: flex</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Mengaktifkan flexbox layout</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-cyan-600 font-mono">flex-col</code>
+                                        <span class="text-gray-600">flex-direction: column</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Menyusun elemen secara vertikal</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-cyan-600 font-mono">justify-center</code>
+                                        <span class="text-gray-600">justify-content: center</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memusatkan elemen secara horizontal</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-cyan-600 font-mono">items-center</code>
+                                        <span class="text-gray-600">align-items: center</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Memusatkan elemen secara vertikal</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-cyan-600 font-mono">flex-wrap</code>
+                                        <span class="text-gray-600">flex-wrap: wrap</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Membungkus elemen ke baris baru</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-emerald-700">Grid Classes</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-emerald-600 font-mono">grid</code>
+                                        <span class="text-gray-600">display: grid</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Mengaktifkan grid layout</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-emerald-600 font-mono">grid-cols-3</code>
+                                        <span class="text-gray-600">grid-template-columns: repeat(3, 1fr)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Membuat 3 kolom dengan lebar sama</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-emerald-600 font-mono">col-span-2</code>
+                                        <span class="text-gray-600">grid-column: span 2</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Elemen mengambil 2 kolom</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-emerald-600 font-mono">gap-4</code>
+                                        <span class="text-gray-600">gap: 1rem (16px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Jarak antar grid item 16px</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colors & Backgrounds -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-rose-800 mb-6">Colors & Backgrounds</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-rose-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-rose-700">Text Colors</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-rose-600 font-mono">text-gray-900</code>
+                                        <span class="text-gray-900">Teks hitam pekat</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Warna teks abu-abu sangat gelap</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-rose-600 font-mono">text-blue-500</code>
+                                        <span class="text-blue-500">Teks biru</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Warna teks biru standar</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-rose-600 font-mono">text-red-600</code>
+                                        <span class="text-red-600">Teks merah</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Warna teks merah untuk peringatan</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-violet-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-violet-700">Background Colors</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-violet-600 font-mono">bg-white</code>
+                                        <div class="w-6 h-6 bg-white border border-gray-300 rounded"></div>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Background putih</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-violet-600 font-mono">bg-blue-500</code>
+                                        <div class="w-6 h-6 bg-blue-500 rounded"></div>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Background biru standar</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-violet-600 font-mono">bg-gradient-to-r</code>
+                                        <div class="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded"></div>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Gradient horizontal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Borders & Shadows -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-amber-800 mb-6">Borders & Shadows</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-amber-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-amber-700">Border Classes</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-amber-600 font-mono">border</code>
+                                        <span class="text-gray-600">border-width: 1px</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Border tipis di semua sisi</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-amber-600 font-mono">border-2</code>
+                                        <span class="text-gray-600">border-width: 2px</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Border sedang di semua sisi</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-amber-600 font-mono">border-t-4</code>
+                                        <span class="text-gray-600">border-top-width: 4px</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Border tebal hanya di atas</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-amber-600 font-mono">rounded-lg</code>
+                                        <span class="text-gray-600">border-radius: 0.5rem (8px)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Sudut melengkung sedang</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold mb-4 text-slate-700">Shadow Classes</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg shadow-sm">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-slate-600 font-mono">shadow-sm</code>
+                                        <span class="text-gray-600">Shadow halus</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Bayangan tipis dan halus</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow-md">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-slate-600 font-mono">shadow-md</code>
+                                        <span class="text-gray-600">Shadow sedang</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Bayangan standar untuk card</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow-lg">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-slate-600 font-mono">shadow-lg</code>
+                                        <span class="text-gray-600">Shadow besar</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Bayangan tebal untuk modal</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <code class="text-slate-600 font-mono">shadow-xl</code>
+                                        <span class="text-gray-600">Shadow extra besar</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Bayangan sangat tebal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typography -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-indigo-800 mb-6">Typography</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-indigo-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold text-indigo-700 mb-4">Font Size</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-indigo-600 font-mono">text-xs</code>
+                                    <p class="text-xs mt-1">Teks sangat kecil (12px)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-indigo-600 font-mono">text-sm</code>
+                                    <p class="text-sm mt-1">Teks kecil (14px)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-indigo-600 font-mono">text-base</code>
+                                    <p class="text-base mt-1">Teks normal (16px)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-indigo-600 font-mono">text-lg</code>
+                                    <p class="text-lg mt-1">Teks besar (18px)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-indigo-600 font-mono">text-xl</code>
+                                    <p class="text-xl mt-1">Teks extra besar (20px)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold text-yellow-700 mb-4">Font Weight</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-yellow-600 font-mono">font-thin</code>
+                                    <p class="font-thin mt-1">Teks sangat tipis (100)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-yellow-600 font-mono">font-light</code>
+                                    <p class="font-light mt-1">Teks tipis (300)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-yellow-600 font-mono">font-normal</code>
+                                    <p class="font-normal mt-1">Teks normal (400)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-yellow-600 font-mono">font-medium</code>
+                                    <p class="font-medium mt-1">Teks sedang (500)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-yellow-600 font-mono">font-bold</code>
+                                    <p class="font-bold mt-1">Teks tebal (700)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-pink-50 p-6 rounded-xl">
+                            <h4 class="text-xl font-semibold text-pink-700 mb-4">Text Alignment</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-pink-600 font-mono">text-left</code>
+                                    <p class="text-left mt-1">Rata kiri</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-pink-600 font-mono">text-center</code>
+                                    <p class="text-center mt-1">Rata tengah</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-pink-600 font-mono">text-right</code>
+                                    <p class="text-right mt-1">Rata kanan</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg">
+                                    <code class="text-pink-600 font-mono">text-justify</code>
+                                    <p class="text-justify mt-1">Rata kiri-kanan (justify)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hover & States -->
+                <div class="mb-12">
+                    <h3 class="text-3xl font-semibold text-red-800 mb-6">Hover States & Transitions</h3>
+                    <div class="bg-red-50 p-6 rounded-xl">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="text-lg font-semibold text-red-700 mb-3">Hover Effects</h4>
+                                <div class="space-y-3">
+                                    <button
+                                        class="w-full p-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                                        <code>hover:bg-blue-600</code> - Hover Background
+                                    </button>
+                                    <button
+                                        class="w-full p-3 bg-green-500 text-white rounded hover:scale-105 transition-transform">
+                                        <code>hover:scale-105</code> - Hover Scale
+                                    </button>
+                                    <button
+                                        class="w-full p-3 bg-purple-500 text-white rounded hover:shadow-lg transition-shadow">
+                                        <code>hover:shadow-lg</code> - Hover Shadow
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg">
+                                <h4 class="text-lg font-semibold text-red-700 mb-3">Transition Classes</h4>
+                                <div class="space-y-3">
+                                    <div class="p-3 bg-gray-100 rounded">
+                                        <code class="text-red-600">transition-all</code>
+                                        <p class="text-sm text-gray-600 mt-1">Transisi semua properti</p>
+                                    </div>
+                                    <div class="p-3 bg-gray-100 rounded">
+                                        <code class="text-red-600">transition-colors</code>
+                                        <p class="text-sm text-gray-600 mt-1">Transisi warna saja</p>
+                                    </div>
+                                    <div class="p-3 bg-gray-100 rounded">
+                                        <code class="text-red-600">duration-300</code>
+                                        <p class="text-sm text-gray-600 mt-1">Durasi transisi 300ms</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Practice -->
+        <section id="interactive-practice" class="mb-20 fade-in">
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Praktik Interaktif</h2>
+                <p class="text-center text-gray-600 mb-8">Masukkan kelas Tailwind CSS dan lihat efeknya secara langsung!
+                </p>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Input Section -->
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold text-blue-800 mb-6">Panel Kontrol</h3>
+
+                        <!-- Class Input -->
+                        <div class="mb-6">
+                            <label for="tailwind-input" class="block text-sm font-medium text-gray-700 mb-2">
+                                Masukkan Kelas Tailwind (pisahkan dengan spasi):
+                            </label>
+                            <input type="text" id="tailwind-input"
+                                placeholder="Contoh: bg-red-500 p-4 rounded-lg text-white"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                oninput="applyTailwindClasses()">
+                        </div>
+
+                        <!-- Text Content Input -->
+                        <div class="mb-6">
+                            <label for="text-input" class="block text-sm font-medium text-gray-700 mb-2">
+                                Ubah Teks:
+                            </label>
+                            <input type="text" id="text-input" placeholder="Masukkan teks yang ingin ditampilkan"
+                                value="Ini adalah kotak praktik"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                oninput="updateText()">
+                        </div>
+
+                        <!-- Quick Buttons -->
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-blue-700 mb-3">Contoh Cepat:</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="setQuickClass('bg-blue-500 text-white p-6 rounded-lg')"
+                                    class="px-3 py-2 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200 transition-colors">
+                                    Button Style
+                                </button>
+                                <button
+                                    onclick="setQuickClass('bg-gradient-to-r from-purple-500 to-pink-500 text-white p-8 rounded-xl shadow-lg')"
+                                    class="px-3 py-2 bg-purple-100 text-purple-700 rounded text-sm hover:bg-purple-200 transition-colors">
+                                    Gradient Card
+                                </button>
+                                <button
+                                    onclick="setQuickClass('border-4 border-green-500 p-4 rounded-full text-center')"
+                                    class="px-3 py-2 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200 transition-colors">
+                                    Circle Border
+                                </button>
+                                <button onclick="setQuickClass('bg-yellow-200 p-3 m-4 transform rotate-3 shadow-md')"
+                                    class="px-3 py-2 bg-yellow-100 text-yellow-700 rounded text-sm hover:bg-yellow-200 transition-colors">
+                                    Sticky Note
+                                </button>
+                                <button
+                                    onclick="setQuickClass('bg-red-500 text-white p-4 rounded-lg hover:bg-red-600 transition-colors cursor-pointer')"
+                                    class="px-3 py-2 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200 transition-colors">
+                                    Hover Effect
+                                </button>
+                                <button onclick="setQuickClass('text-4xl font-bold text-center text-gray-800 p-8')"
+                                    class="px-3 py-2 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 transition-colors">
+                                    Big Title
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Reset Button -->
+                        <button onclick="resetPractice()"
+                            class="w-full px-4 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                            Reset
+                        </button>
+
+                        <!-- Current Classes Display -->
+                        <div class="mt-6 p-4 bg-white rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-2">Kelas yang Diterapkan:</h4>
+                            <code id="current-classes" class="text-blue-600 text-sm break-all">
+                                bg-gray-200 p-6 rounded-lg text-center
+                            </code>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="bg-gray-50 p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-6">Preview</h3>
+
+                        <!-- Preview Container -->
+                        <div
+                            class="bg-white p-8 rounded-lg border-2 border-dashed border-gray-300 min-h-64 flex items-center justify-center">
+                            <div id="practice-box"
+                                class="bg-gray-200 p-6 rounded-lg text-center transition-all duration-300">
+                                <span id="practice-text">Ini adalah kotak praktik</span>
+                            </div>
+                        </div>
+
+                        <!-- Tips -->
+                        <div class="mt-6 p-4 bg-blue-100 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">💡 Tips:</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Coba kombinasi seperti: <code>bg-red-500 text-white p-4 rounded-lg</code></li>
+                                <li>• Gunakan hover effects: <code>hover:bg-blue-600 hover:scale-105</code></li>
+                                <li>• Eksperimen dengan spacing: <code>m-4 p-8 mx-auto</code></li>
+                                <li>• Tambahkan shadows: <code>shadow-lg shadow-xl</code></li>
+                                <li>• Coba responsive: <code>w-full md:w-1/2 lg:w-1/3</code></li>
+                            </ul>
+                        </div>
+
+                        <!-- Common Classes Reference -->
+                        <div class="mt-6 p-4 bg-green-100 rounded-lg">
+                            <h4 class="font-semibold text-green-800 mb-2">🎨 Kelas Populer:</h4>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <div>
+                                    <strong>Background:</strong><br>
+                                    <code class="text-green-700">bg-blue-500, bg-red-400</code>
+                                </div>
+                                <div>
+                                    <strong>Text:</strong><br>
+                                    <code class="text-green-700">text-white, text-lg</code>
+                                </div>
+                                <div>
+                                    <strong>Padding:</strong><br>
+                                    <code class="text-green-700">p-4, px-6, py-3</code>
+                                </div>
+                                <div>
+                                    <strong>Margin:</strong><br>
+                                    <code class="text-green-700">m-2, mt-4, mx-auto</code>
+                                </div>
+                                <div>
+                                    <strong>Border:</strong><br>
+                                    <code class="text-green-700">rounded-lg, border-2</code>
+                                </div>
+                                <div>
+                                    <strong>Shadow:</strong><br>
+                                    <code class="text-green-700">shadow-md, shadow-xl</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold mb-4">Selamat Belajar!</h3>
+            <p class="text-gray-300 mb-6">
+                Dengan memahami CSS dan Tailwind CSS, Anda dapat membuat interface yang indah dan responsif untuk
+                aplikasi Laravel Anda.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <span class="px-4 py-2 bg-blue-600 rounded-full text-sm">CSS</span>
+                <span class="px-4 py-2 bg-purple-600 rounded-full text-sm">Tailwind CSS</span>
+                <span class="px-4 py-2 bg-red-600 rounded-full text-sm">Laravel</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Fade in animation on scroll
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Demo functionality
+        function applyClass(classes) {
+            const demoBox = document.getElementById('demo-box');
+            const demoClasses = document.getElementById('demo-classes');
+
+            demoBox.className = classes + ' transition-all duration-300';
+            demoClasses.innerHTML = `<strong>Kelas yang diterapkan:</strong> <span class="text-blue-600 font-mono">${classes}</span>`;
+        }
+
+        function resetDemo() {
+            const demoBox = document.getElementById('demo-box');
+            const demoClasses = document.getElementById('demo-classes');
+
+            demoBox.className = 'bg-gray-200 p-4 rounded-lg text-center transition-all duration-300';
+            demoClasses.innerHTML = '<strong>Kelas yang diterapkan:</strong> <span class="text-gray-600">Belum ada</span>';
+        }
+
+        // Interactive Practice functionality
+        function applyTailwindClasses() {
+            const input = document.getElementById('tailwind-input');
+            const practiceBox = document.getElementById('practice-box');
+            const currentClasses = document.getElementById('current-classes');
+
+            const classes = input.value.trim();
+
+            if (classes) {
+                practiceBox.className = classes + ' transition-all duration-300';
+                currentClasses.textContent = classes;
+            } else {
+                practiceBox.className = 'bg-gray-200 p-6 rounded-lg text-center transition-all duration-300';
+                currentClasses.textContent = 'bg-gray-200 p-6 rounded-lg text-center';
+            }
+        }
+
+        function updateText() {
+            const textInput = document.getElementById('text-input');
+            const practiceText = document.getElementById('practice-text');
+
+            practiceText.textContent = textInput.value || 'Ini adalah kotak praktik';
+        }
+
+        function setQuickClass(classes) {
+            const input = document.getElementById('tailwind-input');
+            const practiceBox = document.getElementById('practice-box');
+            const currentClasses = document.getElementById('current-classes');
+
+            input.value = classes;
+            practiceBox.className = classes + ' transition-all duration-300';
+            currentClasses.textContent = classes;
+        }
+
+        function resetPractice() {
+            const input = document.getElementById('tailwind-input');
+            const textInput = document.getElementById('text-input');
+            const practiceBox = document.getElementById('practice-box');
+            const practiceText = document.getElementById('practice-text');
+            const currentClasses = document.getElementById('current-classes');
+
+            input.value = '';
+            textInput.value = 'Ini adalah kotak praktik';
+            practiceBox.className = 'bg-gray-200 p-6 rounded-lg text-center transition-all duration-300';
+            practiceText.textContent = 'Ini adalah kotak praktik';
+            currentClasses.textContent = 'bg-gray-200 p-6 rounded-lg text-center';
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', handleScrollAnimation);
+        window.addEventListener('load', handleScrollAnimation);
+
+        // Active navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    b.classList.remove('bg-blue-500', 'text-white');
+                    b.classList.add('bg-blue-100', 'text-blue-700');
+                });
+                this.classList.remove('bg-blue-100', 'text-blue-700');
+                this.classList.add('bg-blue-500', 'text-white');
+            });
+        });
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98381054f2070b95',t:'MTc1ODYwOTc2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
