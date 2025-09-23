@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel 12 Routing - Panduan Interaktif 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .code-block {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .syntax-highlight .keyword {
+            color: #f59e0b;
+        }
+
+        .syntax-highlight .string {
+            color: #10b981;
+        }
+
+        .syntax-highlight .comment {
+            color: #6b7280;
+        }
+
+        .syntax-highlight .function {
+            color: #3b82f6;
+        }
+
+        .syntax-highlight .class {
+            color: #8b5cf6;
+        }
+
+        .syntax-highlight .method {
+            color: #06b6d4;
+        }
+
+        .version-badge {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <div class="version-badge inline-block px-4 py-2 rounded-full text-white font-semibold mb-4 fade-in">
+                Laravel 12 - 2025 Edition
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 fade-in">Laravel 12 Routing</h1>
+            <p class="text-xl opacity-90 max-w-2xl mx-auto fade-in" style="animation-delay: 0.2s">
+                Pelajari fitur routing terbaru Laravel 12 dengan middleware auth, rate limiting, dan fitur modern
+                lainnya
+            </p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-center flex-wrap gap-4 py-4">
+                <button onclick="showSection('basic')"
+                    class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    data-section="basic">Dasar Routing</button>
+                <button onclick="showSection('parameters')"
+                    class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    data-section="parameters">Parameter</button>
+                <button onclick="showSection('methods')"
+                    class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    data-section="methods">HTTP Methods</button>
+                <button onclick="showSection('middleware')"
+                    class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    data-section="middleware">Middleware & Auth</button>
+                <button onclick="showSection('security')"
+                    class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    data-section="security">Security & Rate Limiting</button>
+                <button onclick="showSection('advanced')"
+                    class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    data-section="advanced">Fitur Modern</button>
+                <button onclick="showSection('exercises')"
+                    class="nav-btn px-4 py-2 rounded-lg font-medium transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    data-section="exercises">Latihan</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Basic Routing Section -->
+        <section id="basic" class="content-section">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">Dasar-Dasar Routing</h2>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-600">Apa itu Routing?</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Routing adalah mekanisme untuk menentukan bagaimana aplikasi merespons permintaan klien ke
+                            endpoint tertentu.
+                            Dalam Laravel 12, routing didefinisikan dalam file <code
+                                class="bg-gray-100 px-2 py-1 rounded">routes/web.php</code> atau <code
+                                class="bg-gray-100 px-2 py-1 rounded">routes/api.php</code>.
+                        </p>
+                        <div class="bg-blue-50 p-3 rounded-lg text-sm">
+                            <strong>Baru di Laravel 12:</strong> Auto-discovery routes dan improved performance
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                        <h3 class="text-xl font-semibold mb-4 text-green-600">Route Modern Laravel 12</h3>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight">
+                            <div><span class="comment">// Closure route</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/'</span>, <span class="keyword">fn</span>() => <span
+                                    class="function">view</span>(<span class="string">'welcome'</span>));</div>
+                            <div class="mt-2"><span class="comment">// Controller route</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/dashboard'</span>, [<span
+                                    class="class">DashboardController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'index'</span>]);</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Route Order and Conflicts Section -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-orange-600">Urutan Route & Penulisan yang Benar</h3>
+                    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-6">
+                        <h4 class="font-semibold text-orange-800 mb-2">🎯 Prinsip Penting: Route dibaca dari ATAS ke
+                            BAWAH</h4>
+                        <p class="text-orange-700 text-sm">Laravel akan mencocokkan route pertama yang sesuai dengan
+                            URL. Jika route sudah cocok, route di bawahnya tidak akan diperiksa lagi.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h4 class="font-semibold text-red-800 mb-2">❌ SALAH - Route Bentrok</h4>
+                            <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight">
+                                <div><span class="comment">// Route umum di atas</span></div>
+                                <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                        class="string">'/user/{id}'</span>, <span class="keyword">function</span>($id) {
+                                </div>
+                                <div class="ml-4"><span class="keyword">return</span> <span class="string">"User:
+                                        $id"</span>;</div>
+                                <div>});</div>
+                                <div class="mt-2"><span class="comment">// Route khusus di bawah - TIDAK AKAN
+                                        TERBACA!</span></div>
+                                <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                        class="string">'/user/profile'</span>, <span class="keyword">function</span>() {
+                                </div>
+                                <div class="ml-4"><span class="keyword">return</span> <span class="string">'User
+                                        Profile'</span>;</div>
+                                <div>});</div>
+                            </div>
+                            <p class="text-xs text-red-700 mt-2">URL <code>/user/profile</code> akan ditangkap oleh
+                                route pertama dengan <code>id = "profile"</code></p>
+                        </div>
+
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h4 class="font-semibold text-green-800 mb-2">✅ BENAR - Urutan yang Tepat</h4>
+                            <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight">
+                                <div><span class="comment">// Route khusus di atas</span></div>
+                                <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                        class="string">'/user/profile'</span>, <span class="keyword">function</span>() {
+                                </div>
+                                <div class="ml-4"><span class="keyword">return</span> <span class="string">'User
+                                        Profile'</span>;</div>
+                                <div>});</div>
+                                <div class="mt-2"><span class="comment">// Route umum di bawah</span></div>
+                                <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                        class="string">'/user/{id}'</span>, <span class="keyword">function</span>($id) {
+                                </div>
+                                <div class="ml-4"><span class="keyword">return</span> <span class="string">"User:
+                                        $id"</span>;</div>
+                                <div>});</div>
+                            </div>
+                            <p class="text-xs text-green-700 mt-2">Sekarang <code>/user/profile</code> akan ditangani
+                                dengan benar</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                        <h4 class="font-semibold text-blue-800 mb-3">📋 Tips Menghindari Bentrok Route:</h4>
+                        <ol class="text-sm text-blue-700 space-y-2">
+                            <li><strong>1. Route Spesifik di Atas:</strong> Letakkan route dengan path tetap (seperti
+                                <code>/user/profile</code>) sebelum route dengan parameter (seperti
+                                <code>/user/{id}</code>)
+                            </li>
+                            <li><strong>2. Gunakan Constraints:</strong> Batasi parameter dengan regex untuk menghindari
+                                konflik</li>
+                            <li><strong>3. Grouping yang Logis:</strong> Kelompokkan route berdasarkan fungsi dan
+                                tingkat spesifikasi</li>
+                            <li><strong>4. Test Urutan:</strong> Selalu test route dengan
+                                <code>php artisan route:list</code>
+                            </li>
+                            <li><strong>5. Dokumentasi:</strong> Beri komentar pada route yang berpotensi konflik</li>
+                        </ol>
+                    </div>
+
+                    <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight">
+                        <div><span class="comment">// Contoh urutan yang benar untuk sistem blog</span></div>
+                        <div class="mt-1"><span class="comment">// 1. Route khusus (fixed endpoints)</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/posts/create'</span>, [<span class="class">PostController</span>::<span
+                                class="keyword">class</span>, <span class="string">'create'</span>]);</div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/posts/search'</span>, [<span class="class">PostController</span>::<span
+                                class="keyword">class</span>, <span class="string">'search'</span>]);</div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/posts/popular'</span>, [<span
+                                class="class">PostController</span>::<span class="keyword">class</span>, <span
+                                class="string">'popular'</span>]);</div>
+                        <div class="mt-2"><span class="comment">// 2. Route dengan constraint</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/posts/{id}/edit'</span>, [<span
+                                class="class">PostController</span>::<span class="keyword">class</span>, <span
+                                class="string">'edit'</span>])</div>
+                        <div class="ml-4">-><span class="method">where</span>(<span class="string">'id'</span>, <span
+                                class="string">'[0-9]+'</span>);</div>
+                        <div class="mt-2"><span class="comment">// 3. Route umum dengan parameter</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/posts/{slug}'</span>, [<span class="class">PostController</span>::<span
+                                class="keyword">class</span>, <span class="string">'show'</span>])</div>
+                        <div class="ml-4">-><span class="method">where</span>(<span class="string">'slug'</span>, <span
+                                class="string">'[a-z0-9-]+'</span>);</div>
+                    </div>
+                </div>
+
+                <!-- Resource Routes Section -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-600">Route Resource - Route Gabungan Laravel</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        <strong>Route Resource</strong> adalah fitur Laravel yang memungkinkan kita membuat semua route
+                        CRUD (Create, Read, Update, Delete)
+                        dengan satu baris kode saja. Ini sangat menghemat waktu dan mengikuti konvensi RESTful secara
+                        otomatis.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-indigo-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-indigo-800">Mengapa Menggunakan Resource Routes?</h4>
+                            <ul class="text-sm space-y-1 text-indigo-700">
+                                <li>• Membuat 7 route sekaligus untuk operasi CRUD</li>
+                                <li>• Mengikuti konvensi RESTful secara otomatis</li>
+                                <li>• Menghemat waktu dan mengurangi kode berulang</li>
+                                <li>• Konsisten dengan standar Laravel</li>
+                                <li>• Mudah di-maintain dan dipahami developer lain</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-blue-800">Jenis Resource Routes:</h4>
+                            <ul class="text-sm space-y-1 text-blue-700">
+                                <li>• <code>Route::resource()</code> - Web routes dengan form</li>
+                                <li>• <code>Route::apiResource()</code> - API routes tanpa form</li>
+                                <li>• Nested resources untuk relasi</li>
+                                <li>• Partial resources (only/except)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                        <div><span class="comment">// Web Resource (7 routes dengan create & edit forms)</span></div>
+                        <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                class="string">'users'</span>, <span class="class">UserController</span>::<span
+                                class="keyword">class</span>);</div>
+                        <div class="mt-2"><span class="comment">// API Resource (5 routes tanpa forms)</span></div>
+                        <div><span class="keyword">Route</span>::<span class="method">apiResource</span>(<span
+                                class="string">'posts'</span>, <span class="class">PostController</span>::<span
+                                class="keyword">class</span>);</div>
+                        <div class="mt-2"><span class="comment">// Resource dengan middleware</span></div>
+                        <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                class="string">'admin/users'</span>, <span
+                                class="class">Admin\UserController</span>::<span class="keyword">class</span>)</div>
+                        <div class="ml-4">-><span class="method">middleware</span>([<span class="string">'auth'</span>,
+                            <span class="string">'admin'</span>]);
+                        </div>
+                        <div class="mt-2"><span class="comment">// Partial resource (hanya route tertentu)</span></div>
+                        <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                class="string">'photos'</span>, <span class="class">PhotoController</span>::<span
+                                class="keyword">class</span>)</div>
+                        <div class="ml-4">-><span class="method">only</span>([<span class="string">'index'</span>, <span
+                                class="string">'show'</span>]);</div>
+                        <div class="mt-2"><span class="comment">// Exclude route tertentu</span></div>
+                        <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                class="string">'comments'</span>, <span class="class">CommentController</span>::<span
+                                class="keyword">class</span>)</div>
+                        <div class="ml-4">-><span class="method">except</span>([<span class="string">'create'</span>,
+                            <span class="string">'edit'</span>]);
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-indigo-50 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Web Resource Routes (7 routes):</h4>
+                            <ul class="text-xs space-y-1">
+                                <li>• <code>GET /users</code> → index (daftar semua)</li>
+                                <li>• <code>GET /users/create</code> → create (form tambah)</li>
+                                <li>• <code>POST /users</code> → store (simpan data)</li>
+                                <li>• <code>GET /users/{user}</code> → show (detail)</li>
+                                <li>• <code>GET /users/{user}/edit</code> → edit (form edit)</li>
+                                <li>• <code>PUT/PATCH /users/{user}</code> → update (update data)</li>
+                                <li>• <code>DELETE /users/{user}</code> → destroy (hapus)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">API Resource Routes (5 routes):</h4>
+                            <ul class="text-xs space-y-1">
+                                <li>• <code>GET /posts</code> → index</li>
+                                <li>• <code>POST /posts</code> → store</li>
+                                <li>• <code>GET /posts/{post}</code> → show</li>
+                                <li>• <code>PUT/PATCH /posts/{post}</code> → update</li>
+                                <li>• <code>DELETE /posts/{post}</code> → destroy</li>
+                                <li class="text-gray-500">• Tidak ada create & edit forms</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border-2 border-indigo-200 rounded-lg p-4">
+                        <h4 class="font-semibold mb-2 text-indigo-800">Debugging & Monitoring Route:</h4>
+                        <div class="grid md:grid-cols-2 gap-4 mb-3">
+                            <div class="bg-gray-50 p-3 rounded">
+                                <h5 class="font-medium text-gray-800 mb-1">Command untuk Cek Route:</h5>
+                                <div class="code-block rounded p-2 text-white text-xs">
+                                    <div><span class="comment"># Lihat semua route</span></div>
+                                    <div>php artisan route:list</div>
+                                    <div class="mt-1"><span class="comment"># Filter berdasarkan nama</span></div>
+                                    <div>php artisan route:list --name=user</div>
+                                    <div class="mt-1"><span class="comment"># Filter berdasarkan method</span></div>
+                                    <div>php artisan route:list --method=GET</div>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-50 p-3 rounded">
+                                <h5 class="font-medium text-yellow-800 mb-1">Route Cache (Production):</h5>
+                                <div class="code-block rounded p-2 text-white text-xs">
+                                    <div><span class="comment"># Cache route untuk performa</span></div>
+                                    <div>php artisan route:cache</div>
+                                    <div class="mt-1"><span class="comment"># Clear cache saat development</span></div>
+                                    <div>php artisan route:clear</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-indigo-50 p-3 rounded">
+                            <h5 class="font-medium text-indigo-800 mb-1">Best Practice File Organization:</h5>
+                            <ul class="text-xs text-indigo-700 space-y-1">
+                                <li>• <code>routes/web.php</code> - Route untuk halaman web (middleware: web)</li>
+                                <li>• <code>routes/api.php</code> - Route untuk API (middleware: api, prefix: /api)</li>
+                                <li>• <code>routes/admin.php</code> - Route khusus admin (custom file)</li>
+                                <li>• <code>routes/auth.php</code> - Route autentikasi (Laravel UI/Breeze)</li>
+                            </ul>
+                        </div>
+                        <h4 class="font-semibold mb-2 text-indigo-800">Nested Resources:</h4>
+                        <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight mb-2">
+                            <div><span class="comment">// Nested resource untuk relasi</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                    class="string">'users.posts'</span>, <span
+                                    class="class">UserPostController</span>::<span class="keyword">class</span>);</div>
+                            <div class="mt-1"><span class="comment">// Shallow nesting (untuk menghindari URL
+                                    panjang)</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                    class="string">'users.posts'</span>, <span
+                                    class="class">UserPostController</span>::<span class="keyword">class</span>)</div>
+                            <div class="ml-4">-><span class="method">shallow</span>();</div>
+                        </div>
+                        <p class="text-xs text-gray-600">Contoh: <code>/users/1/posts</code> (index),
+                            <code>/posts/5</code> (show dengan shallow)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Interactive Route Order Tester -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">🧪 Route Order Tester</h3>
+                    <p class="text-gray-600 mb-4 text-center">Test pemahaman Anda tentang urutan route. Prediksi route
+                        mana yang akan menangani URL berikut:</p>
+
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <h4 class="font-medium mb-2">Route yang Terdaftar (urutan dari atas ke bawah):</h4>
+                        <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight">
+                            <div>1. <span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/products/{id}'</span>, 'ProductController@show');</div>
+                            <div>2. <span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/products/new'</span>, 'ProductController@create');</div>
+                            <div>3. <span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/products/popular'</span>, 'ProductController@popular');</div>
+                            <div>4. <span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/products/{category}/list'</span>, 'ProductController@byCategory');
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Test URL:</label>
+                            <select id="testUrl" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option value="">-- Pilih URL untuk ditest --</option>
+                                <option value="/products/123">/products/123</option>
+                                <option value="/products/new">/products/new</option>
+                                <option value="/products/popular">/products/popular</option>
+                                <option value="/products/electronics/list">/products/electronics/list</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Prediksi Route yang Cocok:</label>
+                            <select id="predictedRoute" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option value="">-- Pilih route yang akan menangani --</option>
+                                <option value="1">Route 1: /products/{id}</option>
+                                <option value="2">Route 2: /products/new</option>
+                                <option value="3">Route 3: /products/popular</option>
+                                <option value="4">Route 4: /products/{category}/list</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="checkRouteOrder()"
+                        class="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                        Cek Jawaban
+                    </button>
+
+                    <div id="routeOrderResult" class="mt-4 hidden">
+                        <!-- Result will appear here -->
+                    </div>
+                </div>
+
+                <!-- Interactive Example -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Coba Route Interaktif</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">URL Path:</label>
+                            <input type="text" id="routePath"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="/about" value="/about">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Response:</label>
+                            <input type="text" id="routeResponse"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Halaman About" value="Halaman About">
+                        </div>
+                    </div>
+                    <button onclick="generateRoute()"
+                        class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Generate
+                        Route</button>
+
+                    <div id="generatedRoute"
+                        class="mt-6 code-block rounded-lg p-4 text-white text-sm syntax-highlight hidden">
+                        <!-- Generated route will appear here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Parameters Section -->
+        <section id="parameters" class="content-section hidden">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">Route Parameters</h2>
+
+                <!-- What are Parameters -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-blue-600">Apa itu Route Parameters?</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Route parameters adalah bagian dinamis dari URL yang memungkinkan kita menangkap nilai dari URL
+                        dan menggunakannya dalam aplikasi.
+                        Parameter sangat berguna untuk membuat route yang fleksibel dan dapat menangani berbagai input.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-blue-800">Mengapa Menggunakan Parameters?</h4>
+                            <ul class="text-sm space-y-1 text-blue-700">
+                                <li>• Membuat URL yang dinamis dan fleksibel</li>
+                                <li>• Menghindari pembuatan route berulang</li>
+                                <li>• Memungkinkan passing data melalui URL</li>
+                                <li>• Membuat aplikasi lebih RESTful</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-green-800">Contoh Penggunaan:</h4>
+                            <ul class="text-sm space-y-1 text-green-700">
+                                <li>• <code>/user/123</code> - Menampilkan user dengan ID 123</li>
+                                <li>• <code>/product/laptop</code> - Menampilkan produk laptop</li>
+                                <li>• <code>/category/electronics/item/phone</code> - Nested parameters</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-purple-600">Parameter Wajib (Required Parameters)</h3>
+                    <p class="text-gray-600 mb-4">Parameter yang <strong>harus ada</strong> dalam URL agar route dapat
+                        berfungsi. Jika parameter tidak ada, route tidak akan cocok dan akan menghasilkan 404.</p>
+
+                    <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                        <div><span class="comment">// Parameter tunggal</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/user/{id}'</span>, <span class="keyword">function</span> ($id) {</div>
+                        <div class="ml-4"><span class="keyword">return</span> <span class="string">'User ID: '</span> .
+                            $id;</div>
+                        <div>});</div>
+                        <div class="mt-2"><span class="comment">// Multiple parameters</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/user/{id}/post/{postId}'</span>, <span class="keyword">function</span>
+                            ($id, $postId) {</div>
+                        <div class="ml-4"><span class="keyword">return</span> <span class="string">"User: $id, Post:
+                                $postId"</span>;</div>
+                        <div>});</div>
+                        <div class="mt-2"><span class="comment">// Dengan controller</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/product/{id}'</span>, [<span
+                                class="class">ProductController</span>::<span class="keyword">class</span>, <span
+                                class="string">'show'</span>]);</div>
+                    </div>
+
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2">Contoh URL yang Valid:</h4>
+                        <ul class="space-y-1 text-sm">
+                            <li>✅ <code>/user/123</code> → User ID: 123</li>
+                            <li>✅ <code>/user/456/post/789</code> → User: 456, Post: 789</li>
+                            <li>❌ <code>/user/</code> → 404 Not Found (parameter kosong)</li>
+                            <li>❌ <code>/user</code> → 404 Not Found (parameter tidak ada)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-green-600">Parameter Opsional (Optional Parameters)</h3>
+                    <p class="text-gray-600 mb-4">Parameter yang <strong>boleh ada atau tidak</strong> dalam URL.
+                        Ditandai dengan tanda tanya <code>?</code> setelah nama parameter.</p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-4">
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-green-800">Kapan Menggunakan?</h4>
+                            <ul class="text-sm space-y-1 text-green-700">
+                                <li>• Ketika ingin satu route menangani multiple case</li>
+                                <li>• Untuk pagination atau filtering</li>
+                                <li>• Ketika parameter memiliki nilai default</li>
+                                <li>• Untuk membuat API yang fleksibel</li>
+                            </ul>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-yellow-800">Perbedaan dengan Required:</h4>
+                            <ul class="text-sm space-y-1 text-yellow-700">
+                                <li>• Required: <code>{id}</code> - Harus ada</li>
+                                <li>• Optional: <code>{id?}</code> - Boleh kosong</li>
+                                <li>• Optional harus punya default value</li>
+                                <li>• Optional biasanya di akhir URL</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                        <div><span class="comment">// Parameter opsional sederhana</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/posts/{id?}'</span>, <span class="keyword">function</span> ($id = <span
+                                class="keyword">null</span>) {</div>
+                        <div class="ml-4"><span class="keyword">if</span> ($id) {</div>
+                        <div class="ml-8"><span class="keyword">return</span> <span class="string">'Post ID: '</span> .
+                            $id;</div>
+                        <div class="ml-4">}</div>
+                        <div class="ml-4"><span class="keyword">return</span> <span class="string">'Semua posts'</span>;
+                        </div>
+                        <div>});</div>
+                        <div class="mt-2"><span class="comment">// Dengan default value</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/products/{category?}'</span>, <span class="keyword">function</span>
+                            ($category = <span class="string">'all'</span>) {</div>
+                        <div class="ml-4"><span class="keyword">return</span> <span class="string">"Category:
+                                $category"</span>;</div>
+                        <div>});</div>
+                        <div class="mt-2"><span class="comment">// Multiple optional parameters</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/search/{query?}/{page?}'</span>, <span class="keyword">function</span>
+                            ($query = <span class="string">''</span>, $page = 1) {</div>
+                        <div class="ml-4"><span class="keyword">return</span> <span class="string">"Query: $query, Page:
+                                $page"</span>;</div>
+                        <div>});</div>
+                    </div>
+
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2">Contoh URL yang Valid:</h4>
+                        <ul class="space-y-1 text-sm">
+                            <li>✅ <code>/posts</code> → Semua posts</li>
+                            <li>✅ <code>/posts/123</code> → Post ID: 123</li>
+                            <li>✅ <code>/products</code> → Category: all</li>
+                            <li>✅ <code>/products/electronics</code> → Category: electronics</li>
+                            <li>✅ <code>/search</code> → Query: , Page: 1</li>
+                            <li>✅ <code>/search/laptop/2</code> → Query: laptop, Page: 2</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Parameter Constraints -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-orange-600">Parameter Constraints (Validasi Parameter)
+                    </h3>
+                    <p class="text-gray-600 mb-4">Laravel 12 memungkinkan kita membatasi format parameter menggunakan
+                        regular expressions.</p>
+
+                    <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                        <div><span class="comment">// Hanya angka</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/user/{id}'</span>, [<span class="class">UserController</span>::<span
+                                class="keyword">class</span>, <span class="string">'show'</span>])</div>
+                        <div class="ml-4">-><span class="method">where</span>(<span class="string">'id'</span>, <span
+                                class="string">'[0-9]+'</span>);</div>
+                        <div class="mt-2"><span class="comment">// Hanya huruf</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/category/{name}'</span>, [<span
+                                class="class">CategoryController</span>::<span class="keyword">class</span>, <span
+                                class="string">'show'</span>])</div>
+                        <div class="ml-4">-><span class="method">where</span>(<span class="string">'name'</span>, <span
+                                class="string">'[A-Za-z]+'</span>);</div>
+                        <div class="mt-2"><span class="comment">// Multiple constraints</span></div>
+                        <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                class="string">'/user/{id}/post/{slug}'</span>, [<span
+                                class="class">PostController</span>::<span class="keyword">class</span>, <span
+                                class="string">'show'</span>])</div>
+                        <div class="ml-4">-><span class="method">where</span>([<span class="string">'id'</span> => <span
+                                class="string">'[0-9]+'</span>, <span class="string">'slug'</span> => <span
+                                class="string">'[a-z-]+'</span>]);</div>
+                    </div>
+                </div>
+
+                <!-- Parameter Tester -->
+                <div class="bg-white rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Test Parameter Route</h3>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">URL dengan Parameter:</label>
+                        <input type="text" id="paramUrl"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="/user/123" value="/user/123">
+                    </div>
+                    <button onclick="testParameter()"
+                        class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">Test
+                        Route</button>
+
+                    <div id="paramResult" class="mt-4 p-4 bg-gray-50 rounded-lg hidden">
+                        <!-- Result will appear here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HTTP Methods Section -->
+        <section id="methods" class="content-section hidden">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">HTTP Methods</h2>
+
+                <!-- What are HTTP Methods -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-600">Apa itu HTTP Methods?</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        <strong>HTTP</strong> (HyperText Transfer Protocol) Methods adalah cara untuk menentukan jenis
+                        operasi yang ingin dilakukan pada resource tertentu.
+                        Setiap method memiliki tujuan yang berbeda dalam arsitektur RESTful.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-indigo-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-indigo-800">HTTP (HyperText Transfer Protocol):</h4>
+                            <p class="text-sm text-indigo-700 mb-2">
+                                Protokol komunikasi yang digunakan untuk mentransfer data antara client (browser) dan
+                                server di World Wide Web.
+                            </p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 text-purple-800">RESTful (Representational State Transfer):
+                            </h4>
+                            <p class="text-sm text-purple-700 mb-2">
+                                Arsitektur web service yang menggunakan HTTP methods untuk operasi CRUD (Create, Read,
+                                Update, Delete) pada resources.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 bg-indigo-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2 text-indigo-800">Prinsip RESTful:</h4>
+                        <ul class="text-sm space-y-1 text-indigo-700">
+                            <li>• <strong>GET</strong> - Mengambil/membaca data (Read)</li>
+                            <li>• <strong>POST</strong> - Membuat data baru (Create)</li>
+                            <li>• <strong>PUT</strong> - Memperbarui seluruh data (Update/Replace)</li>
+                            <li>• <strong>PATCH</strong> - Memperbarui sebagian data (Partial Update)</li>
+                            <li>• <strong>DELETE</strong> - Menghapus data (Delete)</li>
+                            <li>• <strong>OPTIONS</strong> - Mengecek method yang tersedia</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                        <h3 class="text-lg font-semibold mb-3 text-blue-600">GET</h3>
+                        <p class="text-gray-600 text-sm mb-3"><strong>Mengambil/membaca data</strong> dari server tanpa
+                            mengubah apapun</p>
+                        <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight mb-3">
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/users'</span>, [<span class="class">UserController</span>::<span
+                                    class="keyword">class</span>, <span class="string">'index'</span>]);</div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/users/{id}'</span>, [<span
+                                    class="class">UserController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'show'</span>]);</div>
+                        </div>
+                        <button onclick="toggleExample('get-examples')"
+                            class="text-blue-600 text-xs hover:underline mb-2">📋 Lihat Contoh Studi Kasus</button>
+                        <div id="get-examples" class="hidden bg-blue-50 p-3 rounded text-xs">
+                            <h5 class="font-semibold mb-2">Contoh Studi Kasus GET:</h5>
+                            <ul class="space-y-1">
+                                <li>• <strong>E-commerce:</strong> Menampilkan daftar produk, detail produk</li>
+                                <li>• <strong>Blog:</strong> Menampilkan artikel, kategori, komentar</li>
+                                <li>• <strong>Social Media:</strong> Timeline, profil user, daftar followers</li>
+                                <li>• <strong>Dashboard:</strong> Statistik, laporan, grafik</li>
+                                <li>• <strong>API:</strong> Mengambil data JSON untuk mobile app</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                        <h3 class="text-lg font-semibold mb-3 text-green-600">POST</h3>
+                        <p class="text-gray-600 text-sm mb-3"><strong>Membuat data baru</strong> atau mengirim data ke
+                            server</p>
+                        <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight mb-3">
+                            <div><span class="keyword">Route</span>::<span class="function">post</span>(<span
+                                    class="string">'/users'</span>, [<span class="class">UserController</span>::<span
+                                    class="keyword">class</span>, <span class="string">'store'</span>]);</div>
+                            <div><span class="keyword">Route</span>::<span class="function">post</span>(<span
+                                    class="string">'/login'</span>, [<span class="class">AuthController</span>::<span
+                                    class="keyword">class</span>, <span class="string">'login'</span>]);</div>
+                        </div>
+                        <button onclick="toggleExample('post-examples')"
+                            class="text-green-600 text-xs hover:underline mb-2">📋 Lihat Contoh Studi Kasus</button>
+                        <div id="post-examples" class="hidden bg-green-50 p-3 rounded text-xs">
+                            <h5 class="font-semibold mb-2">Contoh Studi Kasus POST:</h5>
+                            <ul class="space-y-1">
+                                <li>• <strong>Registrasi:</strong> Membuat akun user baru</li>
+                                <li>• <strong>Login:</strong> Autentikasi user</li>
+                                <li>• <strong>Form Contact:</strong> Mengirim pesan/feedback</li>
+                                <li>• <strong>Upload File:</strong> Mengunggah gambar/dokumen</li>
+                                <li>• <strong>Checkout:</strong> Membuat order baru di e-commerce</li>
+                                <li>• <strong>Comment:</strong> Menambah komentar di blog/forum</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                        <h3 class="text-lg font-semibold mb-3 text-yellow-600">PUT</h3>
+                        <p class="text-gray-600 text-sm mb-3"><strong>Memperbarui seluruh data</strong> atau mengganti
+                            resource</p>
+                        <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight mb-3">
+                            <div><span class="keyword">Route</span>::<span class="function">put</span>(<span
+                                    class="string">'/users/{id}'</span>, [<span
+                                    class="class">UserController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'update'</span>]);</div>
+                            <div><span class="keyword">Route</span>::<span class="function">put</span>(<span
+                                    class="string">'/profile'</span>, [<span
+                                    class="class">ProfileController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'update'</span>]);</div>
+                        </div>
+                        <button onclick="toggleExample('put-examples')"
+                            class="text-yellow-600 text-xs hover:underline mb-2">📋 Lihat Contoh Studi Kasus</button>
+                        <div id="put-examples" class="hidden bg-yellow-50 p-3 rounded text-xs">
+                            <h5 class="font-semibold mb-2">Contoh Studi Kasus PUT:</h5>
+                            <ul class="space-y-1">
+                                <li>• <strong>Update Profile:</strong> Mengganti semua data profil user</li>
+                                <li>• <strong>Edit Article:</strong> Mengganti seluruh konten artikel</li>
+                                <li>• <strong>Replace Settings:</strong> Mengganti semua pengaturan aplikasi</li>
+                                <li>• <strong>Update Product:</strong> Mengganti semua info produk</li>
+                                <li>• <strong>API Resource:</strong> Replace entire JSON object</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                        <h3 class="text-lg font-semibold mb-3 text-purple-600">PATCH</h3>
+                        <p class="text-gray-600 text-sm mb-3"><strong>Memperbarui sebagian data</strong> saja</p>
+                        <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight mb-3">
+                            <div><span class="keyword">Route</span>::<span class="function">patch</span>(<span
+                                    class="string">'/users/{id}'</span>, [<span
+                                    class="class">UserController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'updatePartial'</span>]);</div>
+                            <div><span class="keyword">Route</span>::<span class="function">patch</span>(<span
+                                    class="string">'/posts/{id}/status'</span>, [<span
+                                    class="class">PostController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'updateStatus'</span>]);</div>
+                        </div>
+                        <button onclick="toggleExample('patch-examples')"
+                            class="text-purple-600 text-xs hover:underline mb-2">📋 Lihat Contoh Studi Kasus</button>
+                        <div id="patch-examples" class="hidden bg-purple-50 p-3 rounded text-xs">
+                            <h5 class="font-semibold mb-2">Contoh Studi Kasus PATCH:</h5>
+                            <ul class="space-y-1">
+                                <li>• <strong>Change Password:</strong> Hanya update password user</li>
+                                <li>• <strong>Update Status:</strong> Mengubah status order (pending → paid)</li>
+                                <li>• <strong>Toggle Feature:</strong> Enable/disable notifikasi</li>
+                                <li>• <strong>Partial Profile:</strong> Update hanya nama atau email</li>
+                                <li>• <strong>Like/Unlike:</strong> Toggle like pada post</li>
+                                <li>• <strong>Increment Counter:</strong> Update view count artikel</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                        <h3 class="text-lg font-semibold mb-3 text-red-600">DELETE</h3>
+                        <p class="text-gray-600 text-sm mb-3"><strong>Menghapus data</strong> dari server</p>
+                        <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight mb-3">
+                            <div><span class="keyword">Route</span>::<span class="function">delete</span>(<span
+                                    class="string">'/users/{id}'</span>, [<span
+                                    class="class">UserController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'destroy'</span>]);</div>
+                            <div><span class="keyword">Route</span>::<span class="function">delete</span>(<span
+                                    class="string">'/posts/{id}'</span>, [<span
+                                    class="class">PostController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'destroy'</span>]);</div>
+                        </div>
+                        <button onclick="toggleExample('delete-examples')"
+                            class="text-red-600 text-xs hover:underline mb-2">📋 Lihat Contoh Studi Kasus</button>
+                        <div id="delete-examples" class="hidden bg-red-50 p-3 rounded text-xs">
+                            <h5 class="font-semibold mb-2">Contoh Studi Kasus DELETE:</h5>
+                            <ul class="space-y-1">
+                                <li>• <strong>Delete Account:</strong> Menghapus akun user</li>
+                                <li>• <strong>Remove Post:</strong> Menghapus artikel/post</li>
+                                <li>• <strong>Delete File:</strong> Menghapus file upload</li>
+                                <li>• <strong>Cancel Order:</strong> Membatalkan pesanan</li>
+                                <li>• <strong>Remove Comment:</strong> Menghapus komentar</li>
+                                <li>• <strong>Logout:</strong> Menghapus session/token</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                        <h3 class="text-lg font-semibold mb-3 text-gray-600">OPTIONS</h3>
+                        <p class="text-gray-600 text-sm mb-3"><strong>Mengecek method yang tersedia</strong> untuk
+                            resource</p>
+                        <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight mb-3">
+                            <div><span class="keyword">Route</span>::<span class="function">options</span>(<span
+                                    class="string">'/api/users'</span>, [<span class="class">ApiController</span>::<span
+                                    class="keyword">class</span>, <span class="string">'options'</span>]);</div>
+                            <div><span class="keyword">Route</span>::<span class="function">match</span>([<span
+                                    class="string">'get'</span>, <span class="string">'post'</span>], <span
+                                    class="string">'/contact'</span>, [<span
+                                    class="class">ContactController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'handle'</span>]);</div>
+                        </div>
+                        <button onclick="toggleExample('options-examples')"
+                            class="text-gray-600 text-xs hover:underline mb-2">📋 Lihat Contoh Studi Kasus</button>
+                        <div id="options-examples" class="hidden bg-gray-50 p-3 rounded text-xs">
+                            <h5 class="font-semibold mb-2">Contoh Studi Kasus OPTIONS:</h5>
+                            <ul class="space-y-1">
+                                <li>• <strong>CORS Preflight:</strong> Browser check sebelum AJAX request</li>
+                                <li>• <strong>API Discovery:</strong> Cek method yang tersedia di endpoint</li>
+                                <li>• <strong>Security Check:</strong> Validasi akses sebelum request utama</li>
+                                <li>• <strong>Mobile App:</strong> Cek API capabilities</li>
+                                <li>• <strong>Third-party Integration:</strong> Validasi endpoint</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HTTP Response Section -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-teal-600">HTTP Response dalam Laravel 12</h3>
+                    <p class="text-gray-600 mb-4">Laravel 12 menyediakan berbagai cara untuk mengembalikan response yang
+                        sesuai dengan HTTP method.</p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-teal-700">Response Types:</h4>
+                            <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight">
+                                <div><span class="comment">// JSON Response (API)</span></div>
+                                <div><span class="keyword">return</span> <span class="function">response</span>()-><span
+                                        class="method">json</span>([</div>
+                                <div class="ml-4"><span class="string">'data'</span> => $users,</div>
+                                <div class="ml-4"><span class="string">'status'</span> => <span
+                                        class="string">'success'</span></div>
+                                <div>]);</div>
+                                <div class="mt-2"><span class="comment">// View Response</span></div>
+                                <div><span class="keyword">return</span> <span class="function">view</span>(<span
+                                        class="string">'users.index'</span>, <span class="function">compact</span>(<span
+                                        class="string">'users'</span>));</div>
+                                <div class="mt-2"><span class="comment">// Redirect Response</span></div>
+                                <div><span class="keyword">return</span> <span class="function">redirect</span>()-><span
+                                        class="method">route</span>(<span class="string">'users.index'</span>)</div>
+                                <div class="ml-4">-><span class="method">with</span>(<span
+                                        class="string">'success'</span>, <span class="string">'User created!'</span>);
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-teal-700">Status Codes:</h4>
+                            <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight">
+                                <div><span class="comment">// Success responses</span></div>
+                                <div><span class="keyword">return</span> <span class="function">response</span>()-><span
+                                        class="method">json</span>($data, 200); <span class="comment">// OK</span></div>
+                                <div><span class="keyword">return</span> <span class="function">response</span>()-><span
+                                        class="method">json</span>($data, 201); <span class="comment">// Created</span>
+                                </div>
+                                <div><span class="keyword">return</span> <span class="function">response</span>()-><span
+                                        class="method">json</span>([], 204); <span class="comment">// No Content</span>
+                                </div>
+                                <div class="mt-2"><span class="comment">// Error responses</span></div>
+                                <div><span class="keyword">return</span> <span class="function">response</span>()-><span
+                                        class="method">json</span>([<span class="string">'error'</span> => <span
+                                        class="string">'Not found'</span>], 404);</div>
+                                <div><span class="keyword">return</span> <span class="function">response</span>()-><span
+                                        class="method">json</span>([<span class="string">'error'</span> => <span
+                                        class="string">'Validation failed'</span>], 422);</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-teal-50 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2">Best Practices Response:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li>• <strong>GET</strong> → 200 (OK) dengan data, 404 jika tidak ditemukan</li>
+                            <li>• <strong>POST</strong> → 201 (Created) dengan data baru, 422 jika validasi gagal</li>
+                            <li>• <strong>PUT/PATCH</strong> → 200 (OK) dengan data updated, 404 jika tidak ditemukan
+                            </li>
+                            <li>• <strong>DELETE</strong> → 204 (No Content) atau 200 dengan pesan konfirmasi</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Method Selector -->
+                <div class="bg-white rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Route Method Generator</h3>
+                    <div class="grid md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">HTTP Method:</label>
+                            <select id="httpMethod"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="get">GET</option>
+                                <option value="post">POST</option>
+                                <option value="put">PUT</option>
+                                <option value="delete">DELETE</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">URL Path:</label>
+                            <input type="text" id="methodPath"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="/api/users" value="/api/users">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Controller:</label>
+                            <input type="text" id="controllerName"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="UserController::class, 'index'" value="UserController::class, 'index'">
+                        </div>
+                    </div>
+                    <button onclick="generateMethodRoute()"
+                        class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">Generate
+                        Route</button>
+
+                    <div id="methodRoute"
+                        class="mt-6 code-block rounded-lg p-4 text-white text-sm syntax-highlight hidden">
+                        <!-- Generated method route will appear here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Middleware & Auth Section -->
+        <section id="middleware" class="content-section hidden">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">Middleware & Authentication</h2>
+
+                <div class="space-y-8">
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-600">Route dengan Auth Middleware</h3>
+                        <p class="text-gray-600 mb-4">Melindungi route agar hanya bisa diakses oleh user yang sudah
+                            login.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Single route dengan auth</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/profile'</span>, [<span
+                                    class="class">ProfileController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'show'</span>])</div>
+                            <div class="ml-4">-><span class="method">middleware</span>(<span
+                                    class="string">'auth'</span>);</div>
+                            <div class="mt-2"><span class="comment">// Multiple middleware</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/admin'</span>, [<span class="class">AdminController</span>::<span
+                                    class="keyword">class</span>, <span class="string">'index'</span>])</div>
+                            <div class="ml-4">-><span class="method">middleware</span>([<span
+                                    class="string">'auth'</span>, <span class="string">'verified'</span>, <span
+                                    class="string">'admin'</span>]);</div>
+                        </div>
+
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Middleware Bawaan Laravel 12:</h4>
+                            <ul class="text-sm space-y-1">
+                                <li><code>auth</code> - Memastikan user sudah login</li>
+                                <li><code>verified</code> - Memastikan email sudah diverifikasi</li>
+                                <li><code>guest</code> - Hanya untuk user yang belum login</li>
+                                <li><code>throttle</code> - Rate limiting</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-indigo-600">Route Groups dengan Middleware</h3>
+                        <p class="text-gray-600 mb-4">Mengelompokkan route dengan middleware yang sama.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Group dengan auth middleware</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">middleware</span>(<span
+                                    class="string">'auth'</span>)-><span class="method">group</span>(<span
+                                    class="keyword">function</span> () {</div>
+                            <div class="ml-4"><span class="keyword">Route</span>::<span
+                                    class="function">get</span>(<span class="string">'/dashboard'</span>, [<span
+                                    class="class">DashboardController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'index'</span>]);</div>
+                            <div class="ml-4"><span class="keyword">Route</span>::<span
+                                    class="function">get</span>(<span class="string">'/profile'</span>, [<span
+                                    class="class">ProfileController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'show'</span>]);</div>
+                            <div class="ml-4"><span class="keyword">Route</span>::<span
+                                    class="function">post</span>(<span class="string">'/profile'</span>, [<span
+                                    class="class">ProfileController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'update'</span>]);</div>
+                            <div>});</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-green-600">Custom Middleware</h3>
+                        <p class="text-gray-600 mb-4">Membuat middleware kustom untuk kebutuhan spesifik.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Membuat middleware</span></div>
+                            <div><span class="function">php artisan make:middleware</span> <span
+                                    class="class">CheckAge</span></div>
+                            <div class="mt-2"><span class="comment">// Menggunakan custom middleware</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/adult-content'</span>, [<span
+                                    class="class">ContentController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'adult'</span>])</div>
+                            <div class="ml-4">-><span class="method">middleware</span>(<span
+                                    class="string">'check.age:18'</span>);</div>
+                        </div>
+                    </div>
+
+                    <!-- Middleware Tester -->
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-semibold mb-6 text-center">Middleware Route Generator</h3>
+                        <div class="grid md:grid-cols-3 gap-4 mb-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Route Path:</label>
+                                <input type="text" id="middlewarePath"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="/admin/users" value="/admin/users">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Controller:</label>
+                                <input type="text" id="middlewareController"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="AdminController::class, 'users'"
+                                    value="AdminController::class, 'users'">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Middleware:</label>
+                                <select id="middlewareType"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="auth">auth</option>
+                                    <option value="auth,verified">auth,verified</option>
+                                    <option value="auth,admin">auth,admin</option>
+                                    <option value="guest">guest</option>
+                                    <option value="throttle:60,1">throttle:60,1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onclick="generateMiddlewareRoute()"
+                            class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">Generate
+                            Route</button>
+
+                        <div id="middlewareRoute"
+                            class="mt-6 code-block rounded-lg p-4 text-white text-sm syntax-highlight hidden">
+                            <!-- Generated middleware route will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security & Rate Limiting Section -->
+        <section id="security" class="content-section hidden">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">Security & Rate Limiting</h2>
+
+                <div class="space-y-8">
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-red-600">Rate Limiting</h3>
+                        <p class="text-gray-600 mb-4">Membatasi jumlah request per waktu untuk mencegah abuse.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Rate limit 60 requests per menit</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/api/data'</span>, [<span class="class">ApiController</span>::<span
+                                    class="keyword">class</span>, <span class="string">'data'</span>])</div>
+                            <div class="ml-4">-><span class="method">middleware</span>(<span
+                                    class="string">'throttle:60,1'</span>);</div>
+                            <div class="mt-2"><span class="comment">// Rate limit berbeda untuk user login</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">post</span>(<span
+                                    class="string">'/api/upload'</span>, [<span
+                                    class="class">UploadController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'store'</span>])</div>
+                            <div class="ml-4">-><span class="method">middleware</span>(<span
+                                    class="string">'throttle:uploads'</span>);</div>
+                        </div>
+
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Rate Limiting di Laravel 12:</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>• <code>throttle:60,1</code> - 60 requests per menit</li>
+                                <li>• <code>throttle:api</code> - Menggunakan konfigurasi default API</li>
+                                <li>• <code>throttle:uploads</code> - Named rate limiter kustom</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-orange-600">CSRF Protection</h3>
+                        <p class="text-gray-600 mb-4">Perlindungan terhadap Cross-Site Request Forgery attacks.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Route dengan CSRF protection (default untuk web routes)</span>
+                            </div>
+                            <div><span class="keyword">Route</span>::<span class="function">post</span>(<span
+                                    class="string">'/contact'</span>, [<span
+                                    class="class">ContactController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'store'</span>]);</div>
+                            <div class="mt-2"><span class="comment">// Exclude dari CSRF (hati-hati!)</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">post</span>(<span
+                                    class="string">'/webhook'</span>, [<span
+                                    class="class">WebhookController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'handle'</span>])</div>
+                            <div class="ml-4">-><span class="method">withoutMiddleware</span>([<span
+                                    class="class">VerifyCsrfToken</span>::<span class="keyword">class</span>]);</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-600">CORS Configuration</h3>
+                        <p class="text-gray-600 mb-4">Mengatur Cross-Origin Resource Sharing untuk API.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// API routes dengan CORS</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">prefix</span>(<span
+                                    class="string">'api'</span>)-><span class="method">middleware</span>([<span
+                                    class="string">'cors'</span>, <span class="string">'throttle:api'</span>])-><span
+                                    class="method">group</span>(<span class="keyword">function</span> () {</div>
+                            <div class="ml-4"><span class="keyword">Route</span>::<span
+                                    class="function">get</span>(<span class="string">'/users'</span>, [<span
+                                    class="class">UserApiController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'index'</span>]);</div>
+                            <div class="ml-4"><span class="keyword">Route</span>::<span
+                                    class="function">post</span>(<span class="string">'/users'</span>, [<span
+                                    class="class">UserApiController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'store'</span>]);</div>
+                            <div>});</div>
+                        </div>
+                    </div>
+
+                    <!-- Security Tester -->
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-semibold mb-6 text-center">Security Route Generator</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Route Type:</label>
+                                <select id="securityType"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="api">API Route</option>
+                                    <option value="web">Web Route</option>
+                                    <option value="admin">Admin Route</option>
+                                    <option value="public">Public Route</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Rate Limit:</label>
+                                <select id="rateLimit"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="60,1">60 per menit</option>
+                                    <option value="100,1">100 per menit</option>
+                                    <option value="1000,1">1000 per menit</option>
+                                    <option value="10,1">10 per menit (strict)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onclick="generateSecurityRoute()"
+                            class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">Generate
+                            Secure Route</button>
+
+                        <div id="securityRoute"
+                            class="mt-6 code-block rounded-lg p-4 text-white text-sm syntax-highlight hidden">
+                            <!-- Generated security route will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Section -->
+        <section id="advanced" class="content-section hidden">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">Fitur Modern Laravel 12</h2>
+
+                <div class="space-y-8">
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-600">Route Caching & Performance</h3>
+                        <p class="text-gray-600 mb-4">Laravel 12 memiliki route caching yang lebih cepat dan
+                            auto-optimization.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Cache routes untuk production</span></div>
+                            <div><span class="function">php artisan route:cache</span></div>
+                            <div class="mt-2"><span class="comment">// Clear route cache</span></div>
+                            <div><span class="function">php artisan route:clear</span></div>
+                            <div class="mt-2"><span class="comment">// Auto-cached routes (Laravel 12)</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/fast-route'</span>, [<span
+                                    class="class">FastController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'index'</span>])</div>
+                            <div class="ml-4">-><span class="method">cached</span>();</div>
+                        </div>
+
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Performance Improvements Laravel 12:</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>• Route compilation 40% lebih cepat</li>
+                                <li>• Auto-optimization untuk route yang sering diakses</li>
+                                <li>• Lazy loading untuk route groups</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-600">Advanced Route Model Binding</h3>
+                        <p class="text-gray-600 mb-4">Fitur binding yang lebih canggih dengan custom resolution.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Implicit binding dengan custom key</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/user/{user:username}'</span>, [<span
+                                    class="class">UserController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'show'</span>]);</div>
+                            <div class="mt-2"><span class="comment">// Scoped binding (Laravel 12)</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/user/{user}/post/{post:slug}'</span>, [<span
+                                    class="class">PostController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'show'</span>])</div>
+                            <div class="ml-4">-><span class="method">scopeBindings</span>();</div>
+                            <div class="mt-2"><span class="comment">// Custom binding dengan closure</span></div>
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/api/{version}/user/{id}'</span>, <span
+                                    class="keyword">function</span> ($version, $id) {</div>
+                            <div class="ml-4"><span class="keyword">return</span> <span class="class">User</span>::<span
+                                    class="method">where</span>(<span class="string">'api_version'</span>,
+                                $version)-><span class="method">findOrFail</span>($id);</div>
+                            <div>})-><span class="method">where</span>([<span class="string">'version'</span> => <span
+                                    class="string">'v[1-9]'</span>, <span class="string">'id'</span> => <span
+                                    class="string">'[0-9]+'</span>]);</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-green-600">Route Attributes (PHP 8+)</h3>
+                        <p class="text-gray-600 mb-4">Menggunakan PHP Attributes untuk mendefinisikan routes langsung di
+                            controller.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Controller dengan Route Attributes</span></div>
+                            <div><span class="keyword">class</span> <span class="class">UserController</span> <span
+                                    class="keyword">extends</span> <span class="class">Controller</span></div>
+                            <div>{</div>
+                            <div class="ml-4">#[<span class="class">Route</span>(<span class="string">'/users'</span>,
+                                methods: [<span class="string">'GET'</span>], middleware: [<span
+                                    class="string">'auth'</span>])]</div>
+                            <div class="ml-4"><span class="keyword">public function</span> <span
+                                    class="function">index</span>()</div>
+                            <div class="ml-4">{</div>
+                            <div class="ml-8"><span class="keyword">return</span> <span class="class">User</span>::<span
+                                    class="method">all</span>();</div>
+                            <div class="ml-4">}</div>
+                            <div class="mt-2 ml-4">#[<span class="class">Route</span>(<span
+                                    class="string">'/users/{user}'</span>, methods: [<span class="string">'GET'</span>],
+                                name: <span class="string">'users.show'</span>)]</div>
+                            <div class="ml-4"><span class="keyword">public function</span> <span
+                                    class="function">show</span>(<span class="class">User</span> $user)</div>
+                            <div class="ml-4">{</div>
+                            <div class="ml-8"><span class="keyword">return</span> $user;</div>
+                            <div class="ml-4">}</div>
+                            <div>}</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-orange-600">Resource Routes - Route Gabungan Laravel
+                        </h3>
+                        <p class="text-gray-600 mb-4">Laravel menyediakan resource routes yang secara otomatis membuat
+                            semua route CRUD dengan satu baris kode.</p>
+
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2 text-orange-800">Apa itu Resource Routes?</h4>
+                                <ul class="text-sm space-y-1 text-orange-700">
+                                    <li>• Membuat 7 route sekaligus untuk operasi CRUD</li>
+                                    <li>• Mengikuti konvensi RESTful secara otomatis</li>
+                                    <li>• Menghemat waktu dan mengurangi kode berulang</li>
+                                    <li>• Konsisten dengan standar Laravel</li>
+                                </ul>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2 text-blue-800">Jenis Resource Routes:</h4>
+                                <ul class="text-sm space-y-1 text-blue-700">
+                                    <li>• <code>Route::resource()</code> - Web routes dengan form</li>
+                                    <li>• <code>Route::apiResource()</code> - API routes tanpa form</li>
+                                    <li>• Nested resources untuk relasi</li>
+                                    <li>• Partial resources (only/except)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Web Resource (7 routes dengan create & edit forms)</span>
+                            </div>
+                            <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                    class="string">'users'</span>, <span class="class">UserController</span>::<span
+                                    class="keyword">class</span>);</div>
+                            <div class="mt-2"><span class="comment">// API Resource (5 routes tanpa forms)</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">apiResource</span>(<span
+                                    class="string">'posts'</span>, <span class="class">PostController</span>::<span
+                                    class="keyword">class</span>);</div>
+                            <div class="mt-2"><span class="comment">// Resource dengan middleware</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                    class="string">'admin/users'</span>, <span
+                                    class="class">Admin\UserController</span>::<span class="keyword">class</span>)</div>
+                            <div class="ml-4">-><span class="method">middleware</span>([<span
+                                    class="string">'auth'</span>, <span class="string">'admin'</span>]);</div>
+                            <div class="mt-2"><span class="comment">// Partial resource (hanya route tertentu)</span>
+                            </div>
+                            <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                    class="string">'photos'</span>, <span class="class">PhotoController</span>::<span
+                                    class="keyword">class</span>)</div>
+                            <div class="ml-4">-><span class="method">only</span>([<span class="string">'index'</span>,
+                                <span class="string">'show'</span>]);
+                            </div>
+                            <div class="mt-2"><span class="comment">// Exclude route tertentu</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                    class="string">'comments'</span>, <span
+                                    class="class">CommentController</span>::<span class="keyword">class</span>)</div>
+                            <div class="ml-4">-><span class="method">except</span>([<span
+                                    class="string">'create'</span>, <span class="string">'edit'</span>]);</div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Web Resource Routes (7 routes):</h4>
+                                <ul class="text-xs space-y-1">
+                                    <li>• <code>GET /users</code> → index (daftar semua)</li>
+                                    <li>• <code>GET /users/create</code> → create (form tambah)</li>
+                                    <li>• <code>POST /users</code> → store (simpan data)</li>
+                                    <li>• <code>GET /users/{user}</code> → show (detail)</li>
+                                    <li>• <code>GET /users/{user}/edit</code> → edit (form edit)</li>
+                                    <li>• <code>PUT/PATCH /users/{user}</code> → update (update data)</li>
+                                    <li>• <code>DELETE /users/{user}</code> → destroy (hapus)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">API Resource Routes (5 routes):</h4>
+                                <ul class="text-xs space-y-1">
+                                    <li>• <code>GET /posts</code> → index</li>
+                                    <li>• <code>POST /posts</code> → store</li>
+                                    <li>• <code>GET /posts/{post}</code> → show</li>
+                                    <li>• <code>PUT/PATCH /posts/{post}</code> → update</li>
+                                    <li>• <code>DELETE /posts/{post}</code> → destroy</li>
+                                    <li class="text-gray-500">• Tidak ada create & edit forms</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border-2 border-orange-200 rounded-lg p-4">
+                            <h4 class="font-semibold mb-2 text-orange-800">Nested Resources:</h4>
+                            <div class="code-block rounded-lg p-3 text-white text-xs syntax-highlight mb-2">
+                                <div><span class="comment">// Nested resource untuk relasi</span></div>
+                                <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                        class="string">'users.posts'</span>, <span
+                                        class="class">UserPostController</span>::<span class="keyword">class</span>);
+                                </div>
+                                <div class="mt-1"><span class="comment">// Shallow nesting (untuk menghindari URL
+                                        panjang)</span></div>
+                                <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                        class="string">'users.posts'</span>, <span
+                                        class="class">UserPostController</span>::<span class="keyword">class</span>)
+                                </div>
+                                <div class="ml-4">-><span class="method">shallow</span>();</div>
+                            </div>
+                            <p class="text-xs text-gray-600">Contoh: <code>/users/1/posts</code> (index),
+                                <code>/posts/5</code> (show dengan shallow)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-red-600">Route Fallbacks & Error Handling</h3>
+                        <p class="text-gray-600 mb-4">Menangani route yang tidak ditemukan dengan elegant fallbacks.</p>
+                        <div class="code-block rounded-lg p-4 text-white text-sm syntax-highlight mb-4">
+                            <div><span class="comment">// Fallback route</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">fallback</span>(<span
+                                    class="keyword">function</span> () {</div>
+                            <div class="ml-4"><span class="keyword">return</span> <span
+                                    class="function">response</span>()-><span class="method">view</span>(<span
+                                    class="string">'errors.404'</span>, [], 404);</div>
+                            <div>});</div>
+                            <div class="mt-2"><span class="comment">// API fallback</span></div>
+                            <div><span class="keyword">Route</span>::<span class="method">prefix</span>(<span
+                                    class="string">'api'</span>)-><span class="method">fallback</span>(<span
+                                    class="keyword">function</span> () {</div>
+                            <div class="ml-4"><span class="keyword">return</span> <span
+                                    class="function">response</span>()-><span class="method">json</span>([</div>
+                            <div class="ml-8"><span class="string">'error'</span> => <span class="string">'Endpoint not
+                                    found'</span>,</div>
+                            <div class="ml-8"><span class="string">'code'</span> => 404</div>
+                            <div class="ml-4">], 404);</div>
+                            <div>});</div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+        <!-- Exercises Section -->
+        <section id="exercises" class="content-section hidden">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">Latihan Soal Laravel Routing</h2>
+
+                <!-- Exercise 1 - MUDAH -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <div class="flex items-center mb-4">
+                        <span
+                            class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">MUDAH</span>
+                        <h3 class="text-xl font-semibold text-blue-600">Soal 1: Route Dasar</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Buatlah route sederhana yang menampilkan halaman "Contact" ketika user mengakses URL
+                        <code>/contact</code>.
+                        Gunakan closure (function) untuk mengembalikan teks "Halaman Kontak".
+                    </p>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Jawaban Anda:</label>
+                        <textarea id="answer1"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent h-20"
+                            placeholder="Route::get('/contact', ...)"></textarea>
+                    </div>
+
+                    <button onclick="checkAnswer(1)"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Periksa
+                        Jawaban</button>
+
+                    <div id="result1" class="mt-4 hidden"></div>
+                    <div id="solution1" class="mt-4 hidden bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Solusi:</h4>
+                        <div class="code-block rounded-lg p-3 text-white text-sm syntax-highlight mb-2">
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/contact'</span>, <span class="keyword">function</span> () {</div>
+                            <div class="ml-4"><span class="keyword">return</span> <span class="string">'Halaman
+                                    Kontak'</span>;</div>
+                            <div>});</div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            <strong>Penjelasan:</strong> Route dasar menggunakan <code>Route::get()</code> dengan
+                            closure function
+                            untuk mengembalikan response sederhana berupa string.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Exercise 2 - MUDAH-SEDANG -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <div class="flex items-center mb-4">
+                        <span
+                            class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">MUDAH-SEDANG</span>
+                        <h3 class="text-xl font-semibold text-green-600">Soal 2: Route dengan Controller</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Buatlah route yang menampilkan halaman "About Us" ketika user mengakses URL <code>/about</code>.
+                        Gunakan syntax array-based modern dan arahkan ke <code>PageController</code> method
+                        <code>about</code>.
+                    </p>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Jawaban Anda:</label>
+                        <textarea id="answer2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent h-20"
+                            placeholder="Route::get('/about', ...)"></textarea>
+                    </div>
+
+                    <button onclick="checkAnswer(2)"
+                        class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">Periksa
+                        Jawaban</button>
+
+                    <div id="result2" class="mt-4 hidden"></div>
+                    <div id="solution2" class="mt-4 hidden bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Solusi:</h4>
+                        <div class="code-block rounded-lg p-3 text-white text-sm syntax-highlight mb-2">
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/about'</span>, [<span class="class">PageController</span>::<span
+                                    class="keyword">class</span>, <span class="string">'about'</span>]);</div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            <strong>Penjelasan:</strong> Menggunakan syntax array-based
+                            <code>[PageController::class, 'about']</code>
+                            yang merupakan standar Laravel 12 untuk mengarahkan ke controller method.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Exercise 3 - SEDANG -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <div class="flex items-center mb-4">
+                        <span
+                            class="bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">SEDANG</span>
+                        <h3 class="text-xl font-semibold text-purple-600">Soal 3: Route dengan Parameter dan Validasi
+                        </h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Buatlah route yang menampilkan detail produk berdasarkan ID. URL: <code>/product/{id}</code>
+                        dimana ID harus berupa angka saja (gunakan constraint). Arahkan ke
+                        <code>ProductController</code> method <code>show</code>.
+                    </p>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Jawaban Anda:</label>
+                        <textarea id="answer3"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent h-24"
+                            placeholder="Route::get('/product/{id}', ...)"></textarea>
+                    </div>
+
+                    <button onclick="checkAnswer(3)"
+                        class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">Periksa
+                        Jawaban</button>
+
+                    <div id="result3" class="mt-4 hidden"></div>
+                    <div id="solution3" class="mt-4 hidden bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Solusi:</h4>
+                        <div class="code-block rounded-lg p-3 text-white text-sm syntax-highlight mb-2">
+                            <div><span class="keyword">Route</span>::<span class="function">get</span>(<span
+                                    class="string">'/product/{id}'</span>, [<span
+                                    class="class">ProductController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'show'</span>])</div>
+                            <div class="ml-4">-><span class="method">where</span>(<span class="string">'id'</span>,
+                                <span class="string">'[0-9]+'</span>);
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            <strong>Penjelasan:</strong> Menggunakan <code>where('id', '[0-9]+')</code> untuk membatasi
+                            parameter ID
+                            hanya menerima angka. Regex <code>[0-9]+</code> berarti satu atau lebih digit angka.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Exercise 4 - SEDANG-SULIT -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <div class="flex items-center mb-4">
+                        <span
+                            class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">SEDANG-SULIT</span>
+                        <h3 class="text-xl font-semibold text-orange-600">Soal 4: Resource Routes dengan Pembatasan</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Buatlah resource route untuk mengelola data "posts" yang hanya memiliki operasi:
+                        index, show, store, dan destroy (tanpa create dan edit forms). Gunakan
+                        <code>PostController</code>
+                        dan tambahkan middleware <code>auth</code> untuk semua route.
+                    </p>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Jawaban Anda:</label>
+                        <textarea id="answer4"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent h-32"
+                            placeholder="Route::resource(...)"></textarea>
+                    </div>
+
+                    <button onclick="checkAnswer(4)"
+                        class="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition-colors">Periksa
+                        Jawaban</button>
+
+                    <div id="result4" class="mt-4 hidden"></div>
+                    <div id="solution4" class="mt-4 hidden bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Solusi:</h4>
+                        <div class="code-block rounded-lg p-3 text-white text-sm syntax-highlight mb-2">
+                            <div><span class="keyword">Route</span>::<span class="method">resource</span>(<span
+                                    class="string">'posts'</span>, <span class="class">PostController</span>::<span
+                                    class="keyword">class</span>)</div>
+                            <div class="ml-4">-><span class="method">only</span>([<span class="string">'index'</span>,
+                                <span class="string">'show'</span>, <span class="string">'store'</span>, <span
+                                    class="string">'destroy'</span>])
+                            </div>
+                            <div class="ml-4">-><span class="method">middleware</span>(<span
+                                    class="string">'auth'</span>);</div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            <strong>Penjelasan:</strong> Menggunakan <code>Route::resource()</code> dengan
+                            <code>only()</code>
+                            untuk membatasi route tertentu, dan <code>middleware('auth')</code> untuk proteksi
+                            autentikasi.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Exercise 5 - SULIT -->
+                <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                    <div class="flex items-center mb-4">
+                        <span
+                            class="bg-red-200 text-red-900 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">SULIT</span>
+                        <h3 class="text-xl font-semibold text-red-600">Soal 5: Route Group Kompleks dengan Multiple
+                            Middleware</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Buatlah route group untuk admin panel dengan konfigurasi berikut:
+                        <br>• Prefix: <code>admin</code>
+                        <br>• Middleware: <code>auth</code>, <code>verified</code>, dan <code>admin</code>
+                        <br>• Rate limiting: maksimal 100 request per menit
+                        <br>• Berisi 3 route: dashboard (GET), users (GET), dan settings (POST)
+                        <br>• Semua menggunakan <code>AdminController</code> dengan method yang sesuai
+                    </p>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Jawaban Anda:</label>
+                        <textarea id="answer5"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent h-40"
+                            placeholder="Route::prefix('admin')->middleware(...)"></textarea>
+                    </div>
+
+                    <button onclick="checkAnswer(5)"
+                        class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">Periksa
+                        Jawaban</button>
+
+                    <div id="result5" class="mt-4 hidden"></div>
+                    <div id="solution5" class="mt-4 hidden bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Solusi:</h4>
+                        <div class="code-block rounded-lg p-3 text-white text-sm syntax-highlight mb-2">
+                            <div><span class="keyword">Route</span>::<span class="method">prefix</span>(<span
+                                    class="string">'admin'</span>)</div>
+                            <div class="ml-4">-><span class="method">middleware</span>([<span
+                                    class="string">'auth'</span>, <span class="string">'verified'</span>, <span
+                                    class="string">'admin'</span>, <span class="string">'throttle:100,1'</span>])</div>
+                            <div class="ml-4">-><span class="method">group</span>(<span class="keyword">function</span>
+                                () {</div>
+                            <div class="ml-8"><span class="keyword">Route</span>::<span
+                                    class="function">get</span>(<span class="string">'/dashboard'</span>, [<span
+                                    class="class">AdminController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'dashboard'</span>]);</div>
+                            <div class="ml-8"><span class="keyword">Route</span>::<span
+                                    class="function">get</span>(<span class="string">'/users'</span>, [<span
+                                    class="class">AdminController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'users'</span>]);</div>
+                            <div class="ml-8"><span class="keyword">Route</span>::<span
+                                    class="function">post</span>(<span class="string">'/settings'</span>, [<span
+                                    class="class">AdminController</span>::<span class="keyword">class</span>, <span
+                                    class="string">'settings'</span>]);</div>
+                            <div class="ml-4">});</div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            <strong>Penjelasan:</strong> Route group kompleks dengan multiple middleware termasuk rate
+                            limiting
+                            <code>throttle:100,1</code>, prefix untuk URL, dan berbagai HTTP methods dalam satu group.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Progress Summary -->
+                <div class="bg-white rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Progress Latihan</h3>
+                    <div id="progressSummary" class="text-center">
+                        <div class="grid grid-cols-5 gap-4 mb-4">
+                            <div id="progress1"
+                                class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mx-auto">1
+                            </div>
+                            <div id="progress2"
+                                class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mx-auto">2
+                            </div>
+                            <div id="progress3"
+                                class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mx-auto">3
+                            </div>
+                            <div id="progress4"
+                                class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mx-auto">4
+                            </div>
+                            <div id="progress5"
+                                class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mx-auto">5
+                            </div>
+                        </div>
+                        <p class="text-gray-600">Selesaikan semua latihan untuk menguasai Laravel Routing!</p>
+                        <button onclick="resetProgress()"
+                            class="mt-4 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm">Reset
+                            Progress</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400">© 2024 Laravel Routing Tutorial - Dibuat dengan ❤️ untuk pembelajaran</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            // Update navigation buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-gray-600');
+            });
+
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('bg-blue-600', 'text-white');
+            document.querySelector(`[data-section="${sectionId}"]`).classList.remove('text-gray-600');
+        }
+
+        // Check route order understanding
+        function checkRouteOrder() {
+            const testUrl = document.getElementById('testUrl').value;
+            const predictedRoute = document.getElementById('predictedRoute').value;
+            const resultDiv = document.getElementById('routeOrderResult');
+
+            if (!testUrl || !predictedRoute) {
+                resultDiv.innerHTML = `
+                    <div class="p-4 rounded-lg bg-yellow-50 border border-yellow-200">
+                        <p class="text-yellow-800">⚠️ Mohon pilih URL dan prediksi route terlebih dahulu</p>
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Correct answers based on route order (first match wins)
+            const correctAnswers = {
+                '/products/123': '1',      // Will match /products/{id}
+                '/products/new': '1',      // Will match /products/{id} with id="new" (WRONG ORDER!)
+                '/products/popular': '1',  // Will match /products/{id} with id="popular" (WRONG ORDER!)
+                '/products/electronics/list': '4' // Will match /products/{category}/list
+            };
+
+            const correctRoute = correctAnswers[testUrl];
+            const isCorrect = predictedRoute === correctRoute;
+
+            let explanation = '';
+            switch (testUrl) {
+                case '/products/123':
+                    explanation = 'Route 1 cocok dengan pattern /products/{id} dimana id="123"';
+                    break;
+                case '/products/new':
+                    explanation = 'Karena Route 1 (/products/{id}) berada di atas, Laravel akan mencocokkannya terlebih dahulu dengan id="new". Route 2 tidak akan pernah dieksekusi!';
+                    break;
+                case '/products/popular':
+                    explanation = 'Sama seperti /products/new, Route 1 akan menangkap URL ini dengan id="popular". Route 3 tidak akan pernah dieksekusi!';
+                    break;
+                case '/products/electronics/list':
+                    explanation = 'Route 1 tidak cocok karena pattern berbeda. Route 4 cocok dengan pattern /products/{category}/list dimana category="electronics"';
+                    break;
+            }
+
+            if (isCorrect) {
+                resultDiv.innerHTML = `
+                    <div class="p-4 rounded-lg bg-green-50 border border-green-200">
+                        <h4 class="font-semibold mb-2 text-green-800">✅ Benar!</h4>
+                        <p class="text-sm text-green-700 mb-2"><strong>Penjelasan:</strong> ${explanation}</p>
+                        ${testUrl === '/products/new' || testUrl === '/products/popular' ?
+                        `<div class="mt-2 p-2 bg-orange-100 rounded text-xs text-orange-800">
+                                <strong>⚠️ Masalah Urutan:</strong> Ini menunjukkan mengapa urutan route sangat penting! 
+                                Route spesifik harus diletakkan sebelum route dengan parameter.
+                            </div>` : ''
+                    }
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="p-4 rounded-lg bg-red-50 border border-red-200">
+                        <h4 class="font-semibold mb-2 text-red-800">❌ Belum Tepat</h4>
+                        <p class="text-sm text-red-700 mb-2">Route yang benar: <strong>Route ${correctRoute}</strong></p>
+                        <p class="text-sm text-red-700 mb-2"><strong>Penjelasan:</strong> ${explanation}</p>
+                        <div class="mt-2 p-2 bg-blue-100 rounded text-xs text-blue-800">
+                            <strong>💡 Tips:</strong> Laravel membaca route dari atas ke bawah dan berhenti pada route pertama yang cocok.
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Generate basic route
+        function generateRoute() {
+            const path = document.getElementById('routePath').value;
+            const response = document.getElementById('routeResponse').value;
+
+            const routeCode = `Route::get('${path}', function () {
+    return '${response}';
+});`;
+
+            const resultDiv = document.getElementById('generatedRoute');
+            resultDiv.innerHTML = routeCode.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Test parameter route
+        function testParameter() {
+            const url = document.getElementById('paramUrl').value;
+            const resultDiv = document.getElementById('paramResult');
+
+            // Simple parameter extraction
+            const match = url.match(/\/user\/(\d+)/);
+            if (match) {
+                resultDiv.innerHTML = `<strong>Hasil:</strong> User ID: ${match[1]}`;
+                resultDiv.className = 'mt-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800';
+            } else {
+                resultDiv.innerHTML = '<strong>Error:</strong> Format URL tidak valid. Gunakan format /user/{id}';
+                resultDiv.className = 'mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800';
+            }
+
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Generate method route
+        function generateMethodRoute() {
+            const method = document.getElementById('httpMethod').value;
+            const path = document.getElementById('methodPath').value;
+            const controller = document.getElementById('controllerName').value;
+
+            const routeCode = `Route::${method}('${path}', [${controller}]);`;
+
+            const resultDiv = document.getElementById('methodRoute');
+            resultDiv.innerHTML = routeCode;
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Generate middleware route
+        function generateMiddlewareRoute() {
+            const path = document.getElementById('middlewarePath').value;
+            const controller = document.getElementById('middlewareController').value;
+            const middleware = document.getElementById('middlewareType').value;
+
+            const middlewareArray = middleware.includes(',') ? `['${middleware.split(',').join("', '")}']` : `'${middleware}'`;
+            const routeCode = `Route::get('${path}', [${controller}])
+    ->middleware(${middlewareArray});`;
+
+            const resultDiv = document.getElementById('middlewareRoute');
+            resultDiv.innerHTML = routeCode.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Generate security route
+        function generateSecurityRoute() {
+            const type = document.getElementById('securityType').value;
+            const rateLimit = document.getElementById('rateLimit').value;
+
+            let routeCode = '';
+
+            switch (type) {
+                case 'api':
+                    routeCode = `Route::prefix('api')->middleware(['cors', 'throttle:${rateLimit}'])->group(function () {
+    Route::get('/data', [ApiController::class, 'index']);
+    Route::post('/data', [ApiController::class, 'store']);
+});`;
+                    break;
+                case 'web':
+                    routeCode = `Route::middleware(['web', 'throttle:${rateLimit}'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::post('/contact', [ContactController::class, 'store']);
+});`;
+                    break;
+                case 'admin':
+                    routeCode = `Route::prefix('admin')->middleware(['auth', 'verified', 'admin', 'throttle:${rateLimit}'])->group(function () {
+    Route::get('/users', [AdminController::class, 'users']);
+    Route::get('/settings', [AdminController::class, 'settings']);
+});`;
+                    break;
+                case 'public':
+                    routeCode = `Route::middleware(['throttle:${rateLimit}'])->group(function () {
+    Route::get('/about', [PageController::class, 'about']);
+    Route::get('/contact', [PageController::class, 'contact']);
+});`;
+                    break;
+            }
+
+            const resultDiv = document.getElementById('securityRoute');
+            resultDiv.innerHTML = routeCode.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Toggle example visibility
+        function toggleExample(exampleId) {
+            const element = document.getElementById(exampleId);
+            element.classList.toggle('hidden');
+        }
+
+        // Exercise solutions and checking
+        const solutions = {
+            1: "Route::get('/contact', function () {\n    return 'Halaman Kontak';\n});",
+            2: "Route::get('/about', [PageController::class, 'about']);",
+            3: "Route::get('/product/{id}', [ProductController::class, 'show'])->where('id', '[0-9]+');",
+            4: "Route::resource('posts', PostController::class)->only(['index', 'show', 'store', 'destroy'])->middleware('auth');",
+            5: "Route::prefix('admin')->middleware(['auth', 'verified', 'admin', 'throttle:100,1'])->group(function () {\n    Route::get('/dashboard', [AdminController::class, 'dashboard']);\n    Route::get('/users', [AdminController::class, 'users']);\n    Route::post('/settings', [AdminController::class, 'settings']);\n});"
+        };
+
+        // Track wrong attempts for auto-solution display
+        const wrongAttempts = {};
+
+        // Load answers from localStorage
+        function loadAnswers() {
+            for (let i = 1; i <= 5; i++) {
+                const saved = localStorage.getItem(`laravel_exercise_${i}`);
+                if (saved) {
+                    document.getElementById(`answer${i}`).value = saved;
+                }
+
+                // Load progress
+                const completed = localStorage.getItem(`laravel_exercise_${i}_completed`);
+                if (completed === 'true') {
+                    updateProgress(i, true);
+                }
+            }
+        }
+
+        // Save answer to localStorage
+        function saveAnswer(exerciseNum, answer) {
+            localStorage.setItem(`laravel_exercise_${exerciseNum}`, answer);
+        }
+
+        // Check answer
+        function checkAnswer(exerciseNum) {
+            const userAnswer = document.getElementById(`answer${exerciseNum}`).value.trim();
+            const correctAnswer = solutions[exerciseNum];
+            const resultDiv = document.getElementById(`result${exerciseNum}`);
+            const solutionDiv = document.getElementById(`solution${exerciseNum}`);
+
+            // Initialize wrong attempts counter
+            if (!wrongAttempts[exerciseNum]) {
+                wrongAttempts[exerciseNum] = 0;
+            }
+
+            // Save answer
+            saveAnswer(exerciseNum, userAnswer);
+
+            // Normalize answers for comparison (remove extra spaces, newlines)
+            const normalizeAnswer = (answer) => {
+                return answer.replace(/\s+/g, ' ').replace(/\n/g, '').trim().toLowerCase();
+            };
+
+            // Check if answer is correct based on exercise difficulty
+            let isCorrect = false;
+            const normalizedUser = normalizeAnswer(userAnswer);
+            const normalizedCorrect = normalizeAnswer(correctAnswer);
+
+            switch (exerciseNum) {
+                case 1:
+                    // Simple closure check
+                    isCorrect = normalizedUser.includes("route::get('/contact'") &&
+                        normalizedUser.includes("function") &&
+                        normalizedUser.includes("halaman kontak");
+                    break;
+                case 2:
+                    // Controller syntax check
+                    isCorrect = normalizedUser.includes("route::get('/about'") &&
+                        normalizedUser.includes("pagecontroller::class") &&
+                        normalizedUser.includes("'about'");
+                    break;
+                case 3:
+                    // Parameter with constraint check
+                    isCorrect = normalizedUser.includes("route::get('/product/{id}'") &&
+                        normalizedUser.includes("productcontroller::class") &&
+                        normalizedUser.includes("where") &&
+                        normalizedUser.includes("[0-9]+");
+                    break;
+                case 4:
+                    // Resource with middleware check
+                    isCorrect = normalizedUser.includes("route::resource('posts'") &&
+                        normalizedUser.includes("postcontroller::class") &&
+                        normalizedUser.includes("only") &&
+                        normalizedUser.includes("middleware('auth')");
+                    break;
+                case 5:
+                    // Complex route group check
+                    isCorrect = normalizedUser.includes("route::prefix('admin')") &&
+                        normalizedUser.includes("middleware") &&
+                        normalizedUser.includes("auth") &&
+                        normalizedUser.includes("verified") &&
+                        normalizedUser.includes("admin") &&
+                        normalizedUser.includes("throttle:100,1") &&
+                        normalizedUser.includes("group") &&
+                        normalizedUser.includes("dashboard") &&
+                        normalizedUser.includes("users") &&
+                        normalizedUser.includes("settings");
+                    break;
+            }
+
+            if (isCorrect) {
+                resultDiv.innerHTML = `
+                    <div class="p-4 rounded-lg bg-green-50 border border-green-200">
+                        <h4 class="font-semibold mb-2 text-green-800">✅ Jawaban Benar!</h4>
+                        <p class="text-sm text-green-700">Selamat! Jawaban Anda sudah tepat.</p>
+                    </div>
+                `;
+                updateProgress(exerciseNum, true);
+                localStorage.setItem(`laravel_exercise_${exerciseNum}_completed`, 'true');
+                // Reset wrong attempts on correct answer
+                wrongAttempts[exerciseNum] = 0;
+            } else {
+                wrongAttempts[exerciseNum]++;
+
+                let message = `Coba periksa kembali syntax dan struktur route Anda.`;
+
+                // Show hint based on wrong attempts
+                if (wrongAttempts[exerciseNum] === 1) {
+                    message += ` Pastikan menggunakan syntax yang tepat.`;
+                } else if (wrongAttempts[exerciseNum] === 2) {
+                    message += ` Periksa nama controller, method, dan parameter yang digunakan.`;
+                } else if (wrongAttempts[exerciseNum] >= 3) {
+                    message += ` Solusi akan ditampilkan di bawah.`;
+                    // Auto-show solution after 3 wrong attempts
+                    setTimeout(() => {
+                        solutionDiv.classList.remove('hidden');
+                    }, 1000);
+                }
+
+                resultDiv.innerHTML = `
+                    <div class="p-4 rounded-lg bg-red-50 border border-red-200">
+                        <h4 class="font-semibold mb-2 text-red-800">❌ Jawaban Belum Tepat (Percobaan ${wrongAttempts[exerciseNum]})</h4>
+                        <p class="text-sm text-red-700">${message}</p>
+                    </div>
+                `;
+            }
+
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Show solution (removed - now auto-shows after 3 wrong attempts)
+
+        // Update progress indicator
+        function updateProgress(exerciseNum, completed) {
+            const progressDiv = document.getElementById(`progress${exerciseNum}`);
+            if (completed) {
+                progressDiv.className = 'w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center mx-auto';
+                progressDiv.innerHTML = '✓';
+            } else {
+                progressDiv.className = 'w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mx-auto';
+                progressDiv.innerHTML = exerciseNum;
+            }
+        }
+
+        // Reset progress
+        function resetProgress() {
+            if (confirm('Apakah Anda yakin ingin mereset semua progress latihan?')) {
+                for (let i = 1; i <= 5; i++) {
+                    localStorage.removeItem(`laravel_exercise_${i}`);
+                    localStorage.removeItem(`laravel_exercise_${i}_completed`);
+                    document.getElementById(`answer${i}`).value = '';
+                    document.getElementById(`result${i}`).classList.add('hidden');
+                    document.getElementById(`solution${i}`).classList.add('hidden');
+                    updateProgress(i, false);
+                    // Reset wrong attempts counter
+                    wrongAttempts[i] = 0;
+                }
+            }
+        }
+
+        // Auto-save answers as user types
+        function setupAutoSave() {
+            for (let i = 1; i <= 5; i++) {
+                const textarea = document.getElementById(`answer${i}`);
+                textarea.addEventListener('input', function () {
+                    saveAnswer(i, this.value);
+                });
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            showSection('basic');
+
+            // Add fade-in animation to elements
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+
+            // Setup exercises
+            loadAnswers();
+            setupAutoSave();
+        });
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9837818070436590',t:'MTc1ODYwMzkxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
