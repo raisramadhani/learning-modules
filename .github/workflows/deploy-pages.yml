@@ -13,18 +13,19 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-  
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Disable Jekyll
+        run: touch .nojekyll
+      
       - name: Generate Directory Listing
         run: |
+          # (Script untuk generate index.html tetap sama, tidak perlu diubah)
           echo '<!DOCTYPE html>' > index.html
           echo '<html lang="en">' >> index.html
           echo '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Daftar Modul Pembelajaran</title></head>' >> index.html
