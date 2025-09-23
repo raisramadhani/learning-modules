@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaya Penulisan Case dalam Code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .code-example {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-example::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .case-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .active-case {
+            border: 3px solid #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .quiz-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-card.correct {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        .quiz-card.incorrect {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+        }
+
+        .hint-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <h1 class="text-2xl font-bold text-gray-800">📚 Belajar Case Style</h1>
+                <div class="flex space-x-4">
+                    <button onclick="showPage('learning')" id="learningBtn"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Pembelajaran
+                    </button>
+                    <button onclick="showPage('quiz')" id="quizBtn"
+                        class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                        Latihan (0/15)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Learning Page -->
+    <div id="learningPage" class="max-w-6xl mx-auto px-4 py-8">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">Macam Gaya Penulisan Case dalam Code</h2>
+            <p class="text-xl text-gray-600">Pelajari berbagai gaya penulisan yang digunakan dalam pemrograman</p>
+        </div>
+
+        <!-- Interactive Case Selector -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="case-card bg-white rounded-xl p-6 shadow-lg active-case" onclick="showCaseExample('camelCase')">
+                <div class="text-2xl mb-2">🐪</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">camelCase</h3>
+                <p class="text-gray-600">Huruf pertama kecil, kata berikutnya kapital</p>
+            </div>
+            <div class="case-card bg-white rounded-xl p-6 shadow-lg" onclick="showCaseExample('PascalCase')">
+                <div class="text-2xl mb-2">🏛️</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">PascalCase</h3>
+                <p class="text-gray-600">Setiap kata dimulai dengan huruf kapital</p>
+            </div>
+            <div class="case-card bg-white rounded-xl p-6 shadow-lg" onclick="showCaseExample('snake_case')">
+                <div class="text-2xl mb-2">🐍</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">snake_case</h3>
+                <p class="text-gray-600">Semua huruf kecil, dipisah underscore</p>
+            </div>
+            <div class="case-card bg-white rounded-xl p-6 shadow-lg" onclick="showCaseExample('kebab-case')">
+                <div class="text-2xl mb-2">🍢</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">kebab-case</h3>
+                <p class="text-gray-600">Semua huruf kecil, dipisah dash</p>
+            </div>
+            <div class="case-card bg-white rounded-xl p-6 shadow-lg" onclick="showCaseExample('SCREAMING_SNAKE_CASE')">
+                <div class="text-2xl mb-2">📢</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">SCREAMING_SNAKE</h3>
+                <p class="text-gray-600">Semua huruf kapital, dipisah underscore</p>
+            </div>
+            <div class="case-card bg-white rounded-xl p-6 shadow-lg" onclick="showCaseExample('flatcase')">
+                <div class="text-2xl mb-2">📏</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">flatcase</h3>
+                <p class="text-gray-600">Semua huruf kecil tanpa pemisah</p>
+            </div>
+        </div>
+
+        <!-- Case Example Display -->
+        <div id="caseExampleContainer" class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <div id="caseExample">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Usage Guidelines -->
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">📋 Panduan Penggunaan</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 rounded-lg p-6">
+                    <h4 class="font-semibold text-blue-800 mb-3">JavaScript/TypeScript</h4>
+                    <ul class="text-blue-700 space-y-2">
+                        <li>• Variables & Functions: <code class="bg-blue-200 px-2 py-1 rounded">camelCase</code></li>
+                        <li>• Classes & Components: <code class="bg-blue-200 px-2 py-1 rounded">PascalCase</code></li>
+                        <li>• Constants: <code class="bg-blue-200 px-2 py-1 rounded">SCREAMING_SNAKE</code></li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 rounded-lg p-6">
+                    <h4 class="font-semibold text-green-800 mb-3">Python</h4>
+                    <ul class="text-green-700 space-y-2">
+                        <li>• Variables & Functions: <code class="bg-green-200 px-2 py-1 rounded">snake_case</code></li>
+                        <li>• Classes: <code class="bg-green-200 px-2 py-1 rounded">PascalCase</code></li>
+                        <li>• Constants: <code class="bg-green-200 px-2 py-1 rounded">SCREAMING_SNAKE</code></li>
+                    </ul>
+                </div>
+                <div class="bg-purple-50 rounded-lg p-6">
+                    <h4 class="font-semibold text-purple-800 mb-3">CSS/HTML</h4>
+                    <ul class="text-purple-700 space-y-2">
+                        <li>• CSS Classes: <code class="bg-purple-200 px-2 py-1 rounded">kebab-case</code></li>
+                        <li>• HTML Attributes: <code class="bg-purple-200 px-2 py-1 rounded">kebab-case</code></li>
+                        <li>• IDs: <code class="bg-purple-200 px-2 py-1 rounded">kebab-case</code></li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 rounded-lg p-6">
+                    <h4 class="font-semibold text-orange-800 mb-3">Database</h4>
+                    <ul class="text-orange-700 space-y-2">
+                        <li>• Table Names: <code class="bg-orange-200 px-2 py-1 rounded">snake_case</code></li>
+                        <li>• Column Names: <code class="bg-orange-200 px-2 py-1 rounded">snake_case</code></li>
+                        <li>• Package Names: <code class="bg-orange-200 px-2 py-1 rounded">flatcase</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Page -->
+    <div id="quizPage" class="max-w-4xl mx-auto px-4 py-8 hidden">
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">🎯 Latihan Praktik</h2>
+            <p class="text-xl text-gray-600">Uji pemahaman Anda tentang gaya penulisan case</p>
+            <div class="mt-4">
+                <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-semibold">
+                    Skor: <span id="scoreDisplay">0/15</span>
+                </span>
+            </div>
+        </div>
+
+        <div id="quizContainer">
+            <!-- Quiz questions will be generated here -->
+        </div>
+
+        <div id="completionMessage" class="hidden text-center bg-green-100 border border-green-400 rounded-lg p-8 mt-8">
+            <div class="text-6xl mb-4">🎉</div>
+            <h3 class="text-2xl font-bold text-green-800 mb-2">Selamat!</h3>
+            <p class="text-green-700">Anda telah menyelesaikan semua latihan!</p>
+            <button onclick="resetQuiz()"
+                class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                Ulangi Latihan
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Case examples data
+        const caseExamples = {
+            'camelCase': {
+                title: '🐪 camelCase',
+                description: 'Huruf pertama kecil, setiap kata berikutnya dimulai dengan huruf kapital. Tidak ada spasi atau pemisah.',
+                examples: [
+                    'firstName',
+                    'lastName',
+                    'getUserData',
+                    'calculateTotalPrice',
+                    'isUserLoggedIn',
+                    'handleButtonClick'
+                ],
+                usage: 'Digunakan untuk: variabel, fungsi, method dalam JavaScript, Java, C#',
+                goodExample: `// ✅ Benar
+let userName = "John";
+function getUserAge() {
+    return 25;
+}`,
+                badExample: `// ❌ Salah
+let user_name = "John";
+let UserName = "John";
+function get_user_age() {
+    return 25;
+}`
+            },
+            'PascalCase': {
+                title: '🏛️ PascalCase',
+                description: 'Setiap kata dimulai dengan huruf kapital, termasuk kata pertama. Tidak ada spasi atau pemisah.',
+                examples: [
+                    'FirstName',
+                    'LastName',
+                    'UserProfile',
+                    'DatabaseConnection',
+                    'PaymentProcessor',
+                    'EmailValidator'
+                ],
+                usage: 'Digunakan untuk: nama class, interface, component dalam berbagai bahasa pemrograman',
+                goodExample: `// ✅ Benar
+class UserProfile {
+    constructor() {}
+}
+interface PaymentMethod {
+    process(): void;
+}`,
+                badExample: `// ❌ Salah
+class userProfile {
+    constructor() {}
+}
+class user_profile {
+    constructor() {}
+}`
+            },
+            'snake_case': {
+                title: '🐍 snake_case',
+                description: 'Semua huruf kecil, kata-kata dipisahkan dengan underscore (_).',
+                examples: [
+                    'first_name',
+                    'last_name',
+                    'user_profile',
+                    'get_user_data',
+                    'calculate_total_price',
+                    'is_user_logged_in'
+                ],
+                usage: 'Digunakan untuk: variabel, fungsi dalam Python, Ruby, dan nama kolom database',
+                goodExample: `# ✅ Benar (Python)
+user_name = "John"
+def get_user_age():
+    return 25
+
+-- ✅ Benar (SQL)
+SELECT first_name, last_name FROM users;`,
+                badExample: `# ❌ Salah
+userName = "John"
+def getUserAge():
+    return 25`
+            },
+            'kebab-case': {
+                title: '🍢 kebab-case',
+                description: 'Semua huruf kecil, kata-kata dipisahkan dengan dash/hyphen (-).',
+                examples: [
+                    'first-name',
+                    'last-name',
+                    'user-profile',
+                    'main-container',
+                    'submit-button',
+                    'navigation-menu'
+                ],
+                usage: 'Digunakan untuk: CSS class names, HTML attributes, URL slugs',
+                goodExample: `<!-- ✅ Benar -->
+<div class="user-profile">
+    <button class="submit-button">Submit</button>
+</div>
+
+/* CSS */
+.main-container {
+    padding: 20px;
+}`,
+                badExample: `<!-- ❌ Salah -->
+<div class="userProfile">
+    <button class="submit_button">Submit</button>
+</div>`
+            },
+            'SCREAMING_SNAKE_CASE': {
+                title: '📢 SCREAMING_SNAKE_CASE',
+                description: 'Semua huruf kapital, kata-kata dipisahkan dengan underscore (_).',
+                examples: [
+                    'MAX_SIZE',
+                    'API_KEY',
+                    'DATABASE_URL',
+                    'DEFAULT_TIMEOUT',
+                    'ERROR_MESSAGE',
+                    'CONFIG_FILE_PATH'
+                ],
+                usage: 'Digunakan untuk: konstanta, environment variables, konfigurasi global',
+                goodExample: `// ✅ Benar
+const MAX_RETRY_ATTEMPTS = 3;
+const API_BASE_URL = "https://api.example.com";
+const DEFAULT_TIMEOUT = 5000;`,
+                badExample: `// ❌ Salah
+const maxRetryAttempts = 3;
+const api_base_url = "https://api.example.com";`
+            },
+            'flatcase': {
+                title: '📏 flatcase',
+                description: 'Semua huruf kecil tanpa pemisah apapun. Semua kata digabung menjadi satu.',
+                examples: [
+                    'firstname',
+                    'lastname',
+                    'userprofile',
+                    'packagename',
+                    'modulename',
+                    'filename'
+                ],
+                usage: 'Digunakan untuk: nama package, module, domain names, beberapa sistem penamaan khusus',
+                goodExample: `// ✅ Benar (Java package)
+package com.example.userservice;
+
+<!-- Domain names -->
+example.com
+userprofile.app`,
+                badExample: `// ❌ Salah untuk package
+package com.example.UserService;
+package com.example.user_service;`
+            }
+        };
+
+        // Quiz questions
+        const quizQuestions = [
+            {
+                question: "Bagaimana cara menulis 'user profile' dalam camelCase?",
+                options: ["userProfile", "UserProfile", "user_profile", "user-profile"],
+                correct: 0,
+                explanation: "camelCase dimulai dengan huruf kecil, kata berikutnya kapital tanpa pemisah"
+            },
+            {
+                question: "Manakah yang benar untuk nama class dalam JavaScript?",
+                options: ["userManager", "UserManager", "user_manager", "USER_MANAGER"],
+                correct: 1,
+                explanation: "Nama class menggunakan PascalCase - setiap kata dimulai dengan huruf kapital"
+            },
+            {
+                question: "Bagaimana menulis konstanta 'maximum size' yang benar?",
+                options: ["maximumSize", "MaximumSize", "MAXIMUM_SIZE", "maximum-size"],
+                correct: 2,
+                explanation: "Konstanta menggunakan SCREAMING_SNAKE_CASE - semua huruf kapital dengan underscore"
+            },
+            {
+                question: "Gaya penulisan mana yang tepat untuk CSS class?",
+                options: ["submitButton", "SubmitButton", "submit_button", "submit-button"],
+                correct: 3,
+                explanation: "CSS class menggunakan kebab-case - huruf kecil dengan dash sebagai pemisah"
+            },
+            {
+                question: "Bagaimana menulis nama fungsi Python yang benar?",
+                options: ["getUserData", "GetUserData", "get_user_data", "get-user-data"],
+                correct: 2,
+                explanation: "Python menggunakan snake_case untuk nama fungsi - huruf kecil dengan underscore"
+            },
+            {
+                question: "Manakah penulisan variabel JavaScript yang benar?",
+                options: ["first_name", "FirstName", "firstName", "first-name"],
+                correct: 2,
+                explanation: "Variabel JavaScript menggunakan camelCase - huruf pertama kecil, kata berikutnya kapital"
+            },
+            {
+                question: "Bagaimana menulis nama package Java yang benar?",
+                options: ["com.example.UserService", "com.example.userService", "com.example.userservice", "com.example.user_service"],
+                correct: 2,
+                explanation: "Package Java menggunakan flatcase - semua huruf kecil tanpa pemisah"
+            },
+            {
+                question: "Gaya penulisan mana untuk environment variable?",
+                options: ["databaseUrl", "DatabaseUrl", "DATABASE_URL", "database-url"],
+                correct: 2,
+                explanation: "Environment variable menggunakan SCREAMING_SNAKE_CASE"
+            },
+            {
+                question: "Bagaimana menulis 'email validator' dalam PascalCase?",
+                options: ["emailValidator", "EmailValidator", "email_validator", "email-validator"],
+                correct: 1,
+                explanation: "PascalCase - setiap kata dimulai dengan huruf kapital termasuk kata pertama"
+            },
+            {
+                question: "Manakah penulisan ID HTML yang benar?",
+                options: ["mainContainer", "MainContainer", "main_container", "main-container"],
+                correct: 3,
+                explanation: "HTML ID menggunakan kebab-case - huruf kecil dengan dash sebagai pemisah"
+            },
+            // Soal Isian - Tingkat Mudah hingga Sangat Sulit
+            {
+                type: "fill",
+                difficulty: "Mudah",
+                question: "Ubah 'hello world' menjadi camelCase:",
+                placeholder: "Ketik jawaban Anda...",
+                correctAnswers: ["helloWorld"],
+                explanation: "camelCase: huruf pertama kecil, kata kedua dimulai dengan huruf kapital",
+                hints: [
+                    "Ingat: camelCase dimulai dengan huruf kecil",
+                    "Kata kedua 'world' harus dimulai dengan huruf kapital",
+                    "Tidak ada spasi atau pemisah dalam camelCase"
+                ]
+            },
+            {
+                type: "fill",
+                difficulty: "Sedang",
+                question: "Konversi 'calculate total price with tax' ke dalam snake_case:",
+                placeholder: "Ketik jawaban Anda...",
+                correctAnswers: ["calculate_total_price_with_tax"],
+                explanation: "snake_case menggunakan huruf kecil semua dengan underscore sebagai pemisah",
+                hints: [
+                    "snake_case menggunakan underscore (_) untuk memisahkan kata",
+                    "Semua huruf harus kecil",
+                    "Setiap spasi diganti dengan underscore"
+                ]
+            },
+            {
+                type: "fill",
+                difficulty: "Sedang",
+                question: "Tulis 'Database Connection Manager' dalam PascalCase:",
+                placeholder: "Ketik jawaban Anda...",
+                correctAnswers: ["DatabaseConnectionManager"],
+                explanation: "PascalCase: setiap kata dimulai dengan huruf kapital, tidak ada pemisah",
+                hints: [
+                    "PascalCase dimulai dengan huruf kapital",
+                    "Setiap kata baru dimulai dengan huruf kapital",
+                    "Tidak ada spasi atau pemisah apapun"
+                ]
+            },
+            {
+                type: "fill",
+                difficulty: "Sulit",
+                question: "Konversi variabel JavaScript 'userAccountSettings' ke dalam format yang tepat untuk konstanta:",
+                placeholder: "Ketik jawaban Anda...",
+                correctAnswers: ["USER_ACCOUNT_SETTINGS"],
+                explanation: "Konstanta menggunakan SCREAMING_SNAKE_CASE - semua huruf kapital dengan underscore",
+                hints: [
+                    "Konstanta menggunakan SCREAMING_SNAKE_CASE",
+                    "Pisahkan setiap kata dengan underscore",
+                    "Semua huruf harus kapital"
+                ]
+            },
+            {
+                type: "fill",
+                difficulty: "Sangat Sulit",
+                question: "Berikan 3 format penulisan yang berbeda untuk 'user authentication service' sesuai konteks: 1) Variabel JS, 2) CSS class, 3) Konstanta (pisahkan dengan koma):",
+                placeholder: "format1, format2, format3",
+                correctAnswers: [
+                    "userAuthenticationService, user-authentication-service, USER_AUTHENTICATION_SERVICE",
+                    "userAuthenticationService,user-authentication-service,USER_AUTHENTICATION_SERVICE"
+                ],
+                explanation: "1) JavaScript variabel = camelCase, 2) CSS class = kebab-case, 3) Konstanta = SCREAMING_SNAKE_CASE",
+                hints: [
+                    "Variabel JavaScript menggunakan camelCase",
+                    "CSS class menggunakan kebab-case (dash)",
+                    "Konstanta menggunakan SCREAMING_SNAKE_CASE"
+                ]
+            }
+        ];
+
+        let currentPage = 'learning';
+        let quizState = {
+            answers: new Array(15).fill(null),
+            attempts: new Array(15).fill(0),
+            score: 0
+        };
+
+        // Initialize the page
+        function init() {
+            showCaseExample('camelCase');
+            generateQuiz();
+        }
+
+        // Show different pages
+        function showPage(page) {
+            const learningPage = document.getElementById('learningPage');
+            const quizPage = document.getElementById('quizPage');
+            const learningBtn = document.getElementById('learningBtn');
+            const quizBtn = document.getElementById('quizBtn');
+
+            if (page === 'learning') {
+                learningPage.classList.remove('hidden');
+                quizPage.classList.add('hidden');
+                learningBtn.className = 'px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors';
+                quizBtn.className = 'px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors';
+                currentPage = 'learning';
+            } else {
+                learningPage.classList.add('hidden');
+                quizPage.classList.remove('hidden');
+                quizBtn.className = 'px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors';
+                learningBtn.className = 'px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors';
+                currentPage = 'quiz';
+            }
+        }
+
+        // Show case example
+        function showCaseExample(caseType) {
+            // Update active card
+            document.querySelectorAll('.case-card').forEach(card => {
+                card.classList.remove('active-case');
+            });
+
+            // Find the card that was clicked and make it active
+            const clickedCard = document.querySelector(`[onclick="showCaseExample('${caseType}')"]`);
+            if (clickedCard) {
+                clickedCard.classList.add('active-case');
+            }
+
+            const example = caseExamples[caseType];
+            const container = document.getElementById('caseExample');
+
+            container.innerHTML = `
+                <div class="mb-6">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-3">${example.title}</h3>
+                    <p class="text-lg text-gray-600 leading-relaxed">${example.description}</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">📝 Contoh Penulisan:</h4>
+                        <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+                            ${example.examples.map(ex => `
+                                <div class="bg-white px-3 py-2 rounded border-l-4 border-blue-500 font-mono text-blue-800">
+                                    ${ex}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">🎯 Penggunaan:</h4>
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <p class="text-blue-800 font-medium">${example.usage}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="code-example">
+                        <h5 class="text-lg font-semibold mb-3">✅ Contoh Benar:</h5>
+                        <pre class="text-sm leading-relaxed">${example.goodExample}</pre>
+                    </div>
+                    
+                    <div class="code-example" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                        <h5 class="text-lg font-semibold mb-3">❌ Contoh Salah:</h5>
+                        <pre class="text-sm leading-relaxed">${example.badExample}</pre>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Generate quiz
+        function generateQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+
+            quizQuestions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-card';
+
+                if (question.type === 'fill') {
+                    // Soal isian
+                    questionDiv.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800">
+                                    Soal ${index + 1}: ${question.question}
+                                </h3>
+                                <span class="inline-block mt-2 px-3 py-1 text-xs font-medium rounded-full ${getDifficultyColor(question.difficulty)}">
+                                    ${question.difficulty}
+                                </span>
+                            </div>
+                            <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                ${quizState.attempts[index]}/3 percobaan
+                            </span>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <input type="text" id="fillAnswer${index}" placeholder="${question.placeholder}" 
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none font-mono text-gray-800">
+                        </div>
+                        
+                        <button onclick="checkFillAnswer(${index})" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                            Submit Jawaban
+                        </button>
+                        
+                        <div id="result${index}" class="mt-4 hidden"></div>
+                        <div id="hint${index}" class="mt-4 hidden"></div>
+                    `;
+                } else {
+                    // Soal pilihan ganda
+                    questionDiv.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">
+                                Soal ${index + 1}: ${question.question}
+                            </h3>
+                            <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                ${quizState.attempts[index]}/3 percobaan
+                            </span>
+                        </div>
+                        
+                        <div class="space-y-3 mb-4">
+                            ${question.options.map((option, optIndex) => `
+                                <label class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-colors">
+                                    <input type="radio" name="question${index}" value="${optIndex}" class="text-blue-600">
+                                    <span class="font-mono text-gray-800">${option}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                        
+                        <button onclick="checkAnswer(${index})" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                            Submit Jawaban
+                        </button>
+                        
+                        <div id="result${index}" class="mt-4 hidden"></div>
+                        <div id="hint${index}" class="mt-4 hidden"></div>
+                    `;
+                }
+                container.appendChild(questionDiv);
+            });
+        }
+
+        // Get difficulty color
+        function getDifficultyColor(difficulty) {
+            switch (difficulty) {
+                case 'Mudah': return 'bg-green-100 text-green-800';
+                case 'Sedang': return 'bg-yellow-100 text-yellow-800';
+                case 'Sulit': return 'bg-orange-100 text-orange-800';
+                case 'Sangat Sulit': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        // Check fill answer
+        function checkFillAnswer(questionIndex) {
+            const inputElement = document.getElementById(`fillAnswer${questionIndex}`);
+            const userAnswer = inputElement.value.trim();
+
+            if (!userAnswer) {
+                alert('Silakan isi jawaban terlebih dahulu!');
+                return;
+            }
+
+            const question = quizQuestions[questionIndex];
+            const resultDiv = document.getElementById(`result${questionIndex}`);
+            const hintDiv = document.getElementById(`hint${questionIndex}`);
+            const questionCard = inputElement.closest('.quiz-card');
+
+            quizState.attempts[questionIndex]++;
+
+            // Check if answer is correct (case insensitive and flexible)
+            const isCorrect = question.correctAnswers.some(correctAnswer =>
+                userAnswer.toLowerCase().replace(/\s+/g, '') === correctAnswer.toLowerCase().replace(/\s+/g, '')
+            );
+
+            if (isCorrect) {
+                // Correct answer
+                if (quizState.answers[questionIndex] === null) {
+                    quizState.answers[questionIndex] = true;
+                    quizState.score++;
+                    updateScore();
+                }
+
+                questionCard.classList.add('correct');
+                questionCard.classList.remove('incorrect');
+
+                resultDiv.innerHTML = `
+                    <div class="bg-green-100 border border-green-400 rounded-lg p-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl">✅</span>
+                            <div>
+                                <p class="font-semibold text-green-800">Benar!</p>
+                                <p class="text-green-700">${question.explanation}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
+
+                // Disable further attempts
+                inputElement.disabled = true;
+                inputElement.classList.add('opacity-50');
+                questionCard.querySelector('button').disabled = true;
+                questionCard.querySelector('button').classList.add('opacity-50', 'cursor-not-allowed');
+
+            } else {
+                // Wrong answer
+                questionCard.classList.add('incorrect');
+                questionCard.classList.remove('correct');
+
+                if (quizState.attempts[questionIndex] >= 3) {
+                    // Show hint after 3 wrong attempts
+                    if (quizState.answers[questionIndex] === null) {
+                        quizState.answers[questionIndex] = false;
+                    }
+
+                    const currentHintIndex = Math.min(quizState.attempts[questionIndex] - 1, question.hints.length - 1);
+                    hintDiv.innerHTML = `
+                        <div class="hint-box">
+                            <div class="flex items-start space-x-2">
+                                <span class="text-2xl">💡</span>
+                                <div>
+                                    <p class="font-semibold text-yellow-800 mb-2">Hint:</p>
+                                    <p class="text-yellow-700 mb-2">${question.hints[currentHintIndex]}</p>
+                                    <p class="font-semibold text-yellow-800 mb-2">Penjelasan:</p>
+                                    <p class="text-yellow-700 mb-2">${question.explanation}</p>
+                                    <p class="font-mono text-yellow-800 bg-yellow-200 px-3 py-1 rounded">
+                                        Jawaban yang benar: ${question.correctAnswers[0]}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    hintDiv.classList.remove('hidden');
+
+                    // Disable further attempts
+                    inputElement.disabled = true;
+                    inputElement.classList.add('opacity-50');
+                    questionCard.querySelector('button').disabled = true;
+                    questionCard.querySelector('button').classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    // Show progressive hint
+                    const hintIndex = quizState.attempts[questionIndex] - 1;
+                    if (hintIndex < question.hints.length) {
+                        hintDiv.innerHTML = `
+                            <div class="bg-blue-100 border border-blue-400 rounded-lg p-4">
+                                <div class="flex items-start space-x-2">
+                                    <span class="text-2xl">💡</span>
+                                    <div>
+                                        <p class="font-semibold text-blue-800 mb-2">Hint ${hintIndex + 1}:</p>
+                                        <p class="text-blue-700">${question.hints[hintIndex]}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        hintDiv.classList.remove('hidden');
+                    }
+
+                    resultDiv.innerHTML = `
+                        <div class="bg-red-100 border border-red-400 rounded-lg p-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-2xl">❌</span>
+                                <p class="font-semibold text-red-800">
+                                    Salah! Coba lagi. (${quizState.attempts[questionIndex]}/3 percobaan)
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    resultDiv.classList.remove('hidden');
+                }
+            }
+
+            // Update attempts display
+            questionCard.querySelector('.bg-gray-200').textContent = `${quizState.attempts[questionIndex]}/3 percobaan`;
+
+            // Check if quiz is complete
+            if (quizState.answers.every(answer => answer !== null)) {
+                setTimeout(() => {
+                    document.getElementById('completionMessage').classList.remove('hidden');
+                }, 1000);
+            }
+        }
+
+        // Check answer
+        function checkAnswer(questionIndex) {
+            const selectedOption = document.querySelector(`input[name="question${questionIndex}"]:checked`);
+
+            if (!selectedOption) {
+                alert('Silakan pilih jawaban terlebih dahulu!');
+                return;
+            }
+
+            const userAnswer = parseInt(selectedOption.value);
+            const correctAnswer = quizQuestions[questionIndex].correct;
+            const resultDiv = document.getElementById(`result${questionIndex}`);
+            const hintDiv = document.getElementById(`hint${questionIndex}`);
+            const questionCard = selectedOption.closest('.quiz-card');
+
+            quizState.attempts[questionIndex]++;
+
+            if (userAnswer === correctAnswer) {
+                // Correct answer
+                if (quizState.answers[questionIndex] === null) {
+                    quizState.answers[questionIndex] = true;
+                    quizState.score++;
+                    updateScore();
+                }
+
+                questionCard.classList.add('correct');
+                questionCard.classList.remove('incorrect');
+
+                resultDiv.innerHTML = `
+                    <div class="bg-green-100 border border-green-400 rounded-lg p-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl">✅</span>
+                            <div>
+                                <p class="font-semibold text-green-800">Benar!</p>
+                                <p class="text-green-700">${quizQuestions[questionIndex].explanation}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
+
+                // Disable further attempts
+                const inputs = questionCard.querySelectorAll('input[type="radio"]');
+                inputs.forEach(input => input.disabled = true);
+                questionCard.querySelector('button').disabled = true;
+                questionCard.querySelector('button').classList.add('opacity-50', 'cursor-not-allowed');
+
+            } else {
+                // Wrong answer
+                questionCard.classList.add('incorrect');
+                questionCard.classList.remove('correct');
+
+                if (quizState.attempts[questionIndex] >= 3) {
+                    // Show hint after 3 wrong attempts
+                    if (quizState.answers[questionIndex] === null) {
+                        quizState.answers[questionIndex] = false;
+                    }
+
+                    hintDiv.innerHTML = `
+                        <div class="hint-box">
+                            <div class="flex items-start space-x-2">
+                                <span class="text-2xl">💡</span>
+                                <div>
+                                    <p class="font-semibold text-yellow-800 mb-2">Hint Jawaban:</p>
+                                    <p class="text-yellow-700 mb-2">${quizQuestions[questionIndex].explanation}</p>
+                                    <p class="font-mono text-yellow-800 bg-yellow-200 px-3 py-1 rounded">
+                                        Jawaban yang benar: ${quizQuestions[questionIndex].options[correctAnswer]}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    hintDiv.classList.remove('hidden');
+
+                    // Disable further attempts
+                    const inputs = questionCard.querySelectorAll('input[type="radio"]');
+                    inputs.forEach(input => input.disabled = true);
+                    questionCard.querySelector('button').disabled = true;
+                    questionCard.querySelector('button').classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="bg-red-100 border border-red-400 rounded-lg p-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-2xl">❌</span>
+                                <p class="font-semibold text-red-800">
+                                    Salah! Coba lagi. (${quizState.attempts[questionIndex]}/3 percobaan)
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    resultDiv.classList.remove('hidden');
+                }
+            }
+
+            // Update attempts display
+            questionCard.querySelector('.bg-gray-200').textContent = `${quizState.attempts[questionIndex]}/3 percobaan`;
+
+            // Check if quiz is complete
+            if (quizState.answers.every(answer => answer !== null)) {
+                setTimeout(() => {
+                    document.getElementById('completionMessage').classList.remove('hidden');
+                }, 1000);
+            }
+        }
+
+        // Update score display
+        function updateScore() {
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const quizBtn = document.getElementById('quizBtn');
+
+            scoreDisplay.textContent = `${quizState.score}/15`;
+            quizBtn.textContent = `Latihan (${quizState.score}/15)`;
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            quizState = {
+                answers: new Array(15).fill(null),
+                attempts: new Array(15).fill(0),
+                score: 0
+            };
+
+            updateScore();
+            generateQuiz();
+            document.getElementById('completionMessage').classList.add('hidden');
+        }
+
+        // Initialize when page loads
+        window.onload = init;
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9807ef6b603afd87',t:'MTc1ODEwNTEwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
