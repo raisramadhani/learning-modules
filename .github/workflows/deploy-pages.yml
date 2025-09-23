@@ -25,7 +25,10 @@ jobs:
       
       - name: Generate Directory Listing
         run: |
-          # (Script untuk generate index.html tetap sama, tidak perlu diubah)
+          echo "--- Files before generation ---"
+          ls -lA
+          echo "-------------------------------"
+
           echo '<!DOCTYPE html>' > index.html
           echo '<html lang="en">' >> index.html
           echo '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Daftar Modul Pembelajaran</title></head>' >> index.html
@@ -33,15 +36,22 @@ jobs:
           echo '<body>' >> index.html
           echo '<h1>📂 Daftar Modul Pembelajaran</h1>' >> index.html
           echo '<ul>' >> index.html
+          
+          # Loop melalui direktori dan abaikan folder .github
           for d in */ ; do
-            if [ -d "$d" ]; then
-              dirname=$(basename "$d")
+            dirname=$(basename "$d")
+            if [ -d "$d" ] && [ "$dirname" != ".github" ]; then
               echo "  <li><a href=\"$dirname/\">$dirname</a></li>" >> index.html
             fi
           done
+          
           echo '</ul>' >> index.html
           echo '</body>' >> index.html
           echo '</html>' >> index.html
+
+          echo "--- Files after generation ---"
+          ls -lA
+          echo "------------------------------"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
