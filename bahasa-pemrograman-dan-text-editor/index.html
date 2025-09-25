@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Interaktif: Bahasa Pemrograman & Text Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        .slide-enter {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .slide-exit {
+            animation: slideOut 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+        }
+
+        .code-highlight {
+            background: linear-gradient(45deg, #1e293b, #334155);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 min-h-screen font-sans">
+    <div class="container mx-auto px-6 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">📚 Modul Pembelajaran Interaktif</h1>
+            <p class="text-blue-200 text-lg">Bahasa Pemrograman & Text Editor</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="bg-gray-700 rounded-full h-2 mb-8">
+            <div id="progressBar" class="progress-bar bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
+                style="width: 20%"></div>
+        </div>
+
+        <!-- Slide Container -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8 min-h-[600px] relative overflow-hidden">
+            <!-- Slide 1: Introduction -->
+            <div id="slide1" class="slide-content">
+                <div class="text-center mb-8">
+                    <div class="text-6xl mb-4">💻</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Selamat Datang!</h2>
+                    <p class="text-gray-600 text-lg mb-8">Mari belajar tentang dunia pemrograman dan tools yang
+                        digunakan para developer</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-3">🔤 Bahasa Pemrograman</h3>
+                        <p class="text-gray-700">Pelajari berbagai bahasa pemrograman populer dan karakteristiknya</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl">
+                        <h3 class="text-xl font-semibold text-purple-800 mb-3">✏️ Text Editor</h3>
+                        <p class="text-gray-700">Kenali tools yang digunakan untuk menulis dan mengedit kode</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Apa itu Bahasa Pemrograman -->
+            <div id="slide2" class="slide-content hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">🔤 Apa itu Bahasa Pemrograman?</h2>
+
+                <div class="mb-8">
+                    <p class="text-gray-700 text-lg mb-6">Bahasa pemrograman adalah sekumpulan instruksi yang digunakan
+                        untuk berkomunikasi dengan komputer dan memberitahu apa yang harus dilakukan.</p>
+
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl mb-6">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-4">💡 Analogi Sederhana</h3>
+                        <p class="text-gray-700">Bayangkan bahasa pemrograman seperti resep masakan. Resep memberikan
+                            langkah-langkah detail kepada koki (komputer) untuk membuat hidangan (program) yang
+                            diinginkan.</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                        <div class="text-2xl mb-2">📝</div>
+                        <h4 class="font-semibold text-green-800">Instruksi</h4>
+                        <p class="text-sm text-gray-600">Perintah yang jelas</p>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg text-center">
+                        <div class="text-2xl mb-2">🔄</div>
+                        <h4 class="font-semibold text-yellow-800">Logika</h4>
+                        <p class="text-sm text-gray-600">Alur berpikir terstruktur</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg text-center">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <h4 class="font-semibold text-red-800">Eksekusi</h4>
+                        <p class="text-sm text-gray-600">Menjalankan perintah</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Ranah Bahasa Pemrograman -->
+            <div id="slide3" class="slide-content hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">🌍 Ranah Bahasa Pemrograman</h2>
+                <p class="text-gray-600 text-center mb-6">Banyak bahasa pemrograman dapat digunakan di berbagai ranah
+                </p>
+
+                <!-- Venn Diagram Container -->
+                <div class="relative w-full max-w-6xl mx-auto h-[500px] mb-8">
+                    <!-- SVG Venn Diagram -->
+                    <svg viewBox="0 0 500 400" class="w-full h-full">
+                        <!-- Desktop Circle -->
+                        <circle cx="180" cy="150" r="100" fill="rgba(59, 130, 246, 0.3)" stroke="#3b82f6"
+                            stroke-width="3" class="hover:fill-blue-200 transition-all cursor-pointer"
+                            id="desktop-circle" />
+
+                        <!-- Website Circle -->
+                        <circle cx="320" cy="150" r="100" fill="rgba(34, 197, 94, 0.3)" stroke="#22c55e"
+                            stroke-width="3" class="hover:fill-green-200 transition-all cursor-pointer"
+                            id="website-circle" />
+
+                        <!-- Mobile Circle -->
+                        <circle cx="180" cy="250" r="100" fill="rgba(168, 85, 247, 0.3)" stroke="#a855f7"
+                            stroke-width="3" class="hover:fill-purple-200 transition-all cursor-pointer"
+                            id="mobile-circle" />
+
+                        <!-- Data Science Circle -->
+                        <circle cx="320" cy="250" r="100" fill="rgba(249, 115, 22, 0.3)" stroke="#f97316"
+                            stroke-width="3" class="hover:fill-orange-200 transition-all cursor-pointer"
+                            id="data-circle" />
+
+                        <!-- Labels -->
+                        <image x="95" y="85" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/windows8/windows8-original.svg" />
+                        <text x="120" y="100" text-anchor="middle"
+                            class="text-lg font-bold fill-blue-700">Desktop</text>
+                        <image x="355" y="85" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/html5/html5-original.svg" />
+                        <text x="380" y="100" text-anchor="middle"
+                            class="text-lg font-bold fill-green-700">Website</text>
+                        <image x="95" y="315" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/android/android-original.svg" />
+                        <text x="120" y="330" text-anchor="middle"
+                            class="text-lg font-bold fill-purple-700">Mobile</text>
+                        <image x="355" y="315" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/kaggle/kaggle-original.svg" />
+                        <text x="380" y="330" text-anchor="middle" class="text-lg font-bold fill-orange-700">Data
+                            Science</text>
+
+                        <!-- Language Icons in Intersections -->
+                        <!-- Python (center intersection - all 4 domains) -->
+                        <image x="242" y="192" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/python/python-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="python-label" />
+
+                        <!-- JavaScript (Website + Mobile + Desktop intersection) -->
+                        <image x="242" y="162" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/javascript/javascript-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="js-label" />
+
+                        <!-- Java (Desktop + Mobile intersection) -->
+                        <image x="172" y="182" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/java/java-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="java-label" />
+
+                        <!-- C++ (Desktop only) -->
+                        <image x="132" y="122" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/cplusplus/cplusplus-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="cpp-label" />
+
+                        <!-- PHP (Website only) -->
+                        <image x="352" y="122" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/php/php-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="php-label" />
+
+                        <!-- Swift (Mobile only) -->
+                        <image x="132" y="272" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/swift/swift-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="swift-label" />
+
+                        <!-- R (Data Science only) -->
+                        <image x="352" y="272" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/r/r-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="r-label" />
+
+                        <!-- Kotlin (Mobile + Desktop intersection) -->
+                        <image x="172" y="212" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/kotlin/kotlin-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="kotlin-label" />
+
+                        <!-- SQL (Data Science intersection) -->
+                        <image x="312" y="212" width="16" height="16"
+                            href="https://github.com/devicons/devicon/raw/master/icons/mysql/mysql-original.svg"
+                            class="cursor-pointer hover:opacity-80" id="sql-label" />
+                    </svg>
+                </div>
+
+                <!-- Interactive Info Panel -->
+                <div id="info-panel" class="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-xl min-h-[120px]">
+                    <div id="default-info" class="text-center">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">💡 Klik pada bahasa atau ranah untuk info
+                            detail!</h3>
+                        <p class="text-gray-600">Diagram Venn ini menunjukkan bahwa banyak bahasa pemrograman dapat
+                            digunakan di berbagai ranah teknologi.</p>
+                    </div>
+
+                    <!-- Python Info -->
+                    <div id="python-info" class="hidden">
+                        <h3 class="text-lg font-bold text-blue-800 mb-2">Python - The Versatile Language</h3>
+                        <p class="text-gray-700 mb-2"><strong>Ranah:</strong> Desktop, Website, Mobile, Data Science</p>
+                        <p class="text-gray-600 text-sm"><strong>Contoh:</strong> Instagram backend, Dropbox desktop,
+                            TensorFlow AI, Django websites</p>
+                    </div>
+
+                    <!-- Java Info -->
+                    <div id="java-info" class="hidden">
+                        <h3 class="text-lg font-bold text-orange-800 mb-2">Java - Enterprise Powerhouse</h3>
+                        <p class="text-gray-700 mb-2"><strong>Ranah:</strong> Desktop, Mobile (Android), Enterprise</p>
+                        <p class="text-gray-600 text-sm"><strong>Contoh:</strong> Android apps, NetBeans IDE, Banking
+                            systems, Minecraft</p>
+                    </div>
+
+                    <!-- JavaScript Info -->
+                    <div id="js-info" class="hidden">
+                        <h3 class="text-lg font-bold text-yellow-800 mb-2">JavaScript - The Universal Language</h3>
+                        <p class="text-gray-700 mb-2"><strong>Ranah:</strong> Website, Mobile (React Native, Ionic),
+                            Desktop (Electron)</p>
+                        <p class="text-gray-600 text-sm"><strong>Contoh:</strong> Facebook web & mobile, WhatsApp Web,
+                            VS Code, Discord, Instagram mobile</p>
+                    </div>
+
+                    <!-- Desktop Info -->
+                    <div id="desktop-info" class="hidden">
+                        <h3 class="text-lg font-bold text-blue-800 mb-2">Desktop Applications</h3>
+                        <p class="text-gray-700 mb-2"><strong>Bahasa Utama:</strong> C++, C#, Java, Python, Electron
+                            (JS)</p>
+                        <p class="text-gray-600 text-sm"><strong>Contoh:</strong> Microsoft Office, Adobe Photoshop,
+                            Steam, Spotify Desktop</p>
+                    </div>
+
+                    <!-- Website Info -->
+                    <div id="website-info" class="hidden">
+                        <h3 class="text-lg font-bold text-green-800 mb-2">Website Development</h3>
+                        <p class="text-gray-700 mb-2"><strong>Bahasa Utama:</strong> JavaScript, PHP, Python, HTML/CSS
+                        </p>
+                        <p class="text-gray-600 text-sm"><strong>Contoh:</strong> Facebook, YouTube, Netflix, Shopee,
+                            WordPress</p>
+                    </div>
+
+                    <!-- Mobile Info -->
+                    <div id="mobile-info" class="hidden">
+                        <h3 class="text-lg font-bold text-purple-800 mb-2">Mobile Applications</h3>
+                        <p class="text-gray-700 mb-2"><strong>Bahasa Utama:</strong> Java/Kotlin (Android), Swift (iOS),
+                            JavaScript (React Native)</p>
+                        <p class="text-gray-600 text-sm"><strong>Contoh:</strong> WhatsApp, Instagram, TikTok, Gojek,
+                            Uber</p>
+                    </div>
+
+                    <!-- Data Science Info -->
+                    <div id="data-info" class="hidden">
+                        <h3 class="text-lg font-bold text-orange-800 mb-2">Data Science & AI</h3>
+                        <p class="text-gray-700 mb-2"><strong>Bahasa Utama:</strong> Python, R, SQL, Julia</p>
+                        <p class="text-gray-600 text-sm"><strong>Contoh:</strong> ChatGPT, Netflix Recommendations,
+                            Google Translate, Spotify Discover</p>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="mt-6 text-center">
+                    <p class="text-gray-500 text-sm">💡 <strong>Tip:</strong> Bahasa di area tumpang tindih dapat
+                        digunakan di beberapa ranah sekaligus!</p>
+                </div>
+            </div>
+
+            <!-- Slide 4: Jenis-jenis Bahasa Pemrograman -->
+            <div id="slide4" class="slide-content hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">🌟 Bahasa Pemrograman Populer</h2>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto">
+                    <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/javascript/javascript-original.svg"
+                                alt="JavaScript" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-orange-800">JavaScript</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">Web development & interaktivitas</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> Website e-commerce, game online
+                        </p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            console.log("Hello World");
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/python/python-original.svg"
+                                alt="Python" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-blue-800">Python</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">AI, Data Science, Automation</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> ChatGPT, Netflix recommendation
+                        </p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            print("Hello World")
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-purple-100 to-pink-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/java/java-original.svg"
+                                alt="Java" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-purple-800">Java</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">Enterprise apps, Android</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> Banking systems, WhatsApp</p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            System.out.println("Hello World");
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-green-100 to-teal-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/cplusplus/cplusplus-original.svg"
+                                alt="C++" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-green-800">C++</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">System programming, Games</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> Windows OS, Unreal Engine</p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            cout &lt;&lt; "Hello World" &lt;&lt; endl;
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-indigo-100 to-blue-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/php/php-original.svg"
+                                alt="PHP" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-indigo-800">PHP</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">Server-side web development</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> WordPress, Facebook backend</p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            echo "Hello World";
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-red-100 to-pink-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/html5/html5-original.svg"
+                                alt="HTML" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-red-800">HTML</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">Struktur halaman web</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> Semua website, email template</p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            &lt;h1&gt;Hello World&lt;/h1&gt;
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-cyan-100 to-blue-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/css3/css3-original.svg"
+                                alt="CSS" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-cyan-800">CSS</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">Styling & layout web</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> Instagram UI, responsive design
+                        </p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            body::before { content: "Hello World"; }
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/csharp/csharp-original.svg"
+                                alt="C#" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-yellow-800">C#</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">Windows apps, Unity games</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> Microsoft Office, Hearthstone</p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            Console.WriteLine("Hello World");
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-gray-100 to-slate-100 p-4 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <img src="https://github.com/devicons/devicon/raw/master/icons/rust/rust-plain.svg"
+                                alt="Rust" class="w-6 h-6 mr-2">
+                            <h3 class="text-lg font-bold text-gray-800">Rust</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">System programming aman</p>
+                        <p class="text-xs text-gray-600 mb-2"><strong>Contoh:</strong> Firefox engine, Dropbox</p>
+                        <div class="code-highlight p-2 rounded text-green-400 text-xs font-mono">
+                            println!("Hello World");
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+
+            <!-- Slide 4: Apa itu Text Editor -->
+            <div id="slide4" class="slide-content hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">✏️ Apa itu Text Editor?</h2>
+
+                <div class="mb-8">
+                    <p class="text-gray-700 text-lg mb-6">Text Editor adalah aplikasi yang digunakan programmer untuk
+                        menulis, mengedit, dan mengelola kode program dengan berbagai fitur yang memudahkan development.
+                    </p>
+
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl mb-6">
+                        <h3 class="text-xl font-semibold text-purple-800 mb-4">🎯 Mengapa Penting?</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Syntax highlighting
+                                untuk mudah membaca kode</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Auto-completion
+                                untuk mempercepat coding</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Error detection
+                                untuk mengurangi bug</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Plugin ecosystem
+                                untuk extend functionality</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="inline-block bg-gray-100 p-4 rounded-xl">
+                        <div class="text-4xl mb-2">🛠️</div>
+                        <p class="text-gray-600 font-medium">Tools yang tepat membuat coding lebih efisien!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Apa itu Text Editor -->
+            <div id="slide5" class="slide-content hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">✏️ Apa itu Text Editor?</h2>
+
+                <div class="mb-8">
+                    <p class="text-gray-700 text-lg mb-6">Text Editor adalah aplikasi yang digunakan programmer untuk
+                        menulis, mengedit, dan mengelola kode program dengan berbagai fitur yang memudahkan development.
+                    </p>
+
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl mb-6">
+                        <h3 class="text-xl font-semibold text-purple-800 mb-4">🎯 Mengapa Penting?</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Syntax highlighting
+                                untuk mudah membaca kode</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Auto-completion
+                                untuk mempercepat coding</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Error detection
+                                untuk mengurangi bug</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Plugin ecosystem
+                                untuk extend functionality</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="inline-block bg-gray-100 p-4 rounded-xl">
+                        <div class="text-4xl mb-2">🛠️</div>
+                        <p class="text-gray-600 font-medium">Tools yang tepat membuat coding lebih efisien!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Text Editor Populer -->
+            <div id="slide6" class="slide-content hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">🏆 Text Editor & IDE Populer</h2>
+
+                <div class="max-h-[500px] overflow-y-auto">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">💻 Desktop Editor/IDE</h3>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">💙</div>
+                                <h4 class="text-lg font-bold text-blue-800 mb-1">VS Code</h4>
+                                <p class="text-gray-700 text-xs mb-2">Microsoft - Gratis, extension lengkap</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Web dev, Python,
+                                    semua bahasa</p>
+                                <div class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-xs">Pemula Friendly
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">🐍</div>
+                                <h4 class="text-lg font-bold text-yellow-800 mb-1">PyCharm</h4>
+                                <p class="text-gray-700 text-xs mb-2">JetBrains - IDE khusus Python</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Data science,
+                                    Django, Flask</p>
+                                <div class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full text-xs">Python Expert
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">🌿</div>
+                                <h4 class="text-lg font-bold text-green-800 mb-1">Sublime Text</h4>
+                                <p class="text-gray-700 text-xs mb-2">Cepat, elegant, ringan</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Quick editing, large
+                                    files</p>
+                                <div class="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs">Performance
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">💎</div>
+                                <h4 class="text-lg font-bold text-red-800 mb-1">IntelliJ IDEA</h4>
+                                <p class="text-gray-700 text-xs mb-2">JetBrains - IDE untuk Java/Kotlin</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Enterprise Java,
+                                    Android</p>
+                                <div class="bg-red-200 text-red-800 px-2 py-1 rounded-full text-xs">Full IDE</div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">⚡</div>
+                                <h4 class="text-lg font-bold text-purple-800 mb-1">Vim/Neovim</h4>
+                                <p class="text-gray-700 text-xs mb-2">Terminal-based, keyboard shortcuts</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Server editing,
+                                    power users</p>
+                                <div class="bg-purple-200 text-purple-800 px-2 py-1 rounded-full text-xs">Advanced</div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">📝</div>
+                                <h4 class="text-lg font-bold text-gray-800 mb-1">Notepad++</h4>
+                                <p class="text-gray-700 text-xs mb-2">Windows - Simple, ringan</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Quick notes, config
+                                    files</p>
+                                <div class="bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-xs">Lightweight</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">🌐 Online Editor/IDE</h3>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">📊</div>
+                                <h4 class="text-lg font-bold text-orange-800 mb-1">Google Colab</h4>
+                                <p class="text-gray-700 text-xs mb-2">Google - Jupyter notebook online</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Machine learning,
+                                    data analysis</p>
+                                <div class="bg-orange-200 text-orange-800 px-2 py-1 rounded-full text-xs">AI/ML</div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-teal-50 to-teal-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">🔧</div>
+                                <h4 class="text-lg font-bold text-teal-800 mb-1">OnlineGDB</h4>
+                                <p class="text-gray-700 text-xs mb-2">Online compiler & debugger</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> C/C++, Java, Python
+                                    testing</p>
+                                <div class="bg-teal-200 text-teal-800 px-2 py-1 rounded-full text-xs">Multi-Language
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">📦</div>
+                                <h4 class="text-lg font-bold text-indigo-800 mb-1">CodePen</h4>
+                                <p class="text-gray-700 text-xs mb-2">Online HTML/CSS/JS playground</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Frontend prototyping
+                                </p>
+                                <div class="bg-indigo-200 text-indigo-800 px-2 py-1 rounded-full text-xs">Web Dev</div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-pink-50 to-pink-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">🚀</div>
+                                <h4 class="text-lg font-bold text-pink-800 mb-1">Replit</h4>
+                                <p class="text-gray-700 text-xs mb-2">Online IDE dengan hosting</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Collaborative coding
+                                </p>
+                                <div class="bg-pink-200 text-pink-800 px-2 py-1 rounded-full text-xs">Collaboration
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">☁️</div>
+                                <h4 class="text-lg font-bold text-cyan-800 mb-1">GitHub Codespaces</h4>
+                                <p class="text-gray-700 text-xs mb-2">VS Code di cloud</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Remote development
+                                </p>
+                                <div class="bg-cyan-200 text-cyan-800 px-2 py-1 rounded-full text-xs">Cloud IDE</div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl text-center">
+                                <div class="text-3xl mb-2">⚡</div>
+                                <h4 class="text-lg font-bold text-emerald-800 mb-1">JSFiddle</h4>
+                                <p class="text-gray-700 text-xs mb-2">Quick HTML/CSS/JS testing</p>
+                                <p class="text-xs text-gray-600 mb-2"><strong>Cocok untuk:</strong> Code snippets, demos
+                                </p>
+                                <div class="bg-emerald-200 text-emerald-800 px-2 py-1 rounded-full text-xs">Quick Test
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="absolute bottom-6 left-6 right-6 flex justify-between items-center">
+                <button id="prevBtn"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
+                    ← Sebelumnya
+                </button>
+
+                <div class="flex space-x-2">
+                    <span id="slideIndicator1" class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                    <span id="slideIndicator2" class="w-3 h-3 bg-gray-300 rounded-full"></span>
+                    <span id="slideIndicator3" class="w-3 h-3 bg-gray-300 rounded-full"></span>
+                    <span id="slideIndicator4" class="w-3 h-3 bg-gray-300 rounded-full"></span>
+                    <span id="slideIndicator5" class="w-3 h-3 bg-gray-300 rounded-full"></span>
+                    <span id="slideIndicator6" class="w-3 h-3 bg-gray-300 rounded-full"></span>
+                </div>
+
+                <button id="nextBtn"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors">
+                    Selanjutnya →
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8">
+            <p class="text-blue-200">🎓 Modul Pembelajaran Interaktif - Bahasa Pemrograman & Text Editor</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 6;
+
+        function updateSlide() {
+            // Hide all slides
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.getElementById(`slide${i}`);
+                const indicator = document.getElementById(`slideIndicator${i}`);
+
+                if (i === currentSlide) {
+                    slide.classList.remove('hidden');
+                    slide.classList.add('slide-enter');
+                    indicator.classList.remove('bg-gray-300');
+                    indicator.classList.add('bg-blue-500');
+                } else {
+                    slide.classList.add('hidden');
+                    slide.classList.remove('slide-enter');
+                    indicator.classList.remove('bg-blue-500');
+                    indicator.classList.add('bg-gray-300');
+                }
+            }
+
+            // Update progress bar
+            const progress = (currentSlide / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+
+            if (currentSlide === totalSlides) {
+                document.getElementById('nextBtn').textContent = '🎉 Selesai';
+            } else {
+                document.getElementById('nextBtn').textContent = 'Selanjutnya →';
+            }
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            } else if (e.key === 'ArrowLeft' && currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+
+        // Venn Diagram Interactivity
+        function showInfo(infoId) {
+            // Hide all info panels
+            const infoPanels = ['default-info', 'python-info', 'java-info', 'js-info', 'desktop-info', 'website-info', 'mobile-info', 'data-info'];
+            infoPanels.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+
+            // Show selected info
+            document.getElementById(infoId).classList.remove('hidden');
+        }
+
+        // Add event listeners for Venn diagram interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            // Language labels
+            document.getElementById('python-label')?.addEventListener('click', () => showInfo('python-info'));
+            document.getElementById('java-label')?.addEventListener('click', () => showInfo('java-info'));
+            document.getElementById('js-label')?.addEventListener('click', () => showInfo('js-info'));
+
+            // Domain circles
+            document.getElementById('desktop-circle')?.addEventListener('click', () => showInfo('desktop-info'));
+            document.getElementById('website-circle')?.addEventListener('click', () => showInfo('website-info'));
+            document.getElementById('mobile-circle')?.addEventListener('click', () => showInfo('mobile-info'));
+            document.getElementById('data-circle')?.addEventListener('click', () => showInfo('data-info'));
+
+            // Other language labels
+            document.getElementById('cpp-label')?.addEventListener('click', () => showInfo('desktop-info'));
+            document.getElementById('php-label')?.addEventListener('click', () => showInfo('website-info'));
+            document.getElementById('swift-label')?.addEventListener('click', () => showInfo('mobile-info'));
+            document.getElementById('r-label')?.addEventListener('click', () => showInfo('data-info'));
+            document.getElementById('kotlin-label')?.addEventListener('click', () => showInfo('mobile-info'));
+            document.getElementById('sql-label')?.addEventListener('click', () => showInfo('data-info'));
+
+            // Reset to default when clicking outside
+            document.getElementById('info-panel')?.addEventListener('click', (e) => {
+                if (e.target.id === 'info-panel') {
+                    showInfo('default-info');
+                }
+            });
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98482cd8f23ffd2b',t:'MTc1ODc3ODcwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
