@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif: Pola dan Tren (Final)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .feedback {
+            display: none;
+        }
+
+        #modal {
+            display: none;
+        }
+
+        .draggable {
+            cursor: grab;
+            user-select: none;
+        }
+
+        .drop-zone {
+            border: 2px dashed #ccc;
+        }
+
+        .drag-over {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center font-sans">
+    <div class="container w-full max-w-4xl h-full p-2 sm:p-4 md:p-6">
+        <div id="quiz-container" class="bg-white rounded-2xl shadow-2xl w-full h-full flex flex-col overflow-hidden">
+
+            <div id="slides-wrapper" class="flex-grow p-4 sm:p-6 md:p-10 overflow-hidden">
+
+                <div id="slide-1" class="slide active">
+                    <div class="flex-grow flex flex-col justify-center">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 1/11</p>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Lengkapi deret angka berikut:</h2>
+                        <div
+                            class="text-2xl md:text-3xl font-mono tracking-widest text-center my-8 bg-gray-50 p-4 rounded-lg">
+                            3, 6, 12, 24, <input type="text" id="answer-1"
+                                class="w-24 text-center bg-white border-2 border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div id="feedback-1" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-2" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 2/11</p>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Saat menggunakan aplikasi baru dan
+                            ingin mencari sesuatu, ikon mana yang paling umum untuk ditekan?</h2>
+                        <div class="grid grid-cols-2 gap-4 my-auto">
+                            <div class="answer-2-option border-2 border-gray-200 rounded-lg p-4 text-center hover:bg-blue-50 hover:border-blue-400 cursor-pointer transition"
+                                data-option="A">
+                                <svg class="w-12 h-12 md:w-16 md:h-16 mx-auto text-gray-600" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                    </path>
+                                </svg>
+                                <p class="mt-2 font-semibold">A</p>
+                            </div>
+                            <div class="answer-2-option border-2 border-gray-200 rounded-lg p-4 text-center hover:bg-blue-50 hover:border-blue-400 cursor-pointer transition"
+                                data-option="B">
+                                <svg class="w-12 h-12 md:w-16 md:h-16 mx-auto text-gray-600" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0 3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <p class="mt-2 font-semibold">B</p>
+                            </div>
+                            <div class="answer-2-option border-2 border-gray-200 rounded-lg p-4 text-center hover:bg-blue-50 hover:border-blue-400 cursor-pointer transition"
+                                data-option="C">
+                                <svg class="w-12 h-12 md:w-16 md:h-16 mx-auto text-gray-600" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                    </path>
+                                </svg>
+                                <p class="mt-2 font-semibold">C</p>
+                            </div>
+                            <div class="answer-2-option border-2 border-gray-200 rounded-lg p-4 text-center hover:bg-blue-50 hover:border-blue-400 cursor-pointer transition"
+                                data-option="D">
+                                <svg class="w-12 h-12 md:w-16 md:h-16 mx-auto text-gray-600" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <p class="mt-2 font-semibold">D</p>
+                            </div>
+                        </div>
+                        <div id="feedback-2" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-3" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 3/11</p>
+                        <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-4">Apa kesalahan desain fatal pada
+                            tampilan ini?</h2>
+                        <div
+                            class="bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-8 my-4 text-center shadow-inner">
+                            <h3 class="text-lg md:text-xl font-bold mb-2">Yakin ingin menghapus akun?</h3>
+                            <p class="text-gray-600 mb-6 text-sm md:text-base">Tindakan ini tidak dapat diurungkan.</p>
+                            <div class="flex justify-center gap-4">
+                                <button class="bg-green-500 text-white font-bold py-2 px-6 rounded-lg">Hapus</button>
+                                <button class="bg-red-500 text-white font-bold py-2 px-6 rounded-lg">Batal</button>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-sm md:text-base">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-3" value="A" class="mr-3"> Teksnya terlalu pendek</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-3" value="B" class="mr-3"> Penggunaan warna tombol terbalik</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-3" value="C" class="mr-3"> Seharusnya ada ikon</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-3" value="D" class="mr-3"> Tulisannya kurang besar</label>
+                        </div>
+                        <div id="feedback-3" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-4" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 4/11</p>
+                        <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-4">Tren apa yang digambarkan oleh
+                            grafik ini?</h2>
+                        <div class="bg-white p-4 border rounded-lg shadow-sm my-4">
+                            <p class="font-bold text-center mb-2 text-sm md:text-base">Pengguna Aplikasi Belajar Online
+                            </p>
+                            <svg viewBox="0 0 500 200" class="w-full h-auto">
+                                <polyline fill="none" stroke="#3b82f6" stroke-width="3"
+                                    points="50,180 100,160 150,140 200,120 250,100 300,80 350,60 400,40 450,20" />
+                                <line x1="50" y1="180" x2="450" y2="180" stroke="#9ca3af" stroke-width="1" />
+                                <line x1="50" y1="20" x2="50" y2="180" stroke="#9ca3af" stroke-width="1" />
+                            </svg>
+                        </div>
+                        <div class="space-y-2 text-sm md:text-base">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-4" value="A" class="mr-3"> Tren Naik (Uptrend)</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-4" value="B" class="mr-3"> Tren Turun (Downtrend)</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-4" value="C" class="mr-3"> Stagnan (Flat)</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-4" value="D" class="mr-3"> Musiman (Seasonal)</label>
+                        </div>
+                        <div id="feedback-4" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-5" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 5/11</p>
+                        <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-4">Syntax apa yang efisien untuk
+                            menampilkan "Hari ke-1" hingga "Hari ke-10"?</h2>
+                        <div class="bg-gray-100 p-4 rounded-lg my-4 font-mono text-sm">
+                            <p>print("Hari ke-1")</p>
+                            <p class="text-gray-500 italic"># Menghasilkan: Hari ke-1</p>
+                            <br>
+                            <p class="font-bold"># Output yang Diinginkan:</p>
+                            <p>Hari ke-1</p>
+                            <p>...</p>
+                            <p>Hari ke-10</p>
+                        </div>
+                        <div class="space-y-3 text-xs sm:text-sm md:text-base">
+                            <label class="block p-3 border rounded-lg hover:bg-gray-50">
+                                <input type="radio" name="answer-5" value="A" class="mr-3">
+                                <pre
+                                    class="inline-block bg-gray-100 p-1 rounded"><code>for i in range(10): print(f"Hari ke-{i}")</code></pre>
+                            </label>
+                            <label class="block p-3 border rounded-lg hover:bg-gray-50">
+                                <input type="radio" name="answer-5" value="B" class="mr-3">
+                                <pre
+                                    class="inline-block bg-gray-100 p-1 rounded"><code>for i in range(1, 11): print(f"Hari ke-{i}")</code></pre>
+                            </label>
+                            <label class="block p-3 border rounded-lg hover:bg-gray-50">
+                                <input type="radio" name="answer-5" value="C" class="mr-3">
+                                <pre
+                                    class="inline-block bg-gray-100 p-1 rounded"><code>for i in range(1, 10): print(f"Hari ke-{i}")</code></pre>
+                            </label>
+                            <label class="block p-3 border rounded-lg hover:bg-gray-50">
+                                <input type="radio" name="answer-5" value="D" class="mr-3">
+                                <pre
+                                    class="inline-block bg-gray-100 p-1 rounded"><code>for i in range(11): print(f"Hari ke-{i+1}")</code></pre>
+                            </label>
+                        </div>
+                        <div id="feedback-5" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-6" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 6/11</p>
+                        <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                            <p class="text-sm md:text-base text-gray-700">Dalam membuat desain sebuah aplikasi, selain
+                                memperhatikan estetika, juga harus memperhatikan <strong>UI (User Interface)</strong>
+                                dan <strong>UX (User Experience)</strong>.</p>
+                        </div>
+                        <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-4">Apa analogi yang tepat untuk UI dan
+                            UX?</h2>
+                        <div class="space-y-2 text-sm md:text-base">
+                            <label class="flex items-start p-3 border rounded-lg hover:bg-gray-50">
+                                <input type="radio" name="answer-6" value="A" class="mr-3 mt-1">
+                                <div><strong>UI</strong> adalah tampilan visual (warna, bentuk), <br><strong>UX</strong>
+                                    adalah kemudahan dan kenyamanan penggunaan.</div>
+                            </label>
+                            <label class="flex items-start p-3 border rounded-lg hover:bg-gray-50">
+                                <input type="radio" name="answer-6" value="B" class="mr-3 mt-1">
+                                <div><strong>UI</strong> adalah kecepatan aplikasi, <br><strong>UX</strong> adalah
+                                    ukuran file aplikasi.</div>
+                            </label>
+                            <label class="flex items-start p-3 border rounded-lg hover:bg-gray-50">
+                                <input type="radio" name="answer-6" value="C" class="mr-3 mt-1">
+                                <div><strong>UI</strong> adalah harga aplikasi, <br><strong>UX</strong> adalah
+                                    popularitas aplikasi.</div>
+                            </label>
+                            <label class="flex items-start p-3 border rounded-lg hover:bg-gray-50">
+                                <input type="radio" name="answer-6" value="D" class="mr-3 mt-1">
+                                <div><strong>UI</strong> adalah bahasa pemrograman, <br><strong>UX</strong> adalah
+                                    sistem operasi.</div>
+                            </label>
+                        </div>
+                        <div id="feedback-6" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-7" class="slide">
+                    <div class="flex-grow flex flex-col overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 7/11</p>
+                        <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-4">Kelompokkan setiap label ke dalam
+                            kategori yang tepat!</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-auto">
+                            <div class="text-center">
+                                <h3 class="font-bold text-lg md:text-xl mb-2">UI (Tampilan)</h3>
+                                <div id="drop-ui"
+                                    class="drop-zone bg-blue-50 rounded-lg min-h-[120px] md:min-h-[160px] p-2 space-y-2">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h3 class="font-bold text-lg md:text-xl mb-2">UX (Pengalaman)</h3>
+                                <div id="drop-ux"
+                                    class="drop-zone bg-green-50 rounded-lg min-h-[120px] md:min-h-[160px] p-2 space-y-2">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="drag-source"
+                            class="flex flex-wrap gap-2 justify-center items-center p-2 mt-4 bg-gray-100 rounded-lg text-xs md:text-sm">
+                            <div id="item1" data-target="ui" draggable="true"
+                                class="draggable bg-white p-2 px-3 rounded-full shadow">Warna Tombol</div>
+                            <div id="item2" data-target="ux" draggable="true"
+                                class="draggable bg-white p-2 px-3 rounded-full shadow">Kemudahan Menemukan Menu</div>
+                            <div id="item3" data-target="ui" draggable="true"
+                                class="draggable bg-white p-2 px-3 rounded-full shadow">Bentuk Ikon</div>
+                            <div id="item4" data-target="ux" draggable="true"
+                                class="draggable bg-white p-2 px-3 rounded-full shadow">Rasa Nyaman Saat Aplikasi
+                                Digunakan</div>
+                        </div>
+                        <div id="feedback-7" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-8" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 8/11</p>
+                        <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-4">Lonjakan drastis pada bulan
+                            Desember kemungkinan besar disebabkan oleh pola apa?</h2>
+                        <div class="bg-white p-4 border rounded-lg shadow-sm my-4">
+                            <p class="font-bold text-center mb-2 text-sm md:text-base">Penjualan E-commerce</p>
+                            <svg viewBox="0 0 500 200" class="w-full h-auto">
+                                <polyline fill="none" stroke="#3b82f6" stroke-width="3"
+                                    points="50,150 100,155 150,145 200,150 250,160 300,155 350,160 400,150 425,20 450,155" />
+                                <line x1="50" y1="180" x2="450" y2="180" stroke="#9ca3af" stroke-width="1" />
+                                <line x1="50" y1="20" x2="50" y2="180" stroke="#9ca3af" stroke-width="1" />
+                            </svg>
+                        </div>
+                        <div class="space-y-2 text-sm md:text-base">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-8" value="A" class="mr-3"> Acak</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-8" value="B" class="mr-3"> Musiman</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-8" value="C" class="mr-3"> Pertumbuhan</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-8" value="D" class="mr-3"> Penurunan</label>
+                        </div>
+                        <div id="feedback-8" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-9" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <p class="text-sm font-semibold text-blue-600">Soal 9/11</p>
+                                <h2 class="text-xl md:text-3xl font-bold text-gray-800">Susunlah elemen ini!</h2>
+                            </div>
+                            <button id="reset-login-btn"
+                                class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition">Reset</button>
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-4 items-center justify-center my-auto">
+                            <div id="login-drop-zone"
+                                class="w-48 sm:w-56 h-[320px] sm:h-[400px] bg-white border-4 border-gray-800 rounded-3xl p-2 sm:p-4 flex flex-col space-y-2 sm:space-y-4">
+                                <div data-order="1" class="drop-login h-1/4 rounded-lg bg-gray-100 drop-zone"></div>
+                                <div data-order="2" class="drop-login h-1/4 rounded-lg bg-gray-100 drop-zone"></div>
+                                <div data-order="3" class="drop-login h-1/4 rounded-lg bg-gray-100 drop-zone"></div>
+                                <div data-order="4" class="drop-login h-1/4 rounded-lg bg-gray-100 drop-zone"></div>
+                            </div>
+                            <div id="login-drag-source" class="grid grid-cols-2 md:grid-cols-1 gap-3">
+                                <div id="login-item1" data-target="1" draggable="true"
+                                    class="draggable p-2 text-center border rounded-lg shadow bg-white text-xs sm:text-sm">
+                                    Logo Sekolah</div>
+                                <div id="login-item2" data-target="2" draggable="true"
+                                    class="draggable p-2 text-center border rounded-lg shadow bg-white text-xs sm:text-sm">
+                                    Input Username</div>
+                                <div id="login-item3" data-target="3" draggable="true"
+                                    class="draggable p-2 text-center border rounded-lg shadow bg-white text-xs sm:text-sm">
+                                    Input Password</div>
+                                <div id="login-item4" data-target="4" draggable="true"
+                                    class="draggable p-2 text-center border rounded-lg shadow bg-white text-xs sm:text-sm">
+                                    Tombol "Login"</div>
+                            </div>
+                        </div>
+                        <div id="feedback-9" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-10" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 10/11</p>
+                        <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-4">Cara tercepat kembali ke halaman
+                            utama adalah dengan mengklik...</h2>
+                        <div class="border rounded-lg shadow-lg my-4 text-xs sm:text-sm md:text-base">
+                            <div class="p-4 border-b flex justify-between items-center bg-gray-50">
+                                <div class="font-bold text-lg text-blue-700">LOGO</div>
+                                <div class="flex space-x-4 text-gray-600"><span>Home</span><span>Profil</span></div>
+                            </div>
+                            <div class="p-4 sm:p-6">
+                                <h1 class="text-xl md:text-2xl font-bold mb-2">Judul Artikel Utama</h1>
+                                <p class="text-gray-500 mb-2">Ditulis oleh Penulis</p>
+                                <p>Ini adalah paragraf pertama dari isi artikel...</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-sm md:text-base">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-10" value="A" class="mr-3"> Logo situs di pojok kiri atas</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-10" value="B" class="mr-3"> Nama penulis</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-10" value="C" class="mr-3"> Judul Artikel Utama</label>
+                        </div>
+                        <div id="feedback-10" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+                <div id="slide-11" class="slide">
+                    <div class="flex-grow flex flex-col justify-center overflow-y-auto">
+                        <p class="text-sm font-semibold text-blue-600 mb-2">Soal 11/11</p>
+                        <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-4">Algoritma TikTok menampilkan video
+                            resep masakan di FYP Anda setelah Anda sering berinteraksi dengan konten serupa. Bagaimana
+                            cara kerja algoritma ini?</h2>
+                        <div class="flex justify-center items-center space-x-6 my-6 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 md:h-12 md:w-12" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 md:h-12 md:w-12" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 md:h-12 md:w-12" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                            </svg>
+                        </div>
+                        <div class="space-y-2 text-sm md:text-base">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-11" value="A" class="mr-3"> Menampilkan video secara acak</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-11" value="B" class="mr-3"> Hanya menampilkan video viral</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-11" value="C" class="mr-3"> Mengenali pola dari perilaku Anda</label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50"><input type="radio"
+                                    name="answer-11" value="D" class="mr-3"> Hanya dari akun yang Anda ikuti</label>
+                        </div>
+                        <div id="feedback-11" class="feedback mt-4 text-center font-semibold text-lg"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="p-4 sm:p-6 border-t bg-gray-50">
+                <div class="flex flex-col-reverse sm:flex-row items-center justify-between">
+                    <div class="flex gap-2 mt-4 sm:mt-0">
+                        <button id="check-answer"
+                            class="bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition text-sm sm:text-base">Periksa
+                            Jawaban</button>
+                        <button id="show-solution"
+                            class="bg-gray-200 text-gray-800 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition text-sm sm:text-base">Lihat
+                            Penyelesaian</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="prev-btn"
+                            class="bg-gray-200 text-gray-800 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition text-sm sm:text-base">&larr;
+                            Sebelumnya</button>
+                        <button id="next-btn"
+                            class="bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition text-sm sm:text-base">Berikutnya
+                            &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl p-6 sm:p-8 max-w-lg w-full">
+            <h3 class="text-2xl font-bold mb-4">Penyelesaian</h3>
+            <p id="modal-content" class="text-gray-700"></p>
+            <button id="close-modal"
+                class="mt-6 w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const checkAnswerBtn = document.getElementById('check-answer');
+            const showSolutionBtn = document.getElementById('show-solution');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            const closeModalBtn = document.getElementById('close-modal');
+            const resetLoginBtn = document.getElementById('reset-login-btn');
+
+            let currentSlide = 0;
+            const userAnswers = {};
+
+            const solutions = {
+                1: "Pola deret ini adalah setiap angka dikalikan dua (3x2=6, 6x2=12, dst.). Maka, angka selanjutnya adalah 24 x 2 = 48.",
+                2: "Ikon kaca pembesar adalah pola universal yang diakui secara global untuk fungsi 'Cari' atau 'Search'. Pengguna langsung mengenali fungsinya tanpa perlu membaca teks.",
+                3: "Jawaban benar adalah B. Dalam desain UI, warna merah digunakan untuk aksi berbahaya (seperti menghapus) untuk memberi peringatan, sedangkan aksi aman (seperti batal) menggunakan warna netral. Tampilan ini bisa menipu pengguna untuk menghapus akun secara tidak sengaja.",
+                4: "Grafik ini menunjukkan Tren Naik (Uptrend), di mana jumlah pengguna secara konsisten meningkat seiring berjalannya waktu. Ini adalah sinyal pertumbuhan yang positif.",
+                5: "Sintaks `range(1, 11)` akan menghasilkan angka dari 1 hingga 10 (angka 11 tidak termasuk). `f-string` (f\"...\") adalah cara efisien untuk memasukkan nilai variabel `i` ke dalam teks.",
+                6: "Analogi yang tepat adalah UI sebagai aspek visual (cat, perabotan) dan UX sebagai aspek fungsional dan pengalaman (kemudahan, kenyamanan). UI adalah bagian dari UX, tapi UX mencakup keseluruhan pengalaman.",
+                7: "UI (User Interface) berkaitan dengan elemen visual seperti warna dan bentuk. UX (User Experience) berkaitan dengan keseluruhan rasa dan pengalaman pengguna, seperti kemudahan dan kenyamanan.",
+                8: "Ini adalah contoh Pola Musiman. Lonjakan penjualan pada waktu tertentu setiap tahun (misalnya saat Harbolnas di bulan Desember) adalah tren yang dapat diprediksi dan bukan terjadi secara acak.",
+                9: "Tata letak standar dan paling efektif untuk halaman login adalah: Logo di bagian atas untuk identitas, diikuti kolom input, dan diakhiri dengan tombol aksi utama (Login). Pola ini sudah sangat dikenal oleh pengguna.",
+                10: "Mengklik logo di pojok kiri atas untuk kembali ke homepage adalah salah satu pola navigasi web yang paling fundamental dan universal. Hampir semua pengguna internet sudah terbiasa dengan pola ini.",
+                11: "Algoritma rekomendasi seperti TikTok FYP bekerja dengan cara menganalisis pola perilaku Anda secara mendalam (video apa yang Anda tonton sampai habis, sukai, komentari, dan bagikan) untuk membangun profil minat dan menyajikan konten yang paling relevan bagi Anda."
+            };
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+                prevBtn.disabled = index === 0;
+                prevBtn.classList.toggle('opacity-50', index === 0);
+                nextBtn.disabled = index === slides.length - 1;
+                nextBtn.classList.toggle('opacity-50', index === slides.length - 1);
+                document.querySelectorAll('.feedback').forEach(f => f.style.display = 'none');
+            }
+
+            function checkAnswer() {
+                const feedbackEl = document.getElementById(`feedback-${currentSlide + 1}`);
+                let isCorrect = false;
+
+                switch (currentSlide) {
+                    case 0: isCorrect = document.getElementById('answer-1').value.trim() === '48'; break;
+                    case 1: isCorrect = userAnswers[2] === 'D'; break;
+                    case 2: isCorrect = document.querySelector('input[name="answer-3"]:checked')?.value === 'B'; break;
+                    case 3: isCorrect = document.querySelector('input[name="answer-4"]:checked')?.value === 'A'; break;
+                    case 4: isCorrect = document.querySelector('input[name="answer-5"]:checked')?.value === 'B'; break;
+                    case 5: isCorrect = document.querySelector('input[name="answer-6"]:checked')?.value === 'A'; break;
+                    case 6:
+                        const uiZone = document.getElementById('drop-ui');
+                        const uxZone = document.getElementById('drop-ux');
+                        isCorrect = uiZone.contains(document.getElementById('item1')) &&
+                            uxZone.contains(document.getElementById('item2')) &&
+                            uiZone.contains(document.getElementById('item3')) &&
+                            uxZone.contains(document.getElementById('item4'));
+                        break;
+                    case 7: isCorrect = document.querySelector('input[name="answer-8"]:checked')?.value === 'B'; break;
+                    case 8:
+                        const dropZones = document.querySelectorAll('.drop-login');
+                        isCorrect = Array.from(dropZones).every(zone =>
+                            zone.children.length === 1 && zone.dataset.order === zone.children[0].dataset.target
+                        );
+                        break;
+                    case 9: isCorrect = document.querySelector('input[name="answer-10"]:checked')?.value === 'A'; break;
+                    case 10: isCorrect = document.querySelector('input[name="answer-11"]:checked')?.value === 'C'; break;
+                }
+
+                feedbackEl.style.display = 'block';
+                feedbackEl.innerHTML = isCorrect ? 'Jawaban Benar! ✅' : 'Jawaban Kurang Tepat. Coba lagi! ❌';
+                feedbackEl.className = `feedback mt-4 text-center font-semibold text-lg ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            }
+
+            prevBtn.addEventListener('click', () => { if (currentSlide > 0) showSlide(--currentSlide); });
+            nextBtn.addEventListener('click', () => { if (currentSlide < slides.length - 1) showSlide(++currentSlide); });
+            checkAnswerBtn.addEventListener('click', checkAnswer);
+            showSolutionBtn.addEventListener('click', () => {
+                modalContent.textContent = solutions[currentSlide + 1];
+                modal.style.display = 'flex';
+            });
+            closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
+
+            document.querySelectorAll('.answer-2-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.answer-2-option').forEach(el => el.classList.remove('border-blue-500', 'ring-2', 'ring-blue-300'));
+                    option.classList.add('border-blue-500', 'ring-2', 'ring-blue-300');
+                    userAnswers[2] = option.dataset.option;
+                });
+            });
+
+            const draggables = document.querySelectorAll('.draggable');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            let draggedItem = null;
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', e => {
+                    draggedItem = e.target;
+                    setTimeout(() => e.target.style.opacity = '0.5', 0);
+                });
+                draggable.addEventListener('dragend', e => {
+                    setTimeout(() => { e.target.style.opacity = '1'; draggedItem = null; }, 0);
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+                zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+                zone.addEventListener('drop', e => {
+                    e.preventDefault();
+                    if (zone.classList.contains('drop-login') && zone.children.length > 0) {
+                        const sourceContainer = draggedItem.parentElement;
+                        sourceContainer.appendChild(zone.children[0]);
+                    }
+                    zone.appendChild(draggedItem);
+                    zone.classList.remove('drag-over');
+                });
+            });
+
+            resetLoginBtn.addEventListener('click', () => {
+                const source = document.getElementById('login-drag-source');
+                const items = ['login-item1', 'login-item2', 'login-item3', 'login-item4'];
+                items.forEach(id => source.appendChild(document.getElementById(id)));
+                document.getElementById('feedback-9').style.display = 'none';
+            });
+
+            showSlide(currentSlide);
+        });
+    </script>
+
+</body>
+
+</html>

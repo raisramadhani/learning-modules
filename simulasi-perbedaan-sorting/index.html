@@ -948,6 +948,350 @@
         </div>
 
         <div class="mt-12 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Algoritma Sorting Bawaan Bahasa Pemrograman
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- Python -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+                                alt="Python" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Python</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Timsort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Hybrid stable sorting algorithm, derived from merge
+                                sort and insertion sort.</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">sorted(), list.sort()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Stabil dan adaptive</li>
+                                <li>• Sangat efisien untuk data yang hampir terurut</li>
+                                <li>• Menggunakan galloping mode untuk run panjang</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Java -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+                                alt="Java" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Java</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Dual-Pivot Quicksort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Advanced quicksort variant with two pivots for better
+                                performance.</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n log n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n²)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">Arrays.sort(), Collections.sort()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Untuk primitives: Dual-pivot quicksort</li>
+                                <li>• Untuk objects: Timsort (stabil)</li>
+                                <li>• Fallback ke insertion sort untuk array kecil</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JavaScript -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                                alt="JavaScript" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">JavaScript</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Timsort/Quicksort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Implementation varies by JavaScript engine (V8,
+                                SpiderMonkey, etc.).</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">Array.prototype.sort()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• V8: Timsort (Chrome, Node.js)</li>
+                                <li>• SpiderMonkey: Merge sort (Firefox)</li>
+                                <li>• Stabil sejak ES2019</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C++ -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg"
+                                alt="C++" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">C++</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Introsort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Hybrid algorithm: quicksort + heapsort + insertion
+                                sort.</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n log n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">std::sort(), std::stable_sort()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• std::sort(): Introsort (tidak stabil)</li>
+                                <li>• std::stable_sort(): Merge sort (stabil)</li>
+                                <li>• Garanteed O(n log n) worst case</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C# -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg"
+                                alt="C#" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">C#</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Introsort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Similar to C++, uses hybrid approach for optimal
+                                performance.</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n log n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">Array.Sort(), List.Sort()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Tidak stabil secara default</li>
+                                <li>• Menggunakan insertion sort untuk array kecil</li>
+                                <li>• Fallback ke heapsort jika rekursi terlalu dalam</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Go -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Go"
+                                class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Go</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Pattern-defeating Quicksort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Advanced quicksort variant that handles adversarial
+                                inputs well.</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">sort.Slice(), sort.Sort()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Tidak stabil secara default</li>
+                                <li>• sort.SliceStable() untuk stable sort</li>
+                                <li>• Deteksi dan penanganan pola adversarial</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rust -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="http://rust-lang.org/logos/rust-logo-512x512.png" alt="Rust" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Rust</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Pattern-defeating Quicksort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Same as Go, focuses on avoiding worst-case scenarios.
+                            </p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">slice.sort(), slice.sort_by()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• sort(): Tidak stabil, sangat cepat</li>
+                                <li>• sort_stable(): Merge sort, stabil</li>
+                                <li>• Zero-cost abstractions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Swift -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg"
+                                alt="Swift" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Swift</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Introsort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Hybrid approach similar to C++ standard library.</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n log n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">Array.sort(), sorted()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Tidak stabil secara default</li>
+                                <li>• Optimasi untuk tipe data Swift</li>
+                                <li>• In-place sorting dengan sort()</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHP -->
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP"
+                                class="w-8 h-8">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">PHP</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Algoritma: Quicksort</h4>
+                            <p class="text-sm text-gray-600 mb-2">Traditional quicksort with various optimizations.</p>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span class="complexity-badge best">Best: O(n log n)</span>
+                                <span class="complexity-badge average">Average: O(n log n)</span>
+                                <span class="complexity-badge worst">Worst: O(n²)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Fungsi:</h5>
+                            <code class="text-xs bg-gray-100 px-2 py-1 rounded">sort(), asort(), usort()</code>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700">Karakteristik:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Berbagai fungsi untuk kebutuhan berbeda</li>
+                                <li>• sort(): Tidak mempertahankan key</li>
+                                <li>• asort(): Mempertahankan key-value association</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">💡 Insight Penting</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">Tren Modern:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• <strong>Hybrid Algorithms:</strong> Kombinasi beberapa algoritma untuk performa
+                                optimal</li>
+                            <li>• <strong>Adaptive Sorting:</strong> Memanfaatkan pola yang sudah ada dalam data</li>
+                            <li>• <strong>Stability Awareness:</strong> Bahasa modern lebih memperhatikan stabilitas
+                            </li>
+                            <li>• <strong>Worst-case Protection:</strong> Menghindari O(n²) dengan teknik khusus</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">Rekomendasi Praktis:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• <strong>Gunakan Built-in:</strong> Hampir selalu lebih baik dari implementasi manual
+                            </li>
+                            <li>• <strong>Perhatikan Stabilitas:</strong> Pilih fungsi yang tepat jika urutan relatif
+                                penting</li>
+                            <li>• <strong>Custom Comparator:</strong> Manfaatkan fungsi pembanding kustom</li>
+                            <li>• <strong>Benchmark:</strong> Test performa untuk data spesifik Anda</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Perbandingan Algoritma Sorting</h2>
             <div class="overflow-x-auto">
                 <table class="comparison-table bg-white">
@@ -1662,7 +2006,7 @@
             });
         });
     </script>
-    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9847773bd62d26da',t:'MTc1ODc3MTI2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9847d57ea73626da',t:'MTc1ODc3NTEyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
 
 </html>
