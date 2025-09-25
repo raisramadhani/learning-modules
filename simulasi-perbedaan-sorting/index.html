@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Algorithms Visualization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .bar {
+            transition: height 0.2s ease, background-color 0.2s ease;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .algorithm-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .algorithm-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .algorithm-card.expanded {
+            grid-column: 1 / -1;
+            max-width: none;
+        }
+
+        .visualization-container {
+            height: 150px;
+            background: #f8fafc;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .complexity-badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .best {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .average {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .worst {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .space {
+            background-color: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .algorithm-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .algorithm-title::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .comparison-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .comparison-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+        }
+
+        .comparison-table td {
+            padding: 12px 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #f1f5f9;
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl md:text-4xl font-bold text-center mb-2 text-gray-800">Visualisasi Algoritma Sorting</h1>
+        <p class="text-center text-gray-600 mb-8">Bandingkan cara kerja 7 algoritma sorting yang berbeda</p>
+
+        <div class="mb-8">
+            <div class="flex flex-wrap justify-center gap-4 mb-6">
+                <button id="generateArrayBtn" class="btn-primary text-white px-6 py-2 rounded-full font-medium">
+                    Acak Array
+                </button>
+                <button id="startAllBtn" class="btn-primary text-white px-6 py-2 rounded-full font-medium">
+                    Jalankan Semua
+                </button>
+                <button id="resetAllBtn"
+                    class="bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300 transition">
+                    Reset Semua
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Selection Sort -->
+                <div class="algorithm-card">
+                    <div class="p-5">
+                        <h3 class="algorithm-title text-xl font-semibold mb-3 text-gray-800">Selection Sort</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="complexity-badge best">Best: O(n²)</span>
+                            <span class="complexity-badge average">Average: O(n²)</span>
+                            <span class="complexity-badge worst">Worst: O(n²)</span>
+                            <span class="complexity-badge space">Space: O(1)</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Mencari elemen terkecil dan menukarnya dengan elemen di
+                            posisi awal.</p>
+
+                        <!-- Collapsible Details -->
+                        <div class="mb-4">
+                            <button
+                                class="details-toggle w-full text-left text-sm font-medium text-indigo-600 hover:text-indigo-800 transition flex items-center justify-between"
+                                data-target="selection-details">
+                                <span>Lihat Detail Algoritma</span>
+                                <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="selection-details"
+                                class="details-content hidden mt-3 p-4 bg-gray-50 rounded-lg text-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Cara Kerja:</h4>
+                                            <ol class="list-decimal list-inside space-y-1 text-gray-600">
+                                                <li>Cari elemen terkecil dalam array</li>
+                                                <li>Tukar dengan elemen di posisi pertama</li>
+                                                <li>Cari elemen terkecil kedua dari sisa array</li>
+                                                <li>Tukar dengan elemen di posisi kedua</li>
+                                                <li>Ulangi hingga seluruh array terurut</li>
+                                            </ol>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Waktu:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Best Case O(n²):</strong> Selalu melakukan n² perbandingan
+                                                    meski array sudah terurut</li>
+                                                <li><strong>Average Case O(n²):</strong> Rata-rata melakukan n²/2
+                                                    perbandingan</li>
+                                                <li><strong>Worst Case O(n²):</strong> Tetap n² perbandingan untuk array
+                                                    terbalik</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Ruang:</h4>
+                                            <p class="text-gray-600"><strong>O(1):</strong> Hanya membutuhkan beberapa
+                                                variabel tambahan untuk indeks dan nilai sementara</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Karakteristik:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Tidak Stabil:</strong> Dapat mengubah urutan relatif elemen
+                                                    yang sama</li>
+                                                <li><strong>In-place:</strong> Mengurutkan di tempat tanpa array
+                                                    tambahan</li>
+                                                <li><strong>Jumlah Swap Minimal:</strong> Maksimal n-1 kali penukaran
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kapan Digunakan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Array berukuran kecil (< 50 elemen)</li>
+                                                <li>Ketika jumlah penukaran harus diminimalkan</li>
+                                                <li>Memori sangat terbatas</li>
+                                                <li>Untuk tujuan pembelajaran algoritma sorting</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="selection-sort" class="visualization-container mb-4 border border-gray-200"></div>
+                        <div class="flex justify-between">
+                            <button
+                                class="start-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                                data-algorithm="selection">Mulai</button>
+                            <button
+                                class="reset-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                                data-algorithm="selection">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bubble Sort -->
+                <div class="algorithm-card">
+                    <div class="p-5">
+                        <h3 class="algorithm-title text-xl font-semibold mb-3 text-gray-800">Bubble Sort</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="complexity-badge best">Best: O(n)</span>
+                            <span class="complexity-badge average">Average: O(n²)</span>
+                            <span class="complexity-badge worst">Worst: O(n²)</span>
+                            <span class="complexity-badge space">Space: O(1)</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Membandingkan elemen berpasangan dan menukarnya jika tidak
+                            berurutan.</p>
+
+                        <!-- Collapsible Details -->
+                        <div class="mb-4">
+                            <button
+                                class="details-toggle w-full text-left text-sm font-medium text-indigo-600 hover:text-indigo-800 transition flex items-center justify-between"
+                                data-target="bubble-details">
+                                <span>Lihat Detail Algoritma</span>
+                                <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="bubble-details"
+                                class="details-content hidden mt-3 p-4 bg-gray-50 rounded-lg text-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Cara Kerja:</h4>
+                                            <ol class="list-decimal list-inside space-y-1 text-gray-600">
+                                                <li>Bandingkan dua elemen bersebelahan</li>
+                                                <li>Tukar jika elemen kiri lebih besar dari kanan</li>
+                                                <li>Lanjutkan ke pasangan berikutnya</li>
+                                                <li>Setelah satu pass, elemen terbesar "menggelembung" ke akhir</li>
+                                                <li>Ulangi untuk n-1 pass</li>
+                                            </ol>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Waktu:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Best Case O(n):</strong> Array sudah terurut, hanya butuh 1
+                                                    pass tanpa swap</li>
+                                                <li><strong>Average Case O(n²):</strong> Rata-rata n²/2 perbandingan dan
+                                                    swap</li>
+                                                <li><strong>Worst Case O(n²):</strong> Array terurut terbalik, butuh n²
+                                                    operasi</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Ruang:</h4>
+                                            <p class="text-gray-600"><strong>O(1):</strong> Hanya membutuhkan satu
+                                                variabel untuk penukaran</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Karakteristik:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Stabil:</strong> Mempertahankan urutan relatif elemen yang
+                                                    sama</li>
+                                                <li><strong>In-place:</strong> Mengurutkan di tempat tanpa array
+                                                    tambahan</li>
+                                                <li><strong>Adaptive:</strong> Performa lebih baik pada data yang hampir
+                                                    terurut</li>
+                                                <li><strong>Online:</strong> Dapat memproses elemen satu per satu</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Optimasi:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Early termination: Berhenti jika tidak ada swap dalam satu pass</li>
+                                                <li>Cocktail sort: Bubble sort dua arah</li>
+                                                <li>Odd-even sort: Varian paralel bubble sort</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kapan Digunakan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Array sangat kecil (< 10 elemen)</li>
+                                                <li>Data hampir terurut</li>
+                                                <li>Untuk tujuan pembelajaran</li>
+                                                <li>Ketika stabilitas diperlukan dan ukuran kecil</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="bubble-sort" class="visualization-container mb-4 border border-gray-200"></div>
+                        <div class="flex justify-between">
+                            <button
+                                class="start-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                                data-algorithm="bubble">Mulai</button>
+                            <button
+                                class="reset-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                                data-algorithm="bubble">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insertion Sort -->
+                <div class="algorithm-card">
+                    <div class="p-5">
+                        <h3 class="algorithm-title text-xl font-semibold mb-3 text-gray-800">Insertion Sort</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="complexity-badge best">Best: O(n)</span>
+                            <span class="complexity-badge average">Average: O(n²)</span>
+                            <span class="complexity-badge worst">Worst: O(n²)</span>
+                            <span class="complexity-badge space">Space: O(1)</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Membangun array terurut satu per satu dengan menyisipkan
+                            elemen.</p>
+
+                        <!-- Collapsible Details -->
+                        <div class="mb-4">
+                            <button
+                                class="details-toggle w-full text-left text-sm font-medium text-indigo-600 hover:text-indigo-800 transition flex items-center justify-between"
+                                data-target="insertion-details">
+                                <span>Lihat Detail Algoritma</span>
+                                <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="insertion-details"
+                                class="details-content hidden mt-3 p-4 bg-gray-50 rounded-lg text-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Cara Kerja:</h4>
+                                            <ol class="list-decimal list-inside space-y-1 text-gray-600">
+                                                <li>Mulai dari elemen kedua (indeks 1)</li>
+                                                <li>Ambil elemen saat ini sebagai "key"</li>
+                                                <li>Bandingkan dengan elemen sebelumnya</li>
+                                                <li>Geser elemen yang lebih besar ke kanan</li>
+                                                <li>Sisipkan "key" di posisi yang tepat</li>
+                                                <li>Ulangi untuk semua elemen</li>
+                                            </ol>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Waktu:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Best Case O(n):</strong> Array sudah terurut, hanya n-1
+                                                    perbandingan</li>
+                                                <li><strong>Average Case O(n²):</strong> Rata-rata n²/4 perbandingan dan
+                                                    pergeseran</li>
+                                                <li><strong>Worst Case O(n²):</strong> Array terurut terbalik, n²/2
+                                                    operasi</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Ruang:</h4>
+                                            <p class="text-gray-600"><strong>O(1):</strong> Hanya membutuhkan variabel
+                                                untuk key dan indeks</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Karakteristik:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Stabil:</strong> Mempertahankan urutan relatif elemen yang
+                                                    sama</li>
+                                                <li><strong>In-place:</strong> Mengurutkan di tempat tanpa array
+                                                    tambahan</li>
+                                                <li><strong>Adaptive:</strong> Sangat efisien untuk data yang hampir
+                                                    terurut</li>
+                                                <li><strong>Online:</strong> Dapat memproses elemen satu per satu saat
+                                                    datang</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Varian:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Binary Insertion Sort:</strong> Menggunakan binary search
+                                                    untuk mencari posisi</li>
+                                                <li><strong>Shell Sort:</strong> Insertion sort dengan gap yang
+                                                    berkurang</li>
+                                                <li><strong>Tree Sort:</strong> Menggunakan binary search tree</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kapan Digunakan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Array kecil hingga menengah (< 50 elemen)</li>
+                                                <li>Data yang hampir terurut atau streaming</li>
+                                                <li>Sebagai subrutin dalam algoritma hybrid (Timsort, Introsort)</li>
+                                                <li>Ketika stabilitas dan simplisitas diperlukan</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="insertion-sort" class="visualization-container mb-4 border border-gray-200"></div>
+                        <div class="flex justify-between">
+                            <button
+                                class="start-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                                data-algorithm="insertion">Mulai</button>
+                            <button
+                                class="reset-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                                data-algorithm="insertion">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shell Sort -->
+                <div class="algorithm-card">
+                    <div class="p-5">
+                        <h3 class="algorithm-title text-xl font-semibold mb-3 text-gray-800">Shell Sort</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="complexity-badge best">Best: O(n log n)</span>
+                            <span class="complexity-badge average">Average: O(n log² n)</span>
+                            <span class="complexity-badge worst">Worst: O(n²)</span>
+                            <span class="complexity-badge space">Space: O(1)</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Versi insertion sort yang lebih efisien dengan
+                            membandingkan elemen berjarak.</p>
+
+                        <!-- Collapsible Details -->
+                        <div class="mb-4">
+                            <button
+                                class="details-toggle w-full text-left text-sm font-medium text-indigo-600 hover:text-indigo-800 transition flex items-center justify-between"
+                                data-target="shell-details">
+                                <span>Lihat Detail Algoritma</span>
+                                <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="shell-details"
+                                class="details-content hidden mt-3 p-4 bg-gray-50 rounded-lg text-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Cara Kerja:</h4>
+                                            <ol class="list-decimal list-inside space-y-1 text-gray-600">
+                                                <li>Mulai dengan gap besar (biasanya n/2)</li>
+                                                <li>Lakukan insertion sort pada elemen berjarak gap</li>
+                                                <li>Kurangi gap (biasanya gap = gap/2)</li>
+                                                <li>Ulangi insertion sort dengan gap baru</li>
+                                                <li>Lanjutkan hingga gap = 1 (insertion sort biasa)</li>
+                                            </ol>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Waktu:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Best Case O(n log n):</strong> Dengan gap sequence yang
+                                                    optimal</li>
+                                                <li><strong>Average Case O(n log² n):</strong> Bergantung pada gap
+                                                    sequence</li>
+                                                <li><strong>Worst Case O(n²):</strong> Dengan gap sequence yang buruk
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Ruang:</h4>
+                                            <p class="text-gray-600"><strong>O(1):</strong> Hanya membutuhkan variabel
+                                                untuk gap, indeks, dan nilai sementara</p>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Gap Sequences:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Shell's Original:</strong> n/2, n/4, n/8, ..., 1</li>
+                                                <li><strong>Knuth's:</strong> (3^k - 1)/2 = 1, 4, 13, 40, 121, ...</li>
+                                                <li><strong>Hibbard's:</strong> 2^k - 1 = 1, 3, 7, 15, 31, ...</li>
+                                                <li><strong>Sedgewick's:</strong> Kombinasi 4^i + 3×2^(i-1) + 1</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Karakteristik:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Tidak Stabil:</strong> Dapat mengubah urutan relatif elemen
+                                                    yang sama</li>
+                                                <li><strong>In-place:</strong> Mengurutkan di tempat tanpa array
+                                                    tambahan</li>
+                                                <li><strong>Adaptive:</strong> Performa lebih baik pada data yang hampir
+                                                    terurut</li>
+                                                <li><strong>Subquadratic:</strong> Lebih cepat dari O(n²) pada
+                                                    praktiknya</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Keunggulan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Lebih cepat dari insertion sort untuk array besar</li>
+                                                <li>Mudah diimplementasi</li>
+                                                <li>Tidak membutuhkan ruang tambahan</li>
+                                                <li>Performa yang dapat diprediksi</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kapan Digunakan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Array berukuran menengah (100-5000 elemen)</li>
+                                                <li>Ketika quick sort atau merge sort terlalu kompleks</li>
+                                                <li>Sistem dengan memori terbatas</li>
+                                                <li>Sebagai alternatif untuk algoritma O(n²) lainnya</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="shell-sort" class="visualization-container mb-4 border border-gray-200"></div>
+                        <div class="flex justify-between">
+                            <button
+                                class="start-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                                data-algorithm="shell">Mulai</button>
+                            <button
+                                class="reset-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                                data-algorithm="shell">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Merge Sort -->
+                <div class="algorithm-card">
+                    <div class="p-5">
+                        <h3 class="algorithm-title text-xl font-semibold mb-3 text-gray-800">Merge Sort</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="complexity-badge best">Best: O(n log n)</span>
+                            <span class="complexity-badge average">Average: O(n log n)</span>
+                            <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            <span class="complexity-badge space">Space: O(n)</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Membagi array, mengurutkan, lalu menggabungkan kembali
+                            (divide and conquer).</p>
+
+                        <!-- Collapsible Details -->
+                        <div class="mb-4">
+                            <button
+                                class="details-toggle w-full text-left text-sm font-medium text-indigo-600 hover:text-indigo-800 transition flex items-center justify-between"
+                                data-target="merge-details">
+                                <span>Lihat Detail Algoritma</span>
+                                <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="merge-details"
+                                class="details-content hidden mt-3 p-4 bg-gray-50 rounded-lg text-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Cara Kerja:</h4>
+                                            <ol class="list-decimal list-inside space-y-1 text-gray-600">
+                                                <li><strong>Divide:</strong> Bagi array menjadi dua bagian hingga
+                                                    tersisa 1 elemen</li>
+                                                <li><strong>Conquer:</strong> Urutkan setiap bagian secara rekursif</li>
+                                                <li><strong>Combine:</strong> Gabungkan dua bagian terurut menjadi satu
+                                                </li>
+                                                <li>Proses merge membandingkan elemen terdepan dari kedua bagian</li>
+                                                <li>Ambil yang lebih kecil dan masukkan ke array hasil</li>
+                                            </ol>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Waktu:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Best Case O(n log n):</strong> Selalu membagi array menjadi
+                                                    dua bagian sama</li>
+                                                <li><strong>Average Case O(n log n):</strong> Konsisten untuk semua
+                                                    input</li>
+                                                <li><strong>Worst Case O(n log n):</strong> Tidak terpengaruh distribusi
+                                                    data</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Ruang:</h4>
+                                            <p class="text-gray-600"><strong>O(n):</strong> Membutuhkan array tambahan
+                                                untuk proses merge</p>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Varian:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Bottom-up Merge Sort:</strong> Iteratif, mulai dari subarray
+                                                    kecil</li>
+                                                <li><strong>In-place Merge Sort:</strong> Menggunakan teknik khusus
+                                                    untuk O(1) space</li>
+                                                <li><strong>Natural Merge Sort:</strong> Memanfaatkan urutan yang sudah
+                                                    ada</li>
+                                                <li><strong>Timsort:</strong> Hybrid merge sort yang digunakan Python
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Karakteristik:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Stabil:</strong> Mempertahankan urutan relatif elemen yang
+                                                    sama</li>
+                                                <li><strong>Not In-place:</strong> Membutuhkan ruang tambahan O(n)</li>
+                                                <li><strong>Divide and Conquer:</strong> Menggunakan paradigma bagi dan
+                                                    taklukkan</li>
+                                                <li><strong>Predictable:</strong> Performa konsisten untuk semua input
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Keunggulan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Kompleksitas waktu yang konsisten O(n log n)</li>
+                                                <li>Stabil dan dapat diprediksi</li>
+                                                <li>Cocok untuk linked list (tidak butuh random access)</li>
+                                                <li>Mudah diparalelisasi</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kapan Digunakan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Ketika stabilitas diperlukan</li>
+                                                <li>Data berukuran besar dengan memori cukup</li>
+                                                <li>Linked list atau struktur data sekuensial</li>
+                                                <li>Ketika performa yang konsisten diperlukan</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="merge-sort" class="visualization-container mb-4 border border-gray-200"></div>
+                        <div class="flex justify-between">
+                            <button
+                                class="start-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                                data-algorithm="merge">Mulai</button>
+                            <button
+                                class="reset-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                                data-algorithm="merge">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Heap Sort -->
+                <div class="algorithm-card">
+                    <div class="p-5">
+                        <h3 class="algorithm-title text-xl font-semibold mb-3 text-gray-800">Heap Sort</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="complexity-badge best">Best: O(n log n)</span>
+                            <span class="complexity-badge average">Average: O(n log n)</span>
+                            <span class="complexity-badge worst">Worst: O(n log n)</span>
+                            <span class="complexity-badge space">Space: O(1)</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Mengubah array menjadi heap, lalu mengekstrak elemen
+                            terbesar berulang kali.</p>
+
+                        <!-- Collapsible Details -->
+                        <div class="mb-4">
+                            <button
+                                class="details-toggle w-full text-left text-sm font-medium text-indigo-600 hover:text-indigo-800 transition flex items-center justify-between"
+                                data-target="heap-details">
+                                <span>Lihat Detail Algoritma</span>
+                                <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="heap-details"
+                                class="details-content hidden mt-3 p-4 bg-gray-50 rounded-lg text-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Cara Kerja:</h4>
+                                            <ol class="list-decimal list-inside space-y-1 text-gray-600">
+                                                <li><strong>Build Max Heap:</strong> Ubah array menjadi max heap</li>
+                                                <li><strong>Extract Max:</strong> Ambil elemen terbesar (root)</li>
+                                                <li><strong>Swap:</strong> Tukar root dengan elemen terakhir</li>
+                                                <li><strong>Heapify:</strong> Perbaiki heap property dari root</li>
+                                                <li>Ulangi langkah 2-4 hingga heap kosong</li>
+                                            </ol>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Waktu:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Best Case O(n log n):</strong> Build heap O(n) + n kali
+                                                    extract O(log n)</li>
+                                                <li><strong>Average Case O(n log n):</strong> Konsisten untuk semua
+                                                    distribusi data</li>
+                                                <li><strong>Worst Case O(n log n):</strong> Tidak terpengaruh urutan
+                                                    input</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Ruang:</h4>
+                                            <p class="text-gray-600"><strong>O(1):</strong> Mengurutkan in-place, hanya
+                                                butuh variabel tambahan</p>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Heap Property:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Max Heap:</strong> Parent ≥ Children (untuk ascending sort)
+                                                </li>
+                                                <li><strong>Complete Binary Tree:</strong> Semua level terisi kecuali
+                                                    yang terakhir</li>
+                                                <li><strong>Array Representation:</strong> Parent(i) = (i-1)/2, Children
+                                                    = 2i+1, 2i+2</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Karakteristik:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Tidak Stabil:</strong> Dapat mengubah urutan relatif elemen
+                                                    yang sama</li>
+                                                <li><strong>In-place:</strong> Mengurutkan di tempat tanpa array
+                                                    tambahan</li>
+                                                <li><strong>Not Adaptive:</strong> Performa sama untuk semua input</li>
+                                                <li><strong>Selection-based:</strong> Berulang kali memilih elemen
+                                                    terbesar</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Operasi Heap:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Heapify:</strong> O(log n) - Memperbaiki heap property</li>
+                                                <li><strong>Build Heap:</strong> O(n) - Membuat heap dari array</li>
+                                                <li><strong>Extract Max:</strong> O(log n) - Mengambil dan menghapus
+                                                    maksimum</li>
+                                                <li><strong>Insert:</strong> O(log n) - Menambah elemen baru</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Keunggulan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Kompleksitas waktu yang terjamin O(n log n)</li>
+                                                <li>Tidak membutuhkan ruang tambahan</li>
+                                                <li>Tidak ada worst case yang buruk seperti quicksort</li>
+                                                <li>Berguna untuk priority queue</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kapan Digunakan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Ketika memori sangat terbatas</li>
+                                                <li>Perlu jaminan O(n log n) tanpa worst case buruk</li>
+                                                <li>Implementasi priority queue</li>
+                                                <li>Sistem real-time dengan batasan waktu ketat</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="heap-sort" class="visualization-container mb-4 border border-gray-200"></div>
+                        <div class="flex justify-between">
+                            <button
+                                class="start-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                                data-algorithm="heap">Mulai</button>
+                            <button
+                                class="reset-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                                data-algorithm="heap">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Sort -->
+                <div class="algorithm-card">
+                    <div class="p-5">
+                        <h3 class="algorithm-title text-xl font-semibold mb-3 text-gray-800">Quick Sort</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="complexity-badge best">Best: O(n log n)</span>
+                            <span class="complexity-badge average">Average: O(n log n)</span>
+                            <span class="complexity-badge worst">Worst: O(n²)</span>
+                            <span class="complexity-badge space">Space: O(log n)</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Memilih pivot dan mempartisi array, lalu mengurutkan
+                            partisi secara rekursif.</p>
+
+                        <!-- Collapsible Details -->
+                        <div class="mb-4">
+                            <button
+                                class="details-toggle w-full text-left text-sm font-medium text-indigo-600 hover:text-indigo-800 transition flex items-center justify-between"
+                                data-target="quick-details">
+                                <span>Lihat Detail Algoritma</span>
+                                <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="quick-details"
+                                class="details-content hidden mt-3 p-4 bg-gray-50 rounded-lg text-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Cara Kerja:</h4>
+                                            <ol class="list-decimal list-inside space-y-1 text-gray-600">
+                                                <li><strong>Choose Pivot:</strong> Pilih elemen sebagai pivot</li>
+                                                <li><strong>Partition:</strong> Atur elemen < pivot di kiri,> pivot di
+                                                        kanan</li>
+                                                <li><strong>Place Pivot:</strong> Tempatkan pivot di posisi akhirnya
+                                                </li>
+                                                <li><strong>Recursion:</strong> Urutkan subarray kiri dan kanan secara
+                                                    rekursif</li>
+                                                <li>Base case: Subarray dengan 0 atau 1 elemen sudah terurut</li>
+                                            </ol>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Waktu:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Best Case O(n log n):</strong> Pivot selalu membagi array
+                                                    menjadi dua bagian sama</li>
+                                                <li><strong>Average Case O(n log n):</strong> Pivot rata-rata membagi
+                                                    cukup seimbang</li>
+                                                <li><strong>Worst Case O(n²):</strong> Pivot selalu elemen
+                                                    terkecil/terbesar</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kompleksitas Ruang:</h4>
+                                            <p class="text-gray-600"><strong>O(log n):</strong> Stack rekursi, O(n) pada
+                                                worst case</p>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Strategi Pivot:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>First/Last Element:</strong> Sederhana tapi rentan worst
+                                                    case</li>
+                                                <li><strong>Random Pivot:</strong> Mengurangi kemungkinan worst case
+                                                </li>
+                                                <li><strong>Median-of-Three:</strong> Pilih median dari first, middle,
+                                                    last</li>
+                                                <li><strong>Median-of-Medians:</strong> Garanteed O(n log n) tapi
+                                                    overhead besar</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Karakteristik:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Tidak Stabil:</strong> Dapat mengubah urutan relatif elemen
+                                                    yang sama</li>
+                                                <li><strong>In-place:</strong> Mengurutkan di tempat (kecuali stack
+                                                    rekursi)</li>
+                                                <li><strong>Divide and Conquer:</strong> Menggunakan paradigma bagi dan
+                                                    taklukkan</li>
+                                                <li><strong>Cache-friendly:</strong> Akses memori yang baik</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Optimasi:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li><strong>Tail Recursion:</strong> Eliminasi rekursi untuk subarray
+                                                    yang lebih besar</li>
+                                                <li><strong>Insertion Sort Cutoff:</strong> Gunakan insertion sort untuk
+                                                    array kecil</li>
+                                                <li><strong>Three-way Partitioning:</strong> Tangani elemen duplikat
+                                                    dengan efisien</li>
+                                                <li><strong>Introsort:</strong> Hybrid dengan heap sort untuk worst case
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Keunggulan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Sangat cepat pada praktiknya (rata-rata)</li>
+                                                <li>In-place sorting</li>
+                                                <li>Cache-friendly dan mudah dioptimasi</li>
+                                                <li>Mudah diparalelisasi</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-2">Kapan Digunakan:</h4>
+                                            <ul class="space-y-1 text-gray-600">
+                                                <li>Data berukuran besar dengan performa tinggi</li>
+                                                <li>Ketika average case performance lebih penting</li>
+                                                <li>Sistem dengan memori terbatas</li>
+                                                <li>Sebagai bagian dari algoritma hybrid</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="quick-sort" class="visualization-container mb-4 border border-gray-200"></div>
+                        <div class="flex justify-between">
+                            <button
+                                class="start-btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                                data-algorithm="quick">Mulai</button>
+                            <button
+                                class="reset-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                                data-algorithm="quick">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Perbandingan Algoritma Sorting</h2>
+            <div class="overflow-x-auto">
+                <table class="comparison-table bg-white">
+                    <thead>
+                        <tr>
+                            <th>Algoritma</th>
+                            <th>Kompleksitas Waktu (Best)</th>
+                            <th>Kompleksitas Waktu (Average)</th>
+                            <th>Kompleksitas Waktu (Worst)</th>
+                            <th>Kompleksitas Ruang</th>
+                            <th>Stabil</th>
+                            <th>Kelebihan</th>
+                            <th>Kekurangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium">Selection Sort</td>
+                            <td>O(n²)</td>
+                            <td>O(n²)</td>
+                            <td>O(n²)</td>
+                            <td>O(1)</td>
+                            <td>Tidak</td>
+                            <td>Sederhana, jumlah swap minimal</td>
+                            <td>Lambat untuk data besar</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Bubble Sort</td>
+                            <td>O(n)</td>
+                            <td>O(n²)</td>
+                            <td>O(n²)</td>
+                            <td>O(1)</td>
+                            <td>Ya</td>
+                            <td>Sederhana, mendeteksi jika sudah terurut</td>
+                            <td>Sangat tidak efisien untuk data besar</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Insertion Sort</td>
+                            <td>O(n)</td>
+                            <td>O(n²)</td>
+                            <td>O(n²)</td>
+                            <td>O(1)</td>
+                            <td>Ya</td>
+                            <td>Efisien untuk data hampir terurut</td>
+                            <td>Lambat untuk data besar</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Shell Sort</td>
+                            <td>O(n log n)</td>
+                            <td>O(n log² n)</td>
+                            <td>O(n²)</td>
+                            <td>O(1)</td>
+                            <td>Tidak</td>
+                            <td>Lebih cepat dari insertion sort</td>
+                            <td>Kompleksitas bergantung pada gap sequence</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Merge Sort</td>
+                            <td>O(n log n)</td>
+                            <td>O(n log n)</td>
+                            <td>O(n log n)</td>
+                            <td>O(n)</td>
+                            <td>Ya</td>
+                            <td>Konsisten, baik untuk linked list</td>
+                            <td>Membutuhkan ruang tambahan</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Heap Sort</td>
+                            <td>O(n log n)</td>
+                            <td>O(n log n)</td>
+                            <td>O(n log n)</td>
+                            <td>O(1)</td>
+                            <td>Tidak</td>
+                            <td>Efisien, tidak membutuhkan ruang tambahan</td>
+                            <td>Lebih lambat dari quick sort pada praktiknya</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Quick Sort</td>
+                            <td>O(n log n)</td>
+                            <td>O(n log n)</td>
+                            <td>O(n²)</td>
+                            <td>O(log n)</td>
+                            <td>Tidak</td>
+                            <td>Sangat cepat pada praktiknya</td>
+                            <td>Worst case buruk, sensitif terhadap pivot</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Containers
+            const containers = {
+                selection: document.getElementById('selection-sort'),
+                bubble: document.getElementById('bubble-sort'),
+                insertion: document.getElementById('insertion-sort'),
+                shell: document.getElementById('shell-sort'),
+                merge: document.getElementById('merge-sort'),
+                heap: document.getElementById('heap-sort'),
+                quick: document.getElementById('quick-sort')
+            };
+
+            // Arrays for each algorithm
+            const arrays = {};
+            const originalArrays = {};
+            const barElements = {};
+
+            // Colors
+            const colors = {
+                default: '#6366f1',
+                comparing: '#f59e0b',
+                sorted: '#10b981',
+                pivot: '#ef4444',
+                current: '#8b5cf6'
+            };
+
+            // Generate random array
+            function generateRandomArray(size = 15) {
+                return Array.from({ length: size }, () => Math.floor(Math.random() * 80) + 10);
+            }
+
+            // Initialize visualization
+            function initializeVisualization() {
+                const initialArray = generateRandomArray();
+
+                Object.keys(containers).forEach(key => {
+                    const container = containers[key];
+                    container.innerHTML = '';
+
+                    // Clone the array for each algorithm
+                    arrays[key] = [...initialArray];
+                    originalArrays[key] = [...initialArray];
+                    barElements[key] = [];
+
+                    // Create bars
+                    arrays[key].forEach((value, index) => {
+                        const bar = document.createElement('div');
+                        bar.className = 'bar absolute bottom-0';
+                        bar.style.height = `${value}%`;
+                        bar.style.width = `${90 / initialArray.length}%`;
+                        bar.style.left = `${index * (100 / initialArray.length)}%`;
+                        bar.style.backgroundColor = colors.default;
+                        container.appendChild(bar);
+                        barElements[key].push(bar);
+                    });
+                });
+            }
+
+            // Update visualization
+            function updateBars(algorithmKey, array, indices = {}) {
+                const { comparing = [], sorted = [], current = [], pivot = [] } = indices;
+
+                barElements[algorithmKey].forEach((bar, index) => {
+                    bar.style.height = `${array[index]}%`;
+
+                    // Reset color
+                    bar.style.backgroundColor = colors.default;
+
+                    // Apply colors based on indices
+                    if (comparing.includes(index)) {
+                        bar.style.backgroundColor = colors.comparing;
+                    }
+                    if (sorted.includes(index)) {
+                        bar.style.backgroundColor = colors.sorted;
+                    }
+                    if (current.includes(index)) {
+                        bar.style.backgroundColor = colors.current;
+                    }
+                    if (pivot.includes(index)) {
+                        bar.style.backgroundColor = colors.pivot;
+                    }
+                });
+            }
+
+            // Sleep function for animation
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            // Selection Sort
+            async function selectionSort(algorithmKey, speed = 100) {
+                const array = arrays[algorithmKey];
+                const n = array.length;
+
+                for (let i = 0; i < n - 1; i++) {
+                    let minIndex = i;
+
+                    // Mark the current position
+                    updateBars(algorithmKey, array, { current: [i], sorted: Array.from({ length: i }, (_, idx) => idx) });
+                    await sleep(speed);
+
+                    for (let j = i + 1; j < n; j++) {
+                        // Comparing
+                        updateBars(algorithmKey, array, {
+                            current: [i],
+                            comparing: [j, minIndex],
+                            sorted: Array.from({ length: i }, (_, idx) => idx)
+                        });
+                        await sleep(speed);
+
+                        if (array[j] < array[minIndex]) {
+                            minIndex = j;
+                        }
+                    }
+
+                    // Swap
+                    if (minIndex !== i) {
+                        [array[i], array[minIndex]] = [array[minIndex], array[i]];
+                        updateBars(algorithmKey, array, {
+                            comparing: [i, minIndex],
+                            sorted: Array.from({ length: i }, (_, idx) => idx)
+                        });
+                        await sleep(speed);
+                    }
+                }
+
+                // Mark all as sorted
+                updateBars(algorithmKey, array, { sorted: Array.from({ length: n }, (_, idx) => idx) });
+            }
+
+            // Bubble Sort
+            async function bubbleSort(algorithmKey, speed = 100) {
+                const array = arrays[algorithmKey];
+                const n = array.length;
+
+                for (let i = 0; i < n; i++) {
+                    let swapped = false;
+
+                    for (let j = 0; j < n - i - 1; j++) {
+                        // Comparing
+                        updateBars(algorithmKey, array, {
+                            comparing: [j, j + 1],
+                            sorted: Array.from({ length: i }, (_, idx) => n - idx - 1)
+                        });
+                        await sleep(speed);
+
+                        if (array[j] > array[j + 1]) {
+                            // Swap
+                            [array[j], array[j + 1]] = [array[j + 1], array[j]];
+                            swapped = true;
+
+                            updateBars(algorithmKey, array, {
+                                comparing: [j, j + 1],
+                                sorted: Array.from({ length: i }, (_, idx) => n - idx - 1)
+                            });
+                            await sleep(speed);
+                        }
+                    }
+
+                    // If no swapping occurred in this pass, array is sorted
+                    if (!swapped) break;
+                }
+
+                // Mark all as sorted
+                updateBars(algorithmKey, array, { sorted: Array.from({ length: n }, (_, idx) => idx) });
+            }
+
+            // Insertion Sort
+            async function insertionSort(algorithmKey, speed = 100) {
+                const array = arrays[algorithmKey];
+                const n = array.length;
+
+                // Mark first element as sorted
+                updateBars(algorithmKey, array, { sorted: [0] });
+                await sleep(speed);
+
+                for (let i = 1; i < n; i++) {
+                    const key = array[i];
+                    let j = i - 1;
+
+                    // Mark current element
+                    updateBars(algorithmKey, array, {
+                        current: [i],
+                        sorted: Array.from({ length: i }, (_, idx) => idx)
+                    });
+                    await sleep(speed);
+
+                    while (j >= 0 && array[j] > key) {
+                        // Comparing and shifting
+                        updateBars(algorithmKey, array, {
+                            comparing: [j, j + 1],
+                            sorted: Array.from({ length: i }, (_, idx) => idx).filter(idx => idx !== j + 1)
+                        });
+                        await sleep(speed);
+
+                        array[j + 1] = array[j];
+                        j--;
+
+                        updateBars(algorithmKey, array, {
+                            current: [j + 1],
+                            sorted: Array.from({ length: i }, (_, idx) => idx).filter(idx => idx !== j + 1)
+                        });
+                        await sleep(speed);
+                    }
+
+                    array[j + 1] = key;
+
+                    // Update after insertion
+                    updateBars(algorithmKey, array, {
+                        sorted: Array.from({ length: i + 1 }, (_, idx) => idx)
+                    });
+                    await sleep(speed);
+                }
+
+                // Mark all as sorted
+                updateBars(algorithmKey, array, { sorted: Array.from({ length: n }, (_, idx) => idx) });
+            }
+
+            // Shell Sort
+            async function shellSort(algorithmKey, speed = 100) {
+                const array = arrays[algorithmKey];
+                const n = array.length;
+
+                // Start with a big gap, then reduce the gap
+                for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
+                    // Do a gapped insertion sort
+                    for (let i = gap; i < n; i++) {
+                        const temp = array[i];
+                        let j;
+
+                        // Mark current element
+                        updateBars(algorithmKey, array, { current: [i] });
+                        await sleep(speed);
+
+                        // Shift earlier gap-sorted elements up until the correct location for array[i] is found
+                        for (j = i; j >= gap && array[j - gap] > temp; j -= gap) {
+                            // Comparing and shifting
+                            updateBars(algorithmKey, array, { comparing: [j, j - gap] });
+                            await sleep(speed);
+
+                            array[j] = array[j - gap];
+
+                            updateBars(algorithmKey, array, { current: [j - gap] });
+                            await sleep(speed);
+                        }
+
+                        // Put temp in its correct location
+                        array[j] = temp;
+                        updateBars(algorithmKey, array, {});
+                        await sleep(speed);
+                    }
+                }
+
+                // Mark all as sorted
+                updateBars(algorithmKey, array, { sorted: Array.from({ length: n }, (_, idx) => idx) });
+            }
+
+            // Merge Sort
+            async function mergeSort(algorithmKey, speed = 100) {
+                const array = arrays[algorithmKey];
+
+                async function merge(start, mid, end) {
+                    const leftSize = mid - start + 1;
+                    const rightSize = end - mid;
+
+                    // Create temp arrays
+                    const leftArray = new Array(leftSize);
+                    const rightArray = new Array(rightSize);
+
+                    // Copy data to temp arrays
+                    for (let i = 0; i < leftSize; i++) {
+                        leftArray[i] = array[start + i];
+                    }
+                    for (let j = 0; j < rightSize; j++) {
+                        rightArray[j] = array[mid + 1 + j];
+                    }
+
+                    // Highlight subarrays
+                    const leftIndices = Array.from({ length: leftSize }, (_, i) => start + i);
+                    const rightIndices = Array.from({ length: rightSize }, (_, i) => mid + 1 + i);
+
+                    updateBars(algorithmKey, array, { comparing: [...leftIndices, ...rightIndices] });
+                    await sleep(speed);
+
+                    // Merge the temp arrays back
+                    let i = 0, j = 0, k = start;
+
+                    while (i < leftSize && j < rightSize) {
+                        // Comparing elements
+                        updateBars(algorithmKey, array, {
+                            comparing: [start + i, mid + 1 + j],
+                            current: [k]
+                        });
+                        await sleep(speed);
+
+                        if (leftArray[i] <= rightArray[j]) {
+                            array[k] = leftArray[i];
+                            i++;
+                        } else {
+                            array[k] = rightArray[j];
+                            j++;
+                        }
+
+                        updateBars(algorithmKey, array, { current: [k] });
+                        await sleep(speed);
+
+                        k++;
+                    }
+
+                    // Copy remaining elements
+                    while (i < leftSize) {
+                        array[k] = leftArray[i];
+                        updateBars(algorithmKey, array, { current: [k] });
+                        await sleep(speed);
+                        i++;
+                        k++;
+                    }
+
+                    while (j < rightSize) {
+                        array[k] = rightArray[j];
+                        updateBars(algorithmKey, array, { current: [k] });
+                        await sleep(speed);
+                        j++;
+                        k++;
+                    }
+
+                    // Mark merged subarray as sorted
+                    const mergedIndices = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+                    updateBars(algorithmKey, array, { sorted: mergedIndices });
+                    await sleep(speed);
+                }
+
+                async function sort(start, end) {
+                    if (start < end) {
+                        const mid = Math.floor((start + end) / 2);
+
+                        // Sort first and second halves
+                        await sort(start, mid);
+                        await sort(mid + 1, end);
+
+                        // Merge the sorted halves
+                        await merge(start, mid, end);
+                    }
+                }
+
+                await sort(0, array.length - 1);
+
+                // Mark all as sorted
+                updateBars(algorithmKey, array, { sorted: Array.from({ length: array.length }, (_, idx) => idx) });
+            }
+
+            // Heap Sort
+            async function heapSort(algorithmKey, speed = 100) {
+                const array = arrays[algorithmKey];
+                const n = array.length;
+
+                // Build heap (rearrange array)
+                for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+                    await heapify(array, n, i);
+                }
+
+                // Extract elements from heap one by one
+                for (let i = n - 1; i > 0; i--) {
+                    // Move current root to end
+                    updateBars(algorithmKey, array, { comparing: [0, i] });
+                    await sleep(speed);
+
+                    [array[0], array[i]] = [array[i], array[0]];
+
+                    updateBars(algorithmKey, array, {
+                        sorted: Array.from({ length: n - i }, (_, idx) => n - idx - 1)
+                    });
+                    await sleep(speed);
+
+                    // Call heapify on the reduced heap
+                    await heapify(array, i, 0);
+                }
+
+                // Mark all as sorted
+                updateBars(algorithmKey, array, { sorted: Array.from({ length: n }, (_, idx) => idx) });
+
+                async function heapify(arr, size, rootIndex) {
+                    let largest = rootIndex;
+                    const left = 2 * rootIndex + 1;
+                    const right = 2 * rootIndex + 2;
+
+                    // Highlight the current subtree
+                    const subtreeIndices = [rootIndex];
+                    if (left < size) subtreeIndices.push(left);
+                    if (right < size) subtreeIndices.push(right);
+
+                    updateBars(algorithmKey, arr, { comparing: subtreeIndices });
+                    await sleep(speed);
+
+                    // If left child is larger than root
+                    if (left < size && arr[left] > arr[largest]) {
+                        largest = left;
+                    }
+
+                    // If right child is larger than largest so far
+                    if (right < size && arr[right] > arr[largest]) {
+                        largest = right;
+                    }
+
+                    // If largest is not root
+                    if (largest !== rootIndex) {
+                        updateBars(algorithmKey, arr, { comparing: [rootIndex, largest] });
+                        await sleep(speed);
+
+                        [arr[rootIndex], arr[largest]] = [arr[largest], arr[rootIndex]];
+
+                        updateBars(algorithmKey, arr, {});
+                        await sleep(speed);
+
+                        // Recursively heapify the affected sub-tree
+                        await heapify(arr, size, largest);
+                    }
+                }
+            }
+
+            // Quick Sort
+            async function quickSort(algorithmKey, speed = 100) {
+                const array = arrays[algorithmKey];
+
+                async function partition(low, high) {
+                    // Pivot (Element to be placed at right position)
+                    const pivot = array[high];
+
+                    // Highlight pivot
+                    updateBars(algorithmKey, array, { pivot: [high] });
+                    await sleep(speed);
+
+                    let i = low - 1; // Index of smaller element
+
+                    for (let j = low; j <= high - 1; j++) {
+                        // Comparing with pivot
+                        updateBars(algorithmKey, array, {
+                            pivot: [high],
+                            comparing: [j],
+                            current: i >= 0 ? [i] : []
+                        });
+                        await sleep(speed);
+
+                        // If current element is smaller than the pivot
+                        if (array[j] < pivot) {
+                            i++; // Increment index of smaller element
+
+                            // Swap elements
+                            updateBars(algorithmKey, array, {
+                                pivot: [high],
+                                comparing: [i, j]
+                            });
+                            await sleep(speed);
+
+                            [array[i], array[j]] = [array[j], array[i]];
+
+                            updateBars(algorithmKey, array, {
+                                pivot: [high],
+                                current: [i]
+                            });
+                            await sleep(speed);
+                        }
+                    }
+
+                    // Swap pivot element with element at i+1
+                    updateBars(algorithmKey, array, {
+                        pivot: [high],
+                        comparing: [i + 1, high]
+                    });
+                    await sleep(speed);
+
+                    [array[i + 1], array[high]] = [array[high], array[i + 1]];
+
+                    updateBars(algorithmKey, array, {
+                        sorted: [i + 1],
+                        pivot: []
+                    });
+                    await sleep(speed);
+
+                    return i + 1;
+                }
+
+                async function sort(low, high) {
+                    if (low < high) {
+                        // pi is partitioning index
+                        const pi = await partition(low, high);
+
+                        // Mark the pivot as sorted
+                        const sortedIndices = [pi];
+                        updateBars(algorithmKey, array, { sorted: sortedIndices });
+                        await sleep(speed);
+
+                        // Separately sort elements before and after partition
+                        await sort(low, pi - 1);
+                        await sort(pi + 1, high);
+                    } else if (low === high) {
+                        // Single element is always sorted
+                        updateBars(algorithmKey, array, { sorted: [...Array.from({ length: array.length }, (_, idx) => idx).filter(i => array[i] <= array[low]), low] });
+                        await sleep(speed);
+                    }
+                }
+
+                await sort(0, array.length - 1);
+
+                // Mark all as sorted
+                updateBars(algorithmKey, array, { sorted: Array.from({ length: array.length }, (_, idx) => idx) });
+            }
+
+            // Event listeners
+            document.getElementById('generateArrayBtn').addEventListener('click', function () {
+                initializeVisualization();
+            });
+
+            document.getElementById('startAllBtn').addEventListener('click', async function () {
+                this.disabled = true;
+                document.getElementById('generateArrayBtn').disabled = true;
+                document.getElementById('resetAllBtn').disabled = true;
+
+                const startButtons = document.querySelectorAll('.start-btn');
+                startButtons.forEach(btn => btn.disabled = true);
+
+                const resetButtons = document.querySelectorAll('.reset-btn');
+                resetButtons.forEach(btn => btn.disabled = true);
+
+                // Start all algorithms with different speeds to make them finish around the same time
+                const algorithms = [
+                    { key: 'selection', fn: selectionSort, speed: 50 },
+                    { key: 'bubble', fn: bubbleSort, speed: 40 },
+                    { key: 'insertion', fn: insertionSort, speed: 50 },
+                    { key: 'shell', fn: shellSort, speed: 80 },
+                    { key: 'merge', fn: mergeSort, speed: 100 },
+                    { key: 'heap', fn: heapSort, speed: 100 },
+                    { key: 'quick', fn: quickSort, speed: 100 }
+                ];
+
+                await Promise.all(algorithms.map(algo => algo.fn(algo.key, algo.speed)));
+
+                this.disabled = false;
+                document.getElementById('generateArrayBtn').disabled = false;
+                document.getElementById('resetAllBtn').disabled = false;
+
+                startButtons.forEach(btn => btn.disabled = false);
+                resetButtons.forEach(btn => btn.disabled = false);
+            });
+
+            document.getElementById('resetAllBtn').addEventListener('click', function () {
+                Object.keys(containers).forEach(key => {
+                    arrays[key] = [...originalArrays[key]];
+                    updateBars(key, arrays[key]);
+                });
+            });
+
+            // Individual start buttons
+            document.querySelectorAll('.start-btn').forEach(button => {
+                button.addEventListener('click', async function () {
+                    const algorithm = this.getAttribute('data-algorithm');
+                    this.disabled = true;
+
+                    switch (algorithm) {
+                        case 'selection':
+                            await selectionSort(algorithm);
+                            break;
+                        case 'bubble':
+                            await bubbleSort(algorithm);
+                            break;
+                        case 'insertion':
+                            await insertionSort(algorithm);
+                            break;
+                        case 'shell':
+                            await shellSort(algorithm);
+                            break;
+                        case 'merge':
+                            await mergeSort(algorithm);
+                            break;
+                        case 'heap':
+                            await heapSort(algorithm);
+                            break;
+                        case 'quick':
+                            await quickSort(algorithm);
+                            break;
+                    }
+
+                    this.disabled = false;
+                });
+            });
+
+            // Individual reset buttons
+            document.querySelectorAll('.reset-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const algorithm = this.getAttribute('data-algorithm');
+                    arrays[algorithm] = [...originalArrays[algorithm]];
+                    updateBars(algorithm, arrays[algorithm]);
+                });
+            });
+
+            // Initialize on load
+            initializeVisualization();
+
+            // Toggle functionality for collapsible details
+            document.querySelectorAll('.details-toggle').forEach(button => {
+                button.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+                    const icon = this.querySelector('svg');
+                    const card = this.closest('.algorithm-card');
+
+                    if (targetElement.classList.contains('hidden')) {
+                        // Expand
+                        targetElement.classList.remove('hidden');
+                        icon.style.transform = 'rotate(180deg)';
+                        card.classList.add('expanded');
+                    } else {
+                        // Collapse
+                        targetElement.classList.add('hidden');
+                        icon.style.transform = 'rotate(0deg)';
+                        card.classList.remove('expanded');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9847773bd62d26da',t:'MTc1ODc3MTI2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
