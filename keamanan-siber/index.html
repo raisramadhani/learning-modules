@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keamanan Siber: Panduan Melawan Phishing & Scam</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            overflow: hidden;
+            /* Mencegah scroll horizontal di mobile */
+            overflow-x: hidden;
+        }
+
+        /* Utility Classes */
+        .h-screen {
+            height: 100vh;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-white {
+            color: white;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+
+        .mb-12 {
+            margin-bottom: 3rem;
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .px-8 {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .p-4 {
+            padding: 1rem;
+        }
+
+        .p-6 {
+            padding: 1.5rem;
+        }
+
+        .p-8 {
+            padding: 2rem;
+        }
+
+        .rounded {
+            border-radius: 0.25rem;
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .rounded-xl {
+            border-radius: 0.75rem;
+        }
+
+        .rounded-2xl {
+            border-radius: 1rem;
+        }
+
+        .rounded-full {
+            border-radius: 9999px;
+        }
+
+        .rounded-t-lg {
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .rounded-b-lg {
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+
+        .text-3xl {
+            font-size: 1.875rem;
+        }
+
+        .text-4xl {
+            font-size: 2.25rem;
+        }
+
+        .text-5xl {
+            font-size: 3rem;
+        }
+
+        .text-6xl {
+            font-size: 3.75rem;
+        }
+
+        .text-8xl {
+            font-size: 6rem;
+        }
+
+        .max-w-5xl {
+            max-width: 64rem;
+        }
+
+        .max-w-6xl {
+            max-width: 72rem;
+        }
+
+        .max-w-7xl {
+            max-width: 80rem;
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .space-y-2>*+* {
+            margin-top: 0.5rem;
+        }
+
+        .space-y-4>*+* {
+            margin-top: 1rem;
+        }
+
+        .space-y-6>*+* {
+            margin-top: 1.5rem;
+        }
+
+        .space-x-4>*+* {
+            margin-left: 1rem;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .gap-8 {
+            gap: 2rem;
+        }
+
+        .gap-12 {
+            gap: 3rem;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .fixed {
+            position: fixed;
+        }
+
+        .bottom-8 {
+            bottom: 2rem;
+        }
+
+        .top-8 {
+            top: 2rem;
+        }
+
+        .left-1\/2 {
+            left: 50%;
+        }
+
+        .right-8 {
+            right: 2rem;
+        }
+
+        .-translate-x-1\/2 {
+            transform: translateX(-50%);
+        }
+
+        .transform.-translate-x-1\/2 {
+            transform: translateX(-50%);
+        }
+
+        .z-50 {
+            z-index: 50;
+        }
+
+        .opacity-90 {
+            opacity: 0.9;
+        }
+
+        .leading-relaxed {
+            line-height: 1.625;
+        }
+
+        .shadow-2xl {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .border {
+            border-width: 1px;
+        }
+
+        .border-red-300 {
+            border-color: #fca5a5;
+        }
+
+        .text-red-600 {
+            color: #dc2626;
+        }
+
+        .text-blue-600 {
+            color: #2563eb;
+        }
+
+        .text-gray-800 {
+            color: #1f2937;
+        }
+
+        .text-gray-500 {
+            color: #6b7280;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        .bg-red-100 {
+            background-color: #fee2e2;
+        }
+
+        .bg-blue-600 {
+            background-color: #2563eb;
+        }
+
+        .bg-green-600 {
+            background-color: #16a34a;
+        }
+
+        .bg-gray-900 {
+            background-color: #111827;
+        }
+
+        .bg-white {
+            background-color: white;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+
+        .mr-3 {
+            margin-right: 0.75rem;
+        }
+
+        .ml-2 {
+            margin-left: 0.5rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 0.75rem;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .transition-all {
+            transition-property: all;
+        }
+
+        .duration-300 {
+            transition-duration: 300ms;
+        }
+
+        /* Button styles untuk quiz */
+        .quiz-button {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .quiz-button:active {
+            transform: translateY(0);
+        }
+
+        /* Perbaikan untuk mobile */
+        @media (max-width: 640px) {
+            .quiz-button {
+                padding: 12px 16px;
+                font-size: 16px;
+            }
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .text-6xl {
+                font-size: 2.5rem;
+            }
+
+            .text-5xl {
+                font-size: 2rem;
+            }
+
+            .text-4xl {
+                font-size: 1.75rem;
+            }
+
+            .text-8xl {
+                font-size: 4rem;
+            }
+
+            .px-8 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .px-6 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .py-4 {
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+            }
+
+            .text-lg {
+                font-size: 1rem;
+            }
+
+            .text-xl {
+                font-size: 1.125rem;
+            }
+
+            .gap-4 {
+                gap: 0.75rem;
+            }
+
+            .gap-8 {
+                gap: 1rem;
+            }
+
+            /* Perbaikan khusus untuk quiz di mobile */
+            .quiz-button {
+                padding: 12px 16px !important;
+                font-size: 16px !important;
+                margin-bottom: 8px;
+            }
+
+            /* Pastikan quiz answer sections terlihat dengan baik di mobile */
+            .bg-green-500\/20,
+            .bg-red-500\/20 {
+                padding: 16px !important;
+                margin-top: 16px !important;
+            }
+        }
+
+        /* Background Effects */
+        .bg-white\/20 {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .bg-white\/15 {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .bg-white\/10 {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .bg-green-500\/20 {
+            background-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .bg-red-500\/20 {
+            background-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .backdrop-blur-sm {
+            /* Fallback untuk browser yang tidak mendukung backdrop-filter */
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        /* Untuk browser yang mendukung backdrop-filter, gunakan transparansi lebih tinggi */
+        @supports (backdrop-filter: blur(4px)) {
+            .backdrop-blur-sm {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        .hover\:bg-white\/30:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Fallback untuk browser lama */
+        .bg-gradient-to-br {
+            background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+            /* Fallback untuk browser yang tidak mendukung CSS variables */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .from-purple-900 {
+            --tw-gradient-from: #581c87;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(88, 28, 135, 0));
+        }
+
+        .to-blue-900 {
+            --tw-gradient-to: #1e3a8a;
+        }
+
+        .from-red-800 {
+            --tw-gradient-from: #991b1b;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(153, 27, 27, 0));
+        }
+
+        .to-pink-800 {
+            --tw-gradient-to: #9d174d;
+        }
+
+        .from-orange-800 {
+            --tw-gradient-from: #9a3412;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(154, 52, 18, 0));
+        }
+
+        .to-red-800 {
+            --tw-gradient-to: #991b1b;
+        }
+
+        .from-green-800 {
+            --tw-gradient-from: #166534;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(22, 101, 52, 0));
+        }
+
+        .to-teal-800 {
+            --tw-gradient-to: #115e59;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .warning-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .danger-bg {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .safe-bg {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+        }
+
+        .tip-bg {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+        }
+    </style>
+</head>
+
+<body class="font-sans overflow-hidden">
+    <!-- Slide 1: Title -->
+    <div class="slide active gradient-bg h-screen flex items-center justify-center text-white">
+        <div class="text-center fade-in">
+            <div class="text-8xl mb-6">🛡️</div>
+            <h1 class="text-6xl font-bold mb-4">Keamanan Siber</h1>
+            <h2 class="text-3xl mb-8">Panduan Melawan Phishing & Scam</h2>
+            <p class="text-xl opacity-90">Lindungi diri Anda di dunia maya</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Apa itu Phishing -->
+    <div class="slide danger-bg h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <div class="text-center mb-12">
+                <div class="text-8xl mb-6 warning-pulse">🎣</div>
+                <h1 class="text-5xl font-bold mb-6">Apa itu Phishing?</h1>
+            </div>
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-4">Definisi</h3>
+                    <p class="text-lg leading-relaxed">
+                        Phishing adalah teknik penipuan siber yang menyamar sebagai entitas terpercaya
+                        untuk mencuri informasi sensitif seperti password, nomor kartu kredit, atau data pribadi.
+                    </p>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-4">Cara Kerja</h3>
+                    <ul class="text-lg space-y-2">
+                        <li>• Mengirim email/pesan palsu</li>
+                        <li>• Menyamar sebagai bank/perusahaan</li>
+                        <li>• Meminta data pribadi</li>
+                        <li>• Mengarahkan ke website palsu</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Jenis-jenis Scam -->
+    <div
+        class="slide bg-gradient-to-br from-purple-900 to-blue-900 h-screen flex items-center justify-center text-white">
+        <div class="max-w-7xl mx-auto px-8 fade-in">
+            <h1 class="text-5xl font-bold text-center mb-12">Jenis-jenis Scam Online</h1>
+            <div class="grid grid-cols-3 gap-8">
+                <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="text-6xl mb-4">📧</div>
+                    <h3 class="text-2xl font-bold mb-3">Email Phishing</h3>
+                    <p class="text-sm">Email palsu yang menyamar sebagai bank atau layanan online</p>
+                </div>
+                <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="text-6xl mb-4">💬</div>
+                    <h3 class="text-2xl font-bold mb-3">SMS Phishing</h3>
+                    <p class="text-sm">Pesan singkat berisi link berbahaya atau permintaan data</p>
+                </div>
+                <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="text-6xl mb-4">🌐</div>
+                    <h3 class="text-2xl font-bold mb-3">Website Palsu</h3>
+                    <p class="text-sm">Situs tiruan yang meniru tampilan website resmi</p>
+                </div>
+                <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="text-6xl mb-4">📞</div>
+                    <h3 class="text-2xl font-bold mb-3">Vishing</h3>
+                    <p class="text-sm">Penipuan melalui telepon yang meminta informasi pribadi</p>
+                </div>
+                <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="text-6xl mb-4">📱</div>
+                    <h3 class="text-2xl font-bold mb-3">App Palsu</h3>
+                    <p class="text-sm">Aplikasi mobile yang menyamar sebagai app resmi</p>
+                </div>
+                <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="text-6xl mb-4">💰</div>
+                    <h3 class="text-2xl font-bold mb-3">Investment Scam</h3>
+                    <p class="text-sm">Penipuan investasi dengan janji keuntungan besar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Contoh Kasus Email Phishing -->
+    <div class="slide bg-gradient-to-br from-red-800 to-pink-800 h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <h1 class="text-4xl font-bold text-center mb-8">Contoh Kasus: Email Phishing Bank</h1>
+            <div class="grid grid-cols-2 gap-8">
+                <div class="bg-white text-gray-800 rounded-2xl p-6 shadow-2xl">
+                    <div class="bg-red-100 border border-red-300 rounded-lg p-4 mb-4">
+                        <div class="flex items-center mb-2">
+                            <span class="font-bold">From:</span>
+                            <span class="ml-2 text-red-600">security@bankbca.co.id</span>
+                        </div>
+                        <div class="font-bold text-lg mb-2">⚠️ AKUN ANDA AKAN DIBLOKIR!</div>
+                        <p class="text-sm mb-3">
+                            Yth. Nasabah BCA,<br><br>
+                            Kami mendeteksi aktivitas mencurigakan pada rekening Anda.
+                            Untuk keamanan, silakan verifikasi data dalam 24 jam atau akun akan diblokir.
+                        </p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded text-sm">
+                            VERIFIKASI SEKARANG
+                        </button>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold mb-4">🚨 Tanda Bahaya:</h3>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <span class="font-bold">❌ Domain Palsu:</span> bankbca.co.id (seharusnya bca.co.id)
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <span class="font-bold">❌ Urgency:</span> Ancaman pemblokiran dalam 24 jam
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <span class="font-bold">❌ Generic:</span> Tidak menyebut nama lengkap nasabah
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <span class="font-bold">❌ Suspicious Link:</span> Tombol mengarah ke website palsu
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Contoh Kasus SMS Phishing -->
+    <div
+        class="slide bg-gradient-to-br from-orange-800 to-red-800 h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <h1 class="text-4xl font-bold text-center mb-8">Contoh Kasus: SMS Phishing E-commerce</h1>
+            <div class="grid grid-cols-2 gap-8">
+                <div class="bg-gray-900 rounded-2xl p-6 shadow-2xl">
+                    <div class="bg-green-600 text-white rounded-t-lg px-4 py-2 text-sm">
+                        SMS dari: SHOPEE
+                    </div>
+                    <div class="bg-white text-gray-800 rounded-b-lg p-4">
+                        <p class="text-sm mb-3">
+                            🎉 SELAMAT! Anda mendapat voucher Rp500.000 dari Shopee!
+                            Klaim sekarang sebelum expired:
+                            <span class="text-blue-600 underline">bit.ly/shopee-voucher123</span>
+                        </p>
+                        <div class="text-xs text-gray-500">
+                            Diterima: Hari ini, 14:30
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold mb-4">🚨 Tanda Bahaya:</h3>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <span class="font-bold">❌ Link Pendek:</span> Menggunakan bit.ly yang mencurigakan
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <span class="font-bold">❌ Hadiah Besar:</span> Voucher Rp500.000 tanpa syarat jelas
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <span class="font-bold">❌ Urgency:</span> Tekanan waktu "sebelum expired"
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <span class="font-bold">❌ Tidak Diminta:</span> Anda tidak pernah ikut undian
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Cara Mengenali Phishing -->
+    <div class="slide safe-bg h-screen flex items-center justify-center text-white">
+        <div class="max-w-7xl mx-auto px-8 fade-in">
+            <h1 class="text-5xl font-bold text-center mb-12">Cara Mengenali Phishing</h1>
+            <div class="grid grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-3">🔍</span>
+                            <h3 class="text-xl font-bold">Periksa Pengirim</h3>
+                        </div>
+                        <p>Cek alamat email/nomor pengirim. Domain resmi tidak menggunakan gmail, yahoo, atau layanan
+                            gratis lainnya.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-3">⚡</span>
+                            <h3 class="text-xl font-bold">Waspada Urgency</h3>
+                        </div>
+                        <p>Hati-hati dengan pesan yang memaksa tindakan segera atau mengancam konsekuensi buruk.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-3">🔗</span>
+                            <h3 class="text-xl font-bold">Hover Link</h3>
+                        </div>
+                        <p>Arahkan mouse ke link tanpa mengklik untuk melihat URL sebenarnya.</p>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-3">📝</span>
+                            <h3 class="text-xl font-bold">Cek Bahasa</h3>
+                        </div>
+                        <p>Pesan phishing sering mengandung kesalahan tata bahasa atau ejaan yang aneh.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-3">🎁</span>
+                            <h3 class="text-xl font-bold">Terlalu Bagus</h3>
+                        </div>
+                        <p>Waspada dengan tawaran yang terlalu bagus untuk menjadi kenyataan atau hadiah besar tanpa
+                            syarat.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-3">🔒</span>
+                            <h3 class="text-xl font-bold">Cek HTTPS</h3>
+                        </div>
+                        <p>Pastikan website menggunakan HTTPS (gembok hijau) terutama saat memasukkan data sensitif.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Tips Keamanan -->
+    <div class="slide tip-bg h-screen flex items-center justify-center text-white">
+        <div class="max-w-7xl mx-auto px-8 fade-in">
+            <h1 class="text-5xl font-bold text-center mb-12">Tips Keamanan Siber</h1>
+            <div class="grid grid-cols-3 gap-6">
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-5xl mb-4">🔐</div>
+                    <h3 class="text-xl font-bold mb-3">Password Kuat</h3>
+                    <p class="text-sm">Gunakan kombinasi huruf besar, kecil, angka, dan simbol. Minimal 12 karakter.</p>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-5xl mb-4">🔄</div>
+                    <h3 class="text-xl font-bold mb-3">2FA Aktif</h3>
+                    <p class="text-sm">Aktifkan two-factor authentication di semua akun penting Anda.</p>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-5xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold mb-3">Update Rutin</h3>
+                    <p class="text-sm">Selalu update aplikasi dan sistem operasi untuk patch keamanan terbaru.</p>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-5xl mb-4">🌐</div>
+                    <h3 class="text-xl font-bold mb-3">Akses Langsung</h3>
+                    <p class="text-sm">Selalu akses website bank/layanan dengan mengetik URL langsung di browser.</p>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-5xl mb-4">📧</div>
+                    <h3 class="text-xl font-bold mb-3">Verifikasi Email</h3>
+                    <p class="text-sm">Hubungi customer service resmi jika menerima email mencurigakan.</p>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-5xl mb-4">🛡️</div>
+                    <h3 class="text-xl font-bold mb-3">Antivirus Aktif</h3>
+                    <p class="text-sm">Gunakan antivirus terpercaya dan scan rutin untuk deteksi malware.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Apa yang Harus Dilakukan -->
+    <div
+        class="slide bg-gradient-to-br from-green-800 to-teal-800 h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <h1 class="text-5xl font-bold text-center mb-12">Jika Terkena Phishing</h1>
+            <div class="grid grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold mb-6">🚨 Langkah Darurat</h2>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-2">1. Jangan Panik</h3>
+                        <p>Tetap tenang dan segera ambil tindakan untuk meminimalkan kerusakan.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-2">2. Ganti Password</h3>
+                        <p>Segera ubah password akun yang terkompromi dan akun lain yang menggunakan password sama.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-2">3. Hubungi Bank</h3>
+                        <p>Jika data finansial terekspos, segera hubungi bank untuk memblokir kartu/rekening.</p>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold mb-6">🔧 Langkah Lanjutan</h2>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-2">4. Scan Malware</h3>
+                        <p>Jalankan full scan antivirus untuk memastikan tidak ada malware yang terinstall.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-2">5. Monitor Akun</h3>
+                        <p>Pantau semua akun online dan laporan keuangan untuk aktivitas mencurigakan.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-2">6. Laporkan</h3>
+                        <p>Laporkan insiden ke pihak berwenang dan platform terkait untuk mencegah korban lain.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Slides -->
+    <!-- Quiz 1: Homograph Attack -->
+    <div
+        class="slide bg-gradient-to-br from-indigo-900 to-purple-900 h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-4">🧩 Quiz 1: Homograph Attack</h1>
+                <p class="text-lg">Perhatikan URL berikut dengan teliti!</p>
+            </div>
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8 mb-8">
+                <div class="text-center mb-6">
+                    <div class="bg-white text-gray-800 rounded-lg p-4 mb-4">
+                        <p class="text-lg font-mono">https://аррӏе.com/login</p>
+                    </div>
+                    <p class="text-xl mb-4">Apakah URL di atas aman untuk login Apple ID?</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="showQuiz1Answer(false)"
+                        class="quiz-button bg-red-600 hover:bg-red-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        A. Ya, ini URL resmi Apple
+                    </button>
+                    <button onclick="showQuiz1Answer(true)"
+                        class="quiz-button bg-green-600 hover:bg-green-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        B. Tidak, ini homograph attack
+                    </button>
+                </div>
+            </div>
+            <div id="quiz1-correct" class="bg-green-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">🎉 Benar! Selamat!</h3>
+                <p class="text-lg">Anda berhasil mengenali homograph attack. Tetap waspada dengan URL yang menggunakan
+                    karakter mirip!</p>
+            </div>
+            <div id="quiz1-answer" class="bg-red-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">❌ Jawaban Salah</h3>
+                <p class="text-lg mb-4"><strong>Jawaban Benar: B - Ini homograph attack</strong></p>
+                <p class="text-lg mb-4"><strong>Penjelasan:</strong></p>
+                <p class="mb-4">URL tersebut menggunakan karakter Cyrillic yang mirip dengan huruf Latin:</p>
+                <ul class="space-y-2 mb-4">
+                    <li>• "а" (Cyrillic) bukan "a" (Latin)</li>
+                    <li>• "р" (Cyrillic) bukan "p" (Latin)</li>
+                    <li>• "ӏ" (Cyrillic) bukan "l" (Latin)</li>
+                </ul>
+                <p class="font-semibold">URL asli Apple: apple.com (semua huruf Latin)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz 2: Subdomain Spoofing -->
+    <div
+        class="slide bg-gradient-to-br from-purple-900 to-pink-900 h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-4">🧩 Quiz 2: Subdomain Spoofing</h1>
+                <p class="text-lg">Analisis URL berikut untuk transaksi banking!</p>
+            </div>
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8 mb-8">
+                <div class="text-center mb-6">
+                    <div class="bg-white text-gray-800 rounded-lg p-4 mb-4">
+                        <p class="text-lg font-mono">https://bca.co.id.secure-banking-verification.net/login</p>
+                    </div>
+                    <p class="text-xl mb-4">Apakah URL ini aman untuk login BCA?</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="showQuiz2Answer(false)"
+                        class="quiz-button bg-red-600 hover:bg-red-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        A. Ya, ada "bca.co.id" di URL
+                    </button>
+                    <button onclick="showQuiz2Answer(true)"
+                        class="quiz-button bg-green-600 hover:bg-green-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        B. Tidak, ini subdomain spoofing
+                    </button>
+                </div>
+            </div>
+            <div id="quiz2-correct" class="bg-green-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">🎉 Benar! Selamat!</h3>
+                <p class="text-lg">Anda berhasil mengenali subdomain spoofing. Selalu perhatikan domain utama di URL!
+                </p>
+            </div>
+            <div id="quiz2-answer" class="bg-red-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">❌ Jawaban Salah</h3>
+                <p class="text-lg mb-4"><strong>Jawaban Benar: B - Ini subdomain spoofing</strong></p>
+                <p class="text-lg mb-4"><strong>Penjelasan:</strong></p>
+                <p class="mb-4">Domain sebenarnya adalah: <strong>secure-banking-verification.net</strong></p>
+                <p class="mb-4">"bca.co.id" hanya subdomain dari domain palsu tersebut.</p>
+                <div class="bg-white/10 rounded-lg p-4 mb-4">
+                    <p class="font-mono text-sm">
+                        https://<span class="text-red-400">bca.co.id.</span><span
+                            class="text-yellow-400 font-bold">secure-banking-verification.net</span>/login
+                    </p>
+                    <p class="text-sm mt-2">↑ Subdomain palsu ↑ Domain sebenarnya</p>
+                </div>
+                <p class="font-semibold">URL asli BCA: https://ibank.klikbca.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz 3: Typosquatting -->
+    <div
+        class="slide bg-gradient-to-br from-red-900 to-orange-900 h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-4">🧩 Quiz 3: Typosquatting</h1>
+                <p class="text-lg">Anda menerima email dari "Netflix" tentang pembayaran!</p>
+            </div>
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8 mb-8">
+                <div class="bg-white text-gray-800 rounded-lg p-6 mb-6">
+                    <div class="mb-4">
+                        <strong>From:</strong> billing@netfIix.com
+                    </div>
+                    <div class="mb-4">
+                        <strong>Subject:</strong> Pembayaran Gagal - Perbarui Kartu Kredit
+                    </div>
+                    <p class="mb-4">Pembayaran bulanan Anda gagal. Klik link untuk memperbarui:</p>
+                    <div class="bg-blue-100 p-3 rounded font-mono text-sm">
+                        https://netfIix.com/billing/update-payment
+                    </div>
+                </div>
+                <p class="text-xl mb-4 text-center">Apa yang salah dengan email ini?</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="showQuiz3Answer(false)"
+                        class="quiz-button bg-red-600 hover:bg-red-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        A. Email ini legitimate
+                    </button>
+                    <button onclick="showQuiz3Answer(true)"
+                        class="quiz-button bg-green-600 hover:bg-green-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        B. Typosquatting - huruf "l" diganti "I"
+                    </button>
+                </div>
+            </div>
+            <div id="quiz3-correct" class="bg-green-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">🎉 Benar! Selamat!</h3>
+                <p class="text-lg">Anda berhasil mengenali typosquatting. Mata Anda tajam dalam melihat perbedaan
+                    karakter!</p>
+            </div>
+            <div id="quiz3-answer" class="bg-red-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">❌ Jawaban Salah</h3>
+                <p class="text-lg mb-4"><strong>Jawaban Benar: B - Typosquatting dengan huruf "l" diganti "I"</strong>
+                </p>
+                <p class="text-lg mb-4"><strong>Penjelasan:</strong></p>
+                <p class="mb-4">Domain palsu menggunakan huruf kapital "I" menggantikan huruf kecil "l":</p>
+                <div class="bg-white/10 rounded-lg p-4 mb-4">
+                    <p class="font-mono text-lg">
+                        Palsu: netf<span class="text-red-400 font-bold">I</span>ix.com (huruf I kapital)<br>
+                        Asli: netf<span class="text-green-400 font-bold">l</span>ix.com (huruf l kecil)
+                    </p>
+                </div>
+                <p class="mb-4">Teknik ini disebut <strong>typosquatting</strong> - memanfaatkan kesalahan ketik atau
+                    karakter yang mirip.</p>
+                <p class="font-semibold">Selalu ketik URL langsung atau gunakan bookmark!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz 4: Social Engineering + Urgency -->
+    <div class="slide bg-gradient-to-br from-teal-900 to-blue-900 h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-4">🧩 Quiz 4: Social Engineering</h1>
+                <p class="text-lg">Anda menerima panggilan telepon yang mencurigakan!</p>
+            </div>
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8 mb-8">
+                <div class="bg-gray-800 text-white rounded-lg p-6 mb-6">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl mr-3">📞</span>
+                        <strong>Panggilan dari: +62-21-1500-888 (Terlihat seperti BCA)</strong>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded">
+                        <p class="mb-2"><strong>Petugas:</strong> "Selamat siang, saya dari BCA Security. Kami
+                            mendeteksi transaksi mencurigakan Rp 50 juta dari rekening Anda 30 menit yang lalu."</p>
+                        <p class="mb-2"><strong>Petugas:</strong> "Untuk keamanan, saya perlu verifikasi PIN dan kode
+                            OTP yang akan dikirim ke HP Anda sekarang."</p>
+                        <p><strong>Petugas:</strong> "Jika tidak diverifikasi dalam 10 menit, rekening akan diblokir
+                            permanen."</p>
+                    </div>
+                </div>
+                <p class="text-xl mb-4 text-center">Apa yang harus Anda lakukan?</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="showQuiz4Answer(false)"
+                        class="quiz-button bg-red-600 hover:bg-red-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        A. Berikan PIN dan OTP segera
+                    </button>
+                    <button onclick="showQuiz4Answer(true)"
+                        class="quiz-button bg-green-600 hover:bg-green-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        B. Tutup telepon, hubungi BCA langsung
+                    </button>
+                </div>
+            </div>
+            <div id="quiz4-correct" class="bg-green-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">🎉 Benar! Selamat!</h3>
+                <p class="text-lg">Anda berhasil mengenali vishing attack. Ingat, bank tidak pernah meminta PIN via
+                    telepon!</p>
+            </div>
+            <div id="quiz4-answer" class="bg-red-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">❌ Jawaban Salah</h3>
+                <p class="text-lg mb-4"><strong>Jawaban Benar: B - Tutup telepon, hubungi BCA langsung</strong></p>
+                <p class="text-lg mb-4"><strong>Penjelasan:</strong></p>
+                <p class="mb-4">Ini adalah <strong>vishing</strong> (voice phishing) dengan beberapa red flag:</p>
+                <ul class="space-y-2 mb-4">
+                    <li>• <strong>Caller ID Spoofing:</strong> Nomor bisa dipalsukan</li>
+                    <li>• <strong>Urgency:</strong> Tekanan waktu 10 menit</li>
+                    <li>• <strong>Fear:</strong> Ancaman pemblokiran permanen</li>
+                    <li>• <strong>Data Request:</strong> Meminta PIN dan OTP</li>
+                </ul>
+                <div class="bg-white/10 rounded-lg p-4">
+                    <p class="font-semibold mb-2">Yang benar:</p>
+                    <p>• Bank TIDAK PERNAH meminta PIN/OTP via telepon</p>
+                    <p>• Tutup telepon, hubungi 1500888 langsung</p>
+                    <p>• Cek saldo via mobile banking atau ATM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz 5: Advanced Email Spoofing -->
+    <div
+        class="slide bg-gradient-to-br from-green-900 to-emerald-900 h-screen flex items-center justify-center text-white">
+        <div class="max-w-6xl mx-auto px-8 fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-4">🧩 Quiz 5: Email Header Spoofing</h1>
+                <p class="text-lg">Email dari "CEO" perusahaan Anda!</p>
+            </div>
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8 mb-8">
+                <div class="bg-white text-gray-800 rounded-lg p-6 mb-6">
+                    <div class="border-b pb-4 mb-4">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><strong>From:</strong> CEO John Smith &lt;john.smith@yourcompany.com&gt;</div>
+                            <div><strong>Reply-To:</strong> j.smith.ceo@gmail.com</div>
+                            <div><strong>Subject:</strong> URGENT: Wire Transfer Needed</div>
+                            <div><strong>Time:</strong> Today, 16:45</div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-2">Hi Finance Team,</p>
+                        <p class="mb-2">I'm in a client meeting and need urgent wire transfer of $50,000 to our new
+                            vendor:</p>
+                        <p class="mb-2"><strong>Account:</strong> 1234567890<br><strong>Bank:</strong> International
+                            Trust Bank</p>
+                        <p class="mb-2">Please process immediately. I'll send official paperwork tomorrow.</p>
+                        <p>Thanks,<br>John Smith<br>CEO</p>
+                    </div>
+                </div>
+                <p class="text-xl mb-4 text-center">Apa yang mencurigakan dari email ini?</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="showQuiz5Answer(false)"
+                        class="quiz-button bg-red-600 hover:bg-red-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        A. Email legitimate dari CEO
+                    </button>
+                    <button onclick="showQuiz5Answer(true)"
+                        class="quiz-button bg-green-600 hover:bg-green-700 px-6 py-4 rounded-xl text-lg font-semibold transition-all">
+                        B. Business Email Compromise (BEC)
+                    </button>
+                </div>
+            </div>
+            <div id="quiz5-correct" class="bg-green-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">🎉 Benar! Selamat!</h3>
+                <p class="text-lg">Anda berhasil mengenali Business Email Compromise. Selalu verifikasi permintaan
+                    transfer via telepon!</p>
+            </div>
+            <div id="quiz5-answer" class="bg-red-500/20 backdrop-blur-sm rounded-xl p-6 hidden">
+                <h3 class="text-2xl font-bold mb-4">❌ Jawaban Salah</h3>
+                <p class="text-lg mb-4"><strong>Jawaban Benar: B - Business Email Compromise (BEC)</strong></p>
+                <p class="text-lg mb-4"><strong>Penjelasan:</strong></p>
+                <p class="mb-4">Ini adalah <strong>Business Email Compromise (BEC)</strong> dengan tanda bahaya:</p>
+                <ul class="space-y-2 mb-4">
+                    <li>• <strong>Reply-To Berbeda:</strong> gmail.com bukan domain perusahaan</li>
+                    <li>• <strong>Urgency:</strong> "urgent", "immediately"</li>
+                    <li>• <strong>Wire Transfer:</strong> Permintaan transfer besar</li>
+                    <li>• <strong>Bypass Process:</strong> "paperwork tomorrow"</li>
+                    <li>• <strong>External Pressure:</strong> "in client meeting"</li>
+                </ul>
+                <div class="bg-white/10 rounded-lg p-4">
+                    <p class="font-semibold mb-2">Langkah verifikasi:</p>
+                    <p>• Hubungi CEO via telepon langsung</p>
+                    <p>• Cek kebijakan transfer perusahaan</p>
+                    <p>• Verifikasi vendor baru dengan procurement</p>
+                    <p>• Jangan pernah bypass prosedur untuk "urgency"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Kesimpulan -->
+    <div class="slide gradient-bg h-screen flex items-center justify-center text-white">
+        <div class="max-w-5xl mx-auto px-8 text-center fade-in">
+            <div class="text-8xl mb-8">🛡️</div>
+            <h1 class="text-5xl font-bold mb-8">Ingat Selalu!</h1>
+            <div class="grid grid-cols-2 gap-8 mb-12">
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-4">✅ LAKUKAN</h3>
+                    <ul class="text-left space-y-2">
+                        <li>• Verifikasi pengirim</li>
+                        <li>• Cek URL dengan teliti</li>
+                        <li>• Gunakan 2FA</li>
+                        <li>• Update software rutin</li>
+                        <li>• Backup data penting</li>
+                    </ul>
+                </div>
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-4">❌ JANGAN</h3>
+                    <ul class="text-left space-y-2">
+                        <li>• Klik link mencurigakan</li>
+                        <li>• Berikan data pribadi</li>
+                        <li>• Terburu-buru bertindak</li>
+                        <li>• Abaikan warning browser</li>
+                        <li>• Gunakan WiFi publik untuk transaksi</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-2xl font-semibold">Keamanan siber adalah tanggung jawab kita bersama! 🤝</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex space-x-4 z-50">
+        <button onclick="previousSlide()"
+            class="quiz-button bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 font-semibold">
+            ← Sebelumnya
+        </button>
+        <div class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold">
+            <span id="slideNumber">1</span> / 14
+        </div>
+        <button onclick="nextSlide()"
+            class="quiz-button bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 font-semibold">
+            Selanjutnya →
+        </button>
+    </div>
+
+    <!-- Keyboard Navigation Hint -->
+    <div class="fixed top-8 right-8 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm">
+        Gunakan ← → atau klik tombol untuk navigasi
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            // Reset and trigger animation
+            const fadeElement = slides[currentSlide].querySelector('.fade-in');
+            if (fadeElement) {
+                fadeElement.style.animation = 'none';
+                fadeElement.offsetHeight; // Trigger reflow
+                fadeElement.style.animation = 'fadeIn 0.5s ease-in';
+            }
+
+            document.getElementById('slideNumber').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function (e) {
+            // Pastikan tidak mengganggu input atau textarea
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function (e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function (e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                nextSlide();
+            }
+            if (touchEndX > touchStartX + 50) {
+                previousSlide();
+            }
+        }
+
+        // Quiz Functions dengan error handling
+        function showQuiz1Answer(isCorrect) {
+            try {
+                // Hide both divs first
+                const answerDiv = document.getElementById('quiz1-answer');
+                const correctDiv = document.getElementById('quiz1-correct');
+
+                if (answerDiv) answerDiv.classList.add('hidden');
+                if (correctDiv) correctDiv.classList.add('hidden');
+
+                if (isCorrect && correctDiv) {
+                    correctDiv.classList.remove('hidden');
+                    correctDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else if (answerDiv) {
+                    answerDiv.classList.remove('hidden');
+                    answerDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } catch (error) {
+                console.error('Error dalam showQuiz1Answer:', error);
+            }
+        }
+
+        function showQuiz2Answer(isCorrect) {
+            try {
+                // Hide both divs first
+                const answerDiv = document.getElementById('quiz2-answer');
+                const correctDiv = document.getElementById('quiz2-correct');
+
+                if (answerDiv) answerDiv.classList.add('hidden');
+                if (correctDiv) correctDiv.classList.add('hidden');
+
+                if (isCorrect && correctDiv) {
+                    correctDiv.classList.remove('hidden');
+                    correctDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else if (answerDiv) {
+                    answerDiv.classList.remove('hidden');
+                    answerDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } catch (error) {
+                console.error('Error dalam showQuiz2Answer:', error);
+            }
+        }
+
+        function showQuiz3Answer(isCorrect) {
+            try {
+                // Hide both divs first
+                const answerDiv = document.getElementById('quiz3-answer');
+                const correctDiv = document.getElementById('quiz3-correct');
+
+                if (answerDiv) answerDiv.classList.add('hidden');
+                if (correctDiv) correctDiv.classList.add('hidden');
+
+                if (isCorrect && correctDiv) {
+                    correctDiv.classList.remove('hidden');
+                    correctDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else if (answerDiv) {
+                    answerDiv.classList.remove('hidden');
+                    answerDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } catch (error) {
+                console.error('Error dalam showQuiz3Answer:', error);
+            }
+        }
+
+        function showQuiz4Answer(isCorrect) {
+            try {
+                // Hide both divs first
+                const answerDiv = document.getElementById('quiz4-answer');
+                const correctDiv = document.getElementById('quiz4-correct');
+
+                if (answerDiv) answerDiv.classList.add('hidden');
+                if (correctDiv) correctDiv.classList.add('hidden');
+
+                if (isCorrect && correctDiv) {
+                    correctDiv.classList.remove('hidden');
+                    correctDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else if (answerDiv) {
+                    answerDiv.classList.remove('hidden');
+                    answerDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } catch (error) {
+                console.error('Error dalam showQuiz4Answer:', error);
+            }
+        }
+
+        function showQuiz5Answer(isCorrect) {
+            try {
+                // Hide both divs first
+                const answerDiv = document.getElementById('quiz5-answer');
+                const correctDiv = document.getElementById('quiz5-correct');
+
+                if (answerDiv) answerDiv.classList.add('hidden');
+                if (correctDiv) correctDiv.classList.add('hidden');
+
+                if (isCorrect && correctDiv) {
+                    correctDiv.classList.remove('hidden');
+                    correctDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else if (answerDiv) {
+                    answerDiv.classList.remove('hidden');
+                    answerDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } catch (error) {
+                console.error('Error dalam showQuiz5Answer:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengungkap Jaring Penipuan SMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pulse-signal {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .signal-wave {
+            animation: wave 3s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+        }
+
+        .slide-in-left {
+            transform: translateX(-100px);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .slide-in-left.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .slide-in-right {
+            transform: translateX(100px);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .slide-in-right.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .bounce-in {
+            animation: bounceIn 0.8s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .moving-car {
+            position: absolute;
+            transition: all 2s ease-in-out;
+            z-index: 10;
+        }
+
+        .car-patrol {
+            animation: patrol 8s infinite linear;
+        }
+
+        @keyframes patrol {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(200px, -50px);
+            }
+
+            50% {
+                transform: translate(150px, 100px);
+            }
+
+            75% {
+                transform: translate(-100px, 80px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        .car-approach {
+            animation: approach 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes approach {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(50px, -20px) scale(1.2);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="text-center py-8 px-4">
+        <h1
+            class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-red-400 to-yellow-400 bg-clip-text text-transparent">
+            🚨 Mengungkap Jaring Penipuan SMS
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto">
+            Perjalanan Data dari Anda ke Penipu: Bagaimana Fake BTS Mengancam Keamanan Anda
+        </p>
+    </header>
+
+    <!-- Intro Animation -->
+    <section class="py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 mb-8 fade-in">
+                <div class="text-6xl mb-4">📱</div>
+                <div id="intro-phone" class="bg-gray-800 rounded-3xl p-6 max-w-sm mx-auto mb-6 relative">
+                    <div class="bg-green-500 h-2 rounded-full mb-4"></div>
+                    <div id="sms-notification" class="bg-blue-600 rounded-lg p-4 text-left hidden">
+                        <div class="text-sm text-gray-300">BANK XYZ</div>
+                        <div class="text-white">Akun Anda akan diblokir! Klik link untuk verifikasi...</div>
+                    </div>
+                </div>
+                <button id="start-demo"
+                    class="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-full text-xl font-bold transition-all transform hover:scale-105">
+                    🔍 Mulai Investigasi
+                </button>
+                <p class="text-lg mt-4 text-gray-300">
+                    Apakah Anda yakin SMS ini datang dari sumber yang asli?
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Story Flow -->
+    <div id="story-container" class="hidden">
+        <!-- Flow Arrow -->
+        <div class="text-center py-8">
+            <div class="text-6xl animate-bounce">⬇️</div>
+            <p class="text-xl text-yellow-400 font-bold">Ikuti Alur Penipuan</p>
+        </div>
+
+        <!-- Scene 1: Unsuspecting Victim -->
+        <section class="py-16 px-4 relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-yellow-400">
+                            🏃‍♂️ Adegan 1: Korban yang Tidak Curiga
+                        </h2>
+                        <p class="text-xl mb-6 leading-relaxed">
+                            Di tengah keramaian, ponsel Anda terus mencari sinyal terbaik untuk tetap terhubung dengan
+                            dunia digital...
+                        </p>
+                        <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6">
+                            <p class="text-lg">
+                                💡 <strong>Tahukah Anda?</strong> Ponsel secara otomatis akan terhubung ke sinyal
+                                terkuat yang tersedia, tanpa memverifikasi keasliannya.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="relative">
+                            <div class="bg-gradient-to-br from-green-400 to-blue-500 rounded-3xl p-8 text-center">
+                                <div class="text-6xl mb-4">🏢</div>
+                                <div class="text-2xl font-bold mb-4">Area Publik</div>
+                                <div class="flex justify-around items-center">
+                                    <div class="text-4xl pulse-signal">📱</div>
+                                    <div class="text-4xl">☕</div>
+                                    <div class="text-4xl pulse-signal">📱</div>
+                                </div>
+                                <div class="mt-4 text-sm">Orang-orang sibuk dengan aktivitas sehari-hari</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Flow Arrow -->
+            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
+                <div class="text-6xl text-red-400 animate-pulse">⬇️</div>
+            </div>
+        </section>
+
+        <!-- Scene 2: Fake BTS Setup -->
+        <section class="py-16 px-4 relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-red-400">
+                            🚗 Adegan 2: Penipu Beraksi dengan Fake BTS
+                        </h2>
+                        <p class="text-xl mb-6 leading-relaxed">
+                            Tidak jauh dari Anda, para penipu mengaktifkan perangkat <strong>Fake BTS</strong>. Sinyal
+                            palsu ini jauh lebih kuat dari sinyal asli.
+                        </p>
+                        <div class="mb-6">
+                            <label
+                                class="flex items-center space-x-3 cursor-pointer bg-white/10 backdrop-blur-lg rounded-xl p-4">
+                                <input type="checkbox" id="fake-bts-toggle" class="w-6 h-6">
+                                <span class="text-lg">🔴 Aktifkan Fake BTS</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="relative bg-gray-800 rounded-3xl p-8 h-80 overflow-hidden">
+                            <!-- Real BTS Tower -->
+                            <div class="absolute top-4 right-4">
+                                <div class="text-center">
+                                    <div class="text-4xl">📡</div>
+                                    <div class="text-sm">BTS Asli</div>
+                                    <div id="real-signal"
+                                        class="w-8 h-8 bg-blue-500 rounded-full mx-auto mt-2 signal-wave"></div>
+                                </div>
+                            </div>
+
+                            <!-- Fake BTS Car (Moving) -->
+                            <div id="fake-bts-car" class="moving-car bottom-4 left-4">
+                                <div class="text-center">
+                                    <div class="text-4xl">🚗📡</div>
+                                    <div class="text-sm">Mobil Penipu</div>
+                                    <div id="fake-signal"
+                                        class="w-8 h-8 bg-red-500 rounded-full mx-auto mt-2 hidden pulse-signal"></div>
+                                </div>
+                            </div>
+
+                            <!-- Victim Phone -->
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div class="text-4xl" id="victim-phone">📱</div>
+                                <div class="text-xs mt-1 text-center">
+                                    <span id="phone-status" class="bg-blue-500 px-2 py-1 rounded text-white text-xs">BTS
+                                        Asli</span>
+                                </div>
+                            </div>
+
+                            <!-- Signal Lines -->
+                            <!-- Real BTS to Phone Signal Line -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none" id="signal-lines">
+                                <defs>
+                                    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.3" />
+                                    </linearGradient>
+                                    <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#ef4444;stop-opacity:0.3" />
+                                    </linearGradient>
+                                </defs>
+
+                                <!-- Real BTS Signal Line -->
+                                <line id="real-signal-line" x1="85%" y1="25%" x2="50%" y2="50%"
+                                    stroke="url(#blueGradient)" stroke-width="3" stroke-dasharray="5,5"
+                                    class="signal-line-active">
+                                    <animate attributeName="stroke-dashoffset" values="0;10" dur="1s"
+                                        repeatCount="indefinite" />
+                                </line>
+
+                                <!-- Fake BTS Signal Line -->
+                                <line id="fake-signal-line" x1="20%" y1="85%" x2="50%" y2="50%"
+                                    stroke="url(#redGradient)" stroke-width="4" stroke-dasharray="5,5" opacity="0"
+                                    class="signal-line-fake">
+                                    <animate attributeName="stroke-dashoffset" values="0;10" dur="0.8s"
+                                        repeatCount="indefinite" />
+                                </line>
+                            </svg>
+
+                            <!-- Signal Range Indicator -->
+                            <div id="signal-range"
+                                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border-2 border-red-500 rounded-full opacity-0 transition-opacity duration-1000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Flow Arrow -->
+            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
+                <div class="text-6xl text-orange-400 animate-pulse">⬇️</div>
+            </div>
+        </section>
+
+        <!-- Scene 3: Phone Connection -->
+        <section class="py-16 px-4 relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-orange-400">
+                            📱 Adegan 3: Ponsel Terkoneksi ke Sinyal Palsu
+                        </h2>
+                        <p class="text-xl mb-6 leading-relaxed">
+                            Secara otomatis, ponsel Anda akan beralih ke sinyal terkuat... kini Anda terhubung ke
+                            jaringan penipu!
+                        </p>
+                        <button id="simulate-connection"
+                            class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-full font-bold transition-all">
+                            🔄 Simulasi Koneksi
+                        </button>
+                    </div>
+                    <div class="fade-in">
+                        <div class="bg-gray-800 rounded-3xl p-8">
+                            <div class="text-center mb-6">
+                                <div class="text-6xl mb-4">📱</div>
+                                <div class="text-xl font-bold">Ponsel Anda</div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div id="connection-status" class="bg-blue-600 rounded-lg p-4 text-center">
+                                    <div class="font-bold">Status: Terhubung ke BTS Asli</div>
+                                    <div class="text-sm">Sinyal: 📶 Normal</div>
+                                </div>
+
+                                <div id="connection-arrow" class="text-center text-4xl hidden">
+                                    ⬇️
+                                </div>
+
+                                <div id="fake-connection" class="bg-red-600 rounded-lg p-4 text-center hidden">
+                                    <div class="font-bold">⚠️ TERHUBUNG KE FAKE BTS!</div>
+                                    <div class="text-sm">Sinyal: 📶 Sangat Kuat (Palsu)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Flow Arrow -->
+            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
+                <div class="text-6xl text-purple-400 animate-pulse">⬇️</div>
+            </div>
+        </section>
+
+        <!-- Scene 4: SMS Spoofing -->
+        <section class="py-16 px-4 relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-purple-400">
+                            📧 Adegan 4: Pengiriman SMS Palsu
+                        </h2>
+                        <p class="text-xl mb-6 leading-relaxed">
+                            Penipu kini dapat mengirim SMS massal dan bebas menggunakan nama pengirim apa pun, menyamar
+                            sebagai brand terpercaya.
+                        </p>
+                        <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6">
+                            <label class="block text-sm font-bold mb-2">Coba Sender ID Palsu:</label>
+                            <input type="text" id="sender-input" placeholder="Contoh: BANK-BCA"
+                                class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-purple-500 focus:outline-none">
+                            <button id="send-fake-sms"
+                                class="mt-3 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-bold transition-all">
+                                📤 Kirim SMS Palsu
+                            </button>
+                        </div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="bg-gray-800 rounded-3xl p-6">
+                            <div class="bg-gray-900 rounded-2xl p-4 mb-4">
+                                <div class="text-center text-sm text-gray-400 mb-2">Perangkat Penipu</div>
+                                <div class="bg-red-900 rounded-lg p-3">
+                                    <div class="text-xs text-gray-300">Sender ID:</div>
+                                    <div id="spoofed-sender" class="font-bold text-red-400">BANK-RESMI</div>
+                                </div>
+                            </div>
+
+                            <div class="text-center text-2xl mb-4">📱⬇️</div>
+
+                            <div id="victim-sms" class="bg-white text-black rounded-2xl p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="font-bold text-sm" id="display-sender">BANK-RESMI</div>
+                                    <div class="text-xs text-gray-600">Sekarang</div>
+                                </div>
+                                <div class="text-sm">
+                                    Akun Anda akan diblokir dalam 24 jam! Segera verifikasi di: bit.ly/fake-link
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Flow Arrow -->
+            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
+                <div class="text-6xl text-red-500 animate-pulse">⬇️</div>
+            </div>
+        </section>
+
+        <!-- Scene 5: Consequences -->
+        <section class="py-16 px-4 relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-red-400">
+                        ⚠️ Adegan 5: Pilihan Anda Menentukan Nasib
+                    </h2>
+                    <p class="text-xl mb-8 leading-relaxed max-w-4xl mx-auto">
+                        SMS ini dirancang untuk memancing Anda. Apa yang akan Anda lakukan?
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center fade-in">
+                        <div class="text-6xl mb-4">📱</div>
+                        <div class="bg-gray-800 rounded-2xl p-4 mb-6">
+                            <div class="text-sm text-blue-400 mb-2">BANK-RESMI</div>
+                            <div class="text-white text-sm mb-4">
+                                Akun Anda akan diblokir! Klik link untuk verifikasi: bit.ly/fake-link
+                            </div>
+                            <div class="space-y-3">
+                                <button id="click-link"
+                                    class="w-full bg-red-600 hover:bg-red-700 px-4 py-3 rounded-lg font-bold transition-all">
+                                    🔗 Klik Link
+                                </button>
+                                <button id="ignore-sms"
+                                    class="w-full bg-green-600 hover:bg-green-700 px-4 py-3 rounded-lg font-bold transition-all">
+                                    🛡️ Abaikan SMS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="consequence-display"
+                        class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center fade-in">
+                        <div class="text-6xl mb-4">❓</div>
+                        <div class="text-xl text-gray-300">
+                            Pilih salah satu opsi untuk melihat konsekuensinya...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <div class="text-6xl text-blue-400 animate-bounce mb-4">⬇️</div>
+                    <button id="show-protection"
+                        class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-full text-xl font-bold transition-all">
+                        🛡️ Pelajari Cara Melindungi Diri
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Protection Tips -->
+    <section id="protection-section" class="py-16 px-4 hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2
+                    class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                    🛡️ Lindungi Diri Anda
+                </h2>
+                <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                    Tips praktis untuk menghindari jebakan penipuan SMS dan melindungi data pribadi Anda
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center fade-in">
+                    <div class="text-5xl mb-4">🔍</div>
+                    <h3 class="text-xl font-bold mb-4 text-yellow-400">Cek Kembali</h3>
+                    <p class="text-gray-300">
+                        Jangan percaya nama pengirim begitu saja. Penipu dapat menyamar sebagai institusi mana pun.
+                    </p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center fade-in">
+                    <div class="text-5xl mb-4">🚫</div>
+                    <h3 class="text-xl font-bold mb-4 text-red-400">Jangan Klik Link Asing</h3>
+                    <p class="text-gray-300">
+                        Ketik manual URL resmi atau buka dari aplikasi resmi bank/institusi.
+                    </p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center fade-in">
+                    <div class="text-5xl mb-4">🔐</div>
+                    <h3 class="text-xl font-bold mb-4 text-blue-400">Jangan Berikan Data Sensitif</h3>
+                    <p class="text-gray-300">
+                        Instansi resmi tidak akan meminta password atau OTP melalui SMS.
+                    </p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center fade-in">
+                    <div class="text-5xl mb-4">📞</div>
+                    <h3 class="text-xl font-bold mb-4 text-green-400">Verifikasi Langsung</h3>
+                    <p class="text-gray-300">
+                        Hubungi call center resmi untuk konfirmasi sebelum mengambil tindakan.
+                    </p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center fade-in">
+                    <div class="text-5xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold mb-4 text-purple-400">Gunakan Aplikasi Resmi</h3>
+                    <p class="text-gray-300">
+                        Selalu gunakan aplikasi mobile banking resmi untuk transaksi keuangan.
+                    </p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center fade-in">
+                    <div class="text-5xl mb-4">🚨</div>
+                    <h3 class="text-xl font-bold mb-4 text-orange-400">Laporkan</h3>
+                    <p class="text-gray-300">
+                        Jika curiga, laporkan ke pihak berwajib atau operator seluler Anda.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz-section" class="py-16 px-4 hidden">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-6 text-yellow-400">
+                    🧠 Uji Pengetahuan Anda
+                </h2>
+                <p class="text-xl text-gray-300">
+                    Fakta atau Mitos? Test pemahaman Anda tentang keamanan SMS
+                </p>
+            </div>
+
+            <div id="quiz-container" class="space-y-8">
+                <!-- Quiz questions will be generated here -->
+            </div>
+
+            <div class="text-center mt-8">
+                <button id="start-quiz"
+                    class="bg-yellow-600 hover:bg-yellow-700 px-8 py-4 rounded-full text-xl font-bold transition-all">
+                    🎯 Mulai Kuis
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8">
+                <h3 class="text-2xl font-bold mb-4 text-green-400">🎉 Selamat!</h3>
+                <p class="text-lg mb-6">
+                    Anda telah menyelesaikan perjalanan edukasi tentang penipuan SMS. Bagikan pengetahuan ini untuk
+                    melindungi orang-orang terdekat Anda.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="window.scrollTo(0,0)"
+                        class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-full font-bold transition-all">
+                        🔄 Ulangi Perjalanan
+                    </button>
+                    <button id="show-quiz"
+                        class="bg-yellow-600 hover:bg-yellow-700 px-6 py-3 rounded-full font-bold transition-all">
+                        🧠 Coba Kuis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animation observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Story navigation
+        document.getElementById('start-demo').addEventListener('click', () => {
+            // Show SMS notification
+            document.getElementById('sms-notification').classList.remove('hidden');
+            document.getElementById('sms-notification').classList.add('bounce-in');
+
+            setTimeout(() => {
+                document.getElementById('story-container').classList.remove('hidden');
+                document.getElementById('story-container').scrollIntoView({ behavior: 'smooth' });
+
+                // Trigger all animations
+                setTimeout(() => {
+                    document.querySelectorAll('#story-container .fade-in').forEach((el, index) => {
+                        setTimeout(() => {
+                            el.classList.add('visible');
+                        }, index * 200);
+                    });
+                }, 500);
+            }, 2000);
+        });
+
+        // Scene 2: Fake BTS Toggle with Car Animation and Signal Switching
+        let carMovementInterval;
+
+        document.getElementById('fake-bts-toggle').addEventListener('change', (e) => {
+            const fakeSignal = document.getElementById('fake-signal');
+            const realSignal = document.getElementById('real-signal');
+            const fakeCar = document.getElementById('fake-bts-car');
+            const signalRange = document.getElementById('signal-range');
+            const phoneStatus = document.getElementById('phone-status');
+            const realSignalLine = document.getElementById('real-signal-line');
+            const fakeSignalLine = document.getElementById('fake-signal-line');
+
+            if (e.target.checked) {
+                // Activate fake BTS
+                fakeSignal.classList.remove('hidden');
+                realSignal.style.opacity = '0.3';
+                signalRange.style.opacity = '0.3';
+
+                // Start car patrol animation
+                fakeCar.classList.add('car-patrol');
+
+                // Show fake signal line initially hidden
+                setTimeout(() => {
+                    fakeSignalLine.style.opacity = '0.5';
+                }, 1000);
+
+                // Random movement and signal switching every few seconds
+                carMovementInterval = setInterval(() => {
+                    if (fakeCar.classList.contains('car-patrol')) {
+                        // Randomly switch between patrol and approach animations
+                        if (Math.random() > 0.4) {
+                            fakeCar.classList.remove('car-patrol');
+                            fakeCar.classList.add('car-approach');
+
+                            // When car approaches, switch phone signal to fake BTS
+                            setTimeout(() => {
+                                // Switch to fake signal
+                                realSignalLine.style.opacity = '0.2';
+                                fakeSignalLine.style.opacity = '1';
+                                phoneStatus.className = 'bg-red-500 px-2 py-1 rounded text-white text-xs';
+                                phoneStatus.textContent = 'Fake BTS';
+
+                                // Add warning pulse to phone
+                                document.getElementById('victim-phone').style.animation = 'pulse 1s infinite';
+                            }, 1500);
+
+                            setTimeout(() => {
+                                fakeCar.classList.remove('car-approach');
+                                fakeCar.classList.add('car-patrol');
+
+                                // When car moves away, signal might switch back briefly
+                                setTimeout(() => {
+                                    if (Math.random() > 0.7) {
+                                        // Sometimes switch back to real signal briefly
+                                        realSignalLine.style.opacity = '0.6';
+                                        fakeSignalLine.style.opacity = '0.4';
+                                        phoneStatus.className = 'bg-yellow-500 px-2 py-1 rounded text-white text-xs';
+                                        phoneStatus.textContent = 'Switching...';
+
+                                        setTimeout(() => {
+                                            // But fake signal takes over again
+                                            realSignalLine.style.opacity = '0.2';
+                                            fakeSignalLine.style.opacity = '1';
+                                            phoneStatus.className = 'bg-red-500 px-2 py-1 rounded text-white text-xs';
+                                            phoneStatus.textContent = 'Fake BTS';
+                                        }, 1000);
+                                    }
+                                }, 500);
+                            }, 3000);
+                        }
+                    }
+                }, 6000);
+
+            } else {
+                // Deactivate fake BTS
+                fakeSignal.classList.add('hidden');
+                realSignal.style.opacity = '1';
+                signalRange.style.opacity = '0';
+
+                // Reset signal lines
+                realSignalLine.style.opacity = '1';
+                fakeSignalLine.style.opacity = '0';
+                phoneStatus.className = 'bg-blue-500 px-2 py-1 rounded text-white text-xs';
+                phoneStatus.textContent = 'BTS Asli';
+
+                // Remove phone warning animation
+                document.getElementById('victim-phone').style.animation = '';
+
+                // Stop car animations
+                fakeCar.classList.remove('car-patrol', 'car-approach');
+
+                // Clear interval
+                if (carMovementInterval) {
+                    clearInterval(carMovementInterval);
+                }
+            }
+        });
+
+        // Scene 3: Connection Simulation
+        document.getElementById('simulate-connection').addEventListener('click', () => {
+            const status = document.getElementById('connection-status');
+            const arrow = document.getElementById('connection-arrow');
+            const fakeConnection = document.getElementById('fake-connection');
+
+            // Show transition
+            arrow.classList.remove('hidden');
+
+            setTimeout(() => {
+                status.classList.add('hidden');
+                fakeConnection.classList.remove('hidden');
+                fakeConnection.classList.add('bounce-in');
+            }, 1000);
+        });
+
+        // Scene 4: SMS Spoofing
+        document.getElementById('send-fake-sms').addEventListener('click', () => {
+            const senderInput = document.getElementById('sender-input');
+            const spoofedSender = document.getElementById('spoofed-sender');
+            const displaySender = document.getElementById('display-sender');
+
+            const senderName = senderInput.value || 'BANK-RESMI';
+            spoofedSender.textContent = senderName;
+            displaySender.textContent = senderName;
+
+            // Animate SMS sending
+            document.getElementById('victim-sms').classList.add('bounce-in');
+        });
+
+        // Scene 5: Consequences
+        document.getElementById('click-link').addEventListener('click', () => {
+            const display = document.getElementById('consequence-display');
+            display.innerHTML = `
+                <div class="text-6xl mb-4">💀</div>
+                <div class="text-2xl font-bold text-red-400 mb-4">Data Dicuri!</div>
+                <div class="text-lg text-gray-300">
+                    Dengan mengklik link, Anda berisiko kehilangan:
+                    <ul class="mt-4 space-y-2 text-left">
+                        <li>🔐 Password dan PIN</li>
+                        <li>💳 Informasi kartu kredit</li>
+                        <li>💰 Saldo rekening</li>
+                        <li>📱 Data pribadi</li>
+                    </ul>
+                </div>
+            `;
+            display.classList.add('shake');
+        });
+
+        document.getElementById('ignore-sms').addEventListener('click', () => {
+            const display = document.getElementById('consequence-display');
+            display.innerHTML = `
+                <div class="text-6xl mb-4">🛡️</div>
+                <div class="text-2xl font-bold text-green-400 mb-4">Anda Aman!</div>
+                <div class="text-lg text-gray-300">
+                    Dengan mengabaikan SMS mencurigakan, Anda telah:
+                    <ul class="mt-4 space-y-2 text-left">
+                        <li>✅ Melindungi data pribadi</li>
+                        <li>✅ Menghindari kerugian finansial</li>
+                        <li>✅ Tidak terjebak penipuan</li>
+                        <li>✅ Bertindak bijak</li>
+                    </ul>
+                </div>
+            `;
+            display.classList.add('bounce-in');
+        });
+
+        // Show protection section
+        document.getElementById('show-protection').addEventListener('click', () => {
+            document.getElementById('protection-section').classList.remove('hidden');
+            document.getElementById('protection-section').scrollIntoView({ behavior: 'smooth' });
+
+            // Animate protection cards
+            setTimeout(() => {
+                document.querySelectorAll('#protection-section .fade-in').forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('visible');
+                    }, index * 200);
+                });
+            }, 300);
+        });
+
+        // Quiz functionality
+        const quizQuestions = [
+            {
+                question: "Ponsel saya aman dari Fake BTS jika selalu terhubung Wi-Fi",
+                answer: "mitos",
+                explanation: "Mitos! Fake BTS dapat mengganggu sinyal seluler meskipun Anda terhubung Wi-Fi. Ponsel tetap mencari sinyal seluler untuk panggilan dan SMS."
+            },
+            {
+                question: "Bank tidak pernah meminta password melalui SMS",
+                answer: "fakta",
+                explanation: "Fakta! Institusi keuangan resmi tidak akan pernah meminta informasi sensitif seperti password, PIN, atau OTP melalui SMS."
+            },
+            {
+                question: "Nama pengirim SMS selalu dapat dipercaya",
+                answer: "mitos",
+                explanation: "Mitos! Penipu dapat dengan mudah memalsukan nama pengirim (Sender ID Spoofing) untuk menyamar sebagai institusi terpercaya."
+            },
+            {
+                question: "Fake BTS hanya bisa dioperasikan oleh ahli teknologi",
+                answer: "mitos",
+                explanation: "Mitos! Perangkat Fake BTS kini dapat dibeli secara online dan relatif mudah dioperasikan oleh siapa saja."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        document.getElementById('show-quiz').addEventListener('click', () => {
+            document.getElementById('quiz-section').classList.remove('hidden');
+            document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('start-quiz').addEventListener('click', () => {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            showQuizQuestion();
+        });
+
+        function showQuizQuestion() {
+            if (currentQuizIndex >= quizQuestions.length) {
+                showQuizResults();
+                return;
+            }
+
+            const question = quizQuestions[currentQuizIndex];
+            const container = document.getElementById('quiz-container');
+
+            container.innerHTML = `
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center">
+                    <h3 class="text-2xl font-bold mb-6">Pertanyaan ${currentQuizIndex + 1} dari ${quizQuestions.length}</h3>
+                    <p class="text-xl mb-8">"${question.question}"</p>
+                    <div class="space-y-4">
+                        <button onclick="answerQuiz('fakta')" class="w-full bg-green-600 hover:bg-green-700 px-6 py-4 rounded-lg text-xl font-bold transition-all">
+                            ✅ FAKTA
+                        </button>
+                        <button onclick="answerQuiz('mitos')" class="w-full bg-red-600 hover:bg-red-700 px-6 py-4 rounded-lg text-xl font-bold transition-all">
+                            ❌ MITOS
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuiz(answer) {
+            const question = quizQuestions[currentQuizIndex];
+            const isCorrect = answer === question.answer;
+
+            if (isCorrect) quizScore++;
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center">
+                    <div class="text-6xl mb-4">${isCorrect ? '🎉' : '😅'}</div>
+                    <h3 class="text-2xl font-bold mb-4 ${isCorrect ? 'text-green-400' : 'text-red-400'}">
+                        ${isCorrect ? 'Benar!' : 'Kurang Tepat'}
+                    </h3>
+                    <p class="text-lg mb-6">${question.explanation}</p>
+                    <button onclick="nextQuizQuestion()" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-bold transition-all">
+                        ${currentQuizIndex < quizQuestions.length - 1 ? 'Pertanyaan Selanjutnya' : 'Lihat Hasil'}
+                    </button>
+                </div>
+            `;
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            showQuizQuestion();
+        }
+
+        function showQuizResults() {
+            const percentage = Math.round((quizScore / quizQuestions.length) * 100);
+            let message = '';
+            let emoji = '';
+
+            if (percentage >= 80) {
+                message = 'Luar biasa! Anda sudah sangat paham tentang keamanan SMS.';
+                emoji = '🏆';
+            } else if (percentage >= 60) {
+                message = 'Bagus! Anda cukup paham, tapi masih bisa belajar lebih banyak.';
+                emoji = '👍';
+            } else {
+                message = 'Jangan khawatir! Ulangi materi untuk meningkatkan pemahaman Anda.';
+                emoji = '📚';
+            }
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center">
+                    <div class="text-6xl mb-4">${emoji}</div>
+                    <h3 class="text-3xl font-bold mb-4 text-yellow-400">Hasil Kuis</h3>
+                    <div class="text-4xl font-bold mb-4">${quizScore}/${quizQuestions.length}</div>
+                    <div class="text-2xl mb-6">${percentage}% Benar</div>
+                    <p class="text-lg mb-8">${message}</p>
+                    <div class="space-y-4">
+                        <button onclick="showQuizQuestion(); currentQuizIndex = 0; quizScore = 0;" class="bg-yellow-600 hover:bg-yellow-700 px-6 py-3 rounded-lg font-bold transition-all">
+                            🔄 Ulangi Kuis
+                        </button>
+                        <button onclick="window.scrollTo(0,0)" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-bold transition-all">
+                            🏠 Kembali ke Awal
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Make functions global for onclick handlers
+        window.answerQuiz = answerQuiz;
+        window.nextQuizQuestion = nextQuizQuestion;
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9881207d557ccb36',t:'MTc1OTM3NTg4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>

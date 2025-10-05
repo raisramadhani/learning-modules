@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisasi Model ML: Naive Bayes vs LSTM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        .flow-animation {
+            animation: flowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes flowPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
+
+        .data-flow {
+            animation: dataMove 3s ease-in-out infinite;
+        }
+
+        @keyframes dataMove {
+            0% {
+                transform: translateX(-10px);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateX(10px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(-10px);
+                opacity: 0.6;
+            }
+        }
+
+        .arrow {
+            animation: arrowBounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes arrowBounce {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+        }
+
+        .process-box {
+            transition: all 0.3s ease;
+        }
+
+        .process-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .active-flow {
+            animation: activeGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes activeGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">🤖 Visualisasi Model Machine Learning</h1>
+            <p class="text-lg text-gray-600 mb-6">Perbandingan Flow Pemrosesan: Naive Bayes vs LSTM</p>
+
+            <!-- Control Buttons -->
+            <div class="flex justify-center gap-4 mb-8">
+                <button onclick="showFlow('naive')" id="naiveBtn"
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                    📊 Model Naive Bayes
+                </button>
+                <button onclick="showFlow('lstm')" id="lstmBtn"
+                    class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold">
+                    🧠 Model LSTM
+                </button>
+                <button onclick="showFlow('both')" id="bothBtn"
+                    class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                    🔄 Bandingkan Keduanya
+                </button>
+            </div>
+        </div>
+
+        <!-- Naive Bayes Flow -->
+        <div id="naiveFlow" class="mb-16 hidden">
+            <h2 class="text-3xl font-bold text-blue-800 mb-8 text-center">🔵 Model Naive Bayes</h2>
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-8">
+
+                <!-- Step 1: Ulasan Teks -->
+                <div class="process-box bg-white rounded-xl p-6 shadow-lg border-2 border-blue-200 max-w-xs cursor-pointer hover:bg-blue-50"
+                    onclick="showModal('naiveText')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">📝</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Ulasan Teks</h3>
+                        <p class="text-sm text-gray-600 mb-3">(Hasil Scraping)</p>
+                        <div class="bg-gray-100 p-3 rounded-lg text-xs">
+                            <div class="data-flow">"Grab sangat membantu transportasi harian"</div>
+                            <div class="data-flow" style="animation-delay: 0.5s">"Driver sering telat dan tidak sopan"
+                            </div>
+                            <div class="data-flow" style="animation-delay: 1s">"Aplikasi mudah digunakan, recommended!"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow 1 -->
+                <div class="arrow text-3xl text-blue-500">➡️</div>
+
+                <!-- Step 2: TF-IDF -->
+                <div class="process-box bg-white rounded-xl p-6 shadow-lg border-2 border-orange-200 max-w-xs cursor-pointer hover:bg-orange-50"
+                    onclick="showModal('tfidf')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🔢</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">TF-IDF</h3>
+                        <p class="text-sm text-gray-600 mb-3">Konversi ke Angka</p>
+                        <div class="bg-orange-50 p-3 rounded-lg text-xs">
+                            <div class="data-flow">bagus: 0.85</div>
+                            <div class="data-flow" style="animation-delay: 0.3s">berkualitas: 0.72</div>
+                            <div class="data-flow" style="animation-delay: 0.6s">kurang: 0.91</div>
+                            <div class="data-flow" style="animation-delay: 0.9s">recommended: 0.68</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow 2 -->
+                <div class="arrow text-3xl text-orange-500">➡️</div>
+
+                <!-- Step 3: Data Angka -->
+                <div class="process-box bg-white rounded-xl p-6 shadow-lg border-2 border-green-200 max-w-xs cursor-pointer hover:bg-green-50"
+                    onclick="showModal('dataAngka')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">📊</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Data Angka</h3>
+                        <p class="text-sm text-gray-600 mb-3">Fitur Numerik</p>
+                        <div class="bg-green-50 p-3 rounded-lg text-xs">
+                            <div class="data-flow">[0.85, 0.72, 0.0, 0.68]</div>
+                            <div class="data-flow" style="animation-delay: 0.4s">[0.0, 0.0, 0.91, 0.0]</div>
+                            <div class="data-flow" style="animation-delay: 0.8s">[0.0, 0.0, 0.0, 0.68]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow 3 -->
+                <div class="arrow text-3xl text-green-500">➡️</div>
+
+                <!-- Step 4: Naive Bayes -->
+                <div class="process-box bg-white rounded-xl p-6 shadow-lg border-2 border-purple-200 max-w-xs cursor-pointer hover:bg-purple-50"
+                    onclick="showModal('naiveBayes')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🎯</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Naive Bayes</h3>
+                        <p class="text-sm text-gray-600 mb-3">Klasifikasi</p>
+                        <div class="bg-purple-50 p-3 rounded-lg text-xs">
+                            <div class="data-flow">P(Positif) = 0.85</div>
+                            <div class="data-flow" style="animation-delay: 0.5s">P(Negatif) = 0.15</div>
+                            <div class="font-bold text-purple-700 mt-2">Hasil: POSITIF ✅</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LSTM Flow -->
+        <div id="lstmFlow" class="mb-16 hidden">
+            <h2 class="text-3xl font-bold text-purple-800 mb-8 text-center">🟣 Model LSTM</h2>
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-8">
+
+                <!-- Step 1: Ulasan Teks -->
+                <div class="process-box bg-white rounded-xl p-6 shadow-lg border-2 border-blue-200 max-w-xs cursor-pointer hover:bg-blue-50"
+                    onclick="showModal('naiveText')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">📝</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Ulasan Teks</h3>
+                        <p class="text-sm text-gray-600 mb-3">(Hasil Scraping)</p>
+                        <div class="bg-gray-100 p-3 rounded-lg text-xs">
+                            <div class="data-flow">"Grab sangat membantu transportasi harian"</div>
+                            <div class="data-flow" style="animation-delay: 0.5s">"Driver sering telat dan tidak sopan"
+                            </div>
+                            <div class="data-flow" style="animation-delay: 1s">"Aplikasi mudah digunakan, recommended!"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow 1 -->
+                <div class="arrow text-3xl text-blue-500">➡️</div>
+
+                <!-- Step 2: Tokenizer + Embedding -->
+                <div class="process-box bg-white rounded-xl p-6 shadow-lg border-2 border-cyan-200 max-w-xs cursor-pointer hover:bg-cyan-50"
+                    onclick="showModal('tokenizer')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🔤</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Tokenizer +</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Embedding Layer</h3>
+                        <p class="text-sm text-gray-600 mb-3">Konversi ke Token</p>
+                        <div class="bg-cyan-50 p-3 rounded-lg text-xs">
+                            <div class="data-flow">produk → [1]</div>
+                            <div class="data-flow" style="animation-delay: 0.3s">bagus → [2]</div>
+                            <div class="data-flow" style="animation-delay: 0.6s">berkualitas → [3]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow 2 -->
+                <div class="arrow text-3xl text-cyan-500">➡️</div>
+
+                <!-- Step 3: Data Vektor -->
+                <div class="process-box bg-white rounded-xl p-6 shadow-lg border-2 border-indigo-200 max-w-xs cursor-pointer hover:bg-indigo-50"
+                    onclick="showModal('dataVektor')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🔢</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Data Angka</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Vektor</h3>
+                        <p class="text-sm text-gray-600 mb-3">Embedding Vectors</p>
+                        <div class="bg-indigo-50 p-3 rounded-lg text-xs">
+                            <div class="data-flow">[0.2, -0.1, 0.8, 0.3]</div>
+                            <div class="data-flow" style="animation-delay: 0.4s">[0.5, 0.7, -0.2, 0.9]</div>
+                            <div class="data-flow" style="animation-delay: 0.8s">[0.1, 0.4, 0.6, -0.3]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow 3 -->
+                <div class="arrow text-3xl text-indigo-500">➡️</div>
+
+                <!-- Step 4: LSTM -->
+                <div class="process-box bg-white rounded-xl p-6 shadow-lg border-2 border-pink-200 max-w-xs cursor-pointer hover:bg-pink-50"
+                    onclick="showModal('lstm')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🧠</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">LSTM</h3>
+                        <p class="text-sm text-gray-600 mb-3">Sequential Processing</p>
+                        <div class="bg-pink-50 p-3 rounded-lg text-xs">
+                            <div class="data-flow">Hidden State: [0.8, 0.2]</div>
+                            <div class="data-flow" style="animation-delay: 0.5s">Cell State: [0.6, 0.9]</div>
+                            <div class="font-bold text-pink-700 mt-2">Output: POSITIF ✅</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison View -->
+        <div id="comparisonFlow" class="hidden">
+            <h2 class="text-3xl font-bold text-green-800 mb-8 text-center">🔄 Perbandingan Model</h2>
+
+            <!-- Naive Bayes Row -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4 text-center">Model Naive Bayes</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="bg-blue-100 rounded-lg p-4 border-2 border-blue-300 flex-1 min-w-48 max-w-56">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">📝</div>
+                            <div class="font-semibold text-sm">Ulasan Teks</div>
+                        </div>
+                    </div>
+                    <div class="text-2xl text-blue-500 self-center">→</div>
+                    <div class="bg-orange-100 rounded-lg p-4 border-2 border-orange-300 flex-1 min-w-48 max-w-56">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">🔢</div>
+                            <div class="font-semibold text-sm">TF-IDF</div>
+                        </div>
+                    </div>
+                    <div class="text-2xl text-orange-500 self-center">→</div>
+                    <div class="bg-green-100 rounded-lg p-4 border-2 border-green-300 flex-1 min-w-48 max-w-56">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">📊</div>
+                            <div class="font-semibold text-sm">Data Angka</div>
+                        </div>
+                    </div>
+                    <div class="text-2xl text-green-500 self-center">→</div>
+                    <div class="bg-purple-100 rounded-lg p-4 border-2 border-purple-300 flex-1 min-w-48 max-w-56">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">🎯</div>
+                            <div class="font-semibold text-sm">Naive Bayes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LSTM Row -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-purple-700 mb-4 text-center">Model LSTM</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="bg-blue-100 rounded-lg p-4 border-2 border-blue-300 flex-1 min-w-48 max-w-56">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">📝</div>
+                            <div class="font-semibold text-sm">Ulasan Teks</div>
+                        </div>
+                    </div>
+                    <div class="text-2xl text-blue-500 self-center">→</div>
+                    <div class="bg-cyan-100 rounded-lg p-4 border-2 border-cyan-300 flex-1 min-w-48 max-w-56">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">🔤</div>
+                            <div class="font-semibold text-sm">Tokenizer + Embedding</div>
+                        </div>
+                    </div>
+                    <div class="text-2xl text-cyan-500 self-center">→</div>
+                    <div class="bg-indigo-100 rounded-lg p-4 border-2 border-indigo-300 flex-1 min-w-48 max-w-56">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">🔢</div>
+                            <div class="font-semibold text-sm">Data Vektor</div>
+                        </div>
+                    </div>
+                    <div class="text-2xl text-indigo-500 self-center">→</div>
+                    <div class="bg-pink-100 rounded-lg p-4 border-2 border-pink-300 flex-1 min-w-48 max-w-56">
+                        <div class="text-center">
+                            <div class="text-2xl mb-2">🧠</div>
+                            <div class="font-semibold text-sm">LSTM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Differences -->
+            <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-gray-200">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">🔍 Perbedaan Utama</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                        <h4 class="text-xl font-bold text-blue-700 mb-3">Naive Bayes</h4>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>✅ Menggunakan TF-IDF untuk ekstraksi fitur</li>
+                            <li>✅ Menghasilkan data angka berbasis frekuensi kata</li>
+                            <li>✅ Asumsi independensi antar fitur</li>
+                            <li>✅ Cocok untuk dataset kecil-menengah</li>
+                            <li>✅ Proses lebih cepat dan sederhana</li>
+                        </ul>
+                    </div>
+                    <div class="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-500">
+                        <h4 class="text-xl font-bold text-purple-700 mb-3">LSTM</h4>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li>✅ Menggunakan Tokenizer + Embedding Layer</li>
+                            <li>✅ Menghasilkan data vektor multidimensi</li>
+                            <li>✅ Mempertahankan urutan dan konteks kata</li>
+                            <li>✅ Cocok untuk dataset besar dan kompleks</li>
+                            <li>✅ Dapat menangkap pola sekuensial</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Demo Section -->
+        <div class="mt-16 bg-white rounded-xl p-8 shadow-lg border-2 border-gray-200">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">🎮 Demo Interaktif</h3>
+            <div class="max-w-2xl mx-auto">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Masukkan teks ulasan:</label>
+                    <textarea id="inputText"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        rows="3" placeholder="Contoh: Grab sangat membantu transportasi harian saya!"></textarea>
+                </div>
+                <button onclick="processText()"
+                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-semibold">
+                    🚀 Proses dengan Kedua Model
+                </button>
+                <div id="demoResult" class="mt-6 hidden">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <h4 class="font-bold text-blue-700 mb-2">Naive Bayes Processing:</h4>
+                            <div id="naiveResult" class="text-sm text-gray-700"></div>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                            <h4 class="font-bold text-purple-700 mb-2">LSTM Processing:</h4>
+                            <div id="lstmResult" class="text-sm text-gray-700"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-96 overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <div id="modalContent" class="text-gray-700 leading-relaxed"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        function showModal(type) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+
+            const modalData = {
+                naiveText: {
+                    title: '📝 Ulasan Teks (Data Scraping)',
+                    content: `
+                        <h4 class="font-bold text-lg mb-3">Pengumpulan Data Ulasan Grab dari Play Store</h4>
+                        <p class="mb-3">Tahap pertama adalah mengumpulkan ulasan pengguna aplikasi Grab dari Google Play Store menggunakan teknik web scraping.</p>
+                        <div class="bg-blue-50 p-4 rounded-lg mb-3">
+                            <h5 class="font-semibold mb-2">Contoh ulasan yang dikumpulkan:</h5>
+                            <ul class="space-y-1 text-sm">
+                                <li>• "Grab sangat membantu transportasi harian"</li>
+                                <li>• "Driver sering telat dan tidak sopan"</li>
+                                <li>• "Aplikasi mudah digunakan, recommended!"</li>
+                                <li>• "Tarif mahal tapi pelayanan oke"</li>
+                            </ul>
+                        </div>
+                        <p><strong>Output:</strong> Kumpulan teks ulasan mentah yang siap diproses lebih lanjut.</p>
+                    `
+                },
+                tfidf: {
+                    title: '🔢 TF-IDF (Term Frequency-Inverse Document Frequency)',
+                    content: `
+                        <h4 class="font-bold text-lg mb-3">Konversi Teks ke Representasi Numerik</h4>
+                        <p class="mb-3">TF-IDF mengubah teks menjadi angka dengan menghitung seberapa penting sebuah kata dalam dokumen relatif terhadap seluruh koleksi dokumen.</p>
+                        <div class="bg-orange-50 p-4 rounded-lg mb-3">
+                            <h5 class="font-semibold mb-2">Proses TF-IDF:</h5>
+                            <ul class="space-y-1 text-sm">
+                                <li><strong>TF (Term Frequency):</strong> Frekuensi kata dalam dokumen</li>
+                                <li><strong>IDF (Inverse Document Frequency):</strong> Kebalikan frekuensi dokumen</li>
+                                <li><strong>Formula:</strong> TF-IDF = TF × IDF</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded text-sm">
+                            <strong>Contoh:</strong><br>
+                            "grab" → 0.85<br>
+                            "bagus" → 0.72<br>
+                            "aplikasi" → 0.68
+                        </div>
+                    `
+                },
+                dataAngka: {
+                    title: '📊 Data Angka (Feature Vector)',
+                    content: `
+                        <h4 class="font-bold text-lg mb-3">Representasi Numerik untuk Machine Learning</h4>
+                        <p class="mb-3">Hasil TF-IDF berupa vektor angka yang merepresentasikan setiap ulasan dalam bentuk yang dapat dipahami oleh algoritma Naive Bayes.</p>
+                        <div class="bg-green-50 p-4 rounded-lg mb-3">
+                            <h5 class="font-semibold mb-2">Karakteristik Data:</h5>
+                            <ul class="space-y-1 text-sm">
+                                <li>• Setiap ulasan menjadi vektor angka</li>
+                                <li>• Dimensi sesuai jumlah kata unik dalam dataset</li>
+                                <li>• Nilai 0 untuk kata yang tidak ada</li>
+                                <li>• Nilai tinggi untuk kata penting</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded text-sm">
+                            <strong>Contoh vektor:</strong><br>
+                            [0.85, 0.72, 0.0, 0.68, 0.0, 0.91, ...]<br>
+                            <em>Setiap angka mewakili bobot kata tertentu</em>
+                        </div>
+                    `
+                },
+                naiveBayes: {
+                    title: '🎯 Naive Bayes Classifier',
+                    content: `
+                        <h4 class="font-bold text-lg mb-3">Klasifikasi Sentimen dengan Teorema Bayes</h4>
+                        <p class="mb-3">Naive Bayes menggunakan teorema probabilitas Bayes untuk mengklasifikasikan ulasan sebagai positif atau negatif.</p>
+                        <div class="bg-purple-50 p-4 rounded-lg mb-3">
+                            <h5 class="font-semibold mb-2">Cara Kerja:</h5>
+                            <ul class="space-y-1 text-sm">
+                                <li>• Menghitung probabilitas setiap kelas (positif/negatif)</li>
+                                <li>• Mengasumsikan independensi antar fitur</li>
+                                <li>• Menggunakan data training untuk pembelajaran</li>
+                                <li>• Memilih kelas dengan probabilitas tertinggi</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded text-sm">
+                            <strong>Formula:</strong><br>
+                            P(Positif|ulasan) = P(ulasan|Positif) × P(Positif)<br>
+                            <strong>Hasil:</strong> Klasifikasi POSITIF/NEGATIF
+                        </div>
+                    `
+                },
+                tokenizer: {
+                    title: '🔤 Tokenizer + Embedding Layer',
+                    content: `
+                        <h4 class="font-bold text-lg mb-3">Konversi Teks ke Token dan Embedding</h4>
+                        <p class="mb-3">Tokenizer mengubah teks menjadi token (angka), kemudian Embedding Layer mengkonversi token menjadi vektor dense yang kaya makna.</p>
+                        <div class="bg-cyan-50 p-4 rounded-lg mb-3">
+                            <h5 class="font-semibold mb-2">Proses Tokenization:</h5>
+                            <ul class="space-y-1 text-sm">
+                                <li>• <strong>Tokenizer:</strong> "grab" → 1, "bagus" → 2, "aplikasi" → 3</li>
+                                <li>• <strong>Sequence:</strong> [1, 2, 3, 4, 5, ...]</li>
+                                <li>• <strong>Padding:</strong> Menyamakan panjang sequence</li>
+                            </ul>
+                        </div>
+                        <div class="bg-cyan-100 p-4 rounded-lg">
+                            <h5 class="font-semibold mb-2">Embedding Layer:</h5>
+                            <p class="text-sm">Mengubah token menjadi vektor dense (misal 128 dimensi) yang menangkap makna semantik kata.</p>
+                        </div>
+                    `
+                },
+                dataVektor: {
+                    title: '🔢 Data Angka Vektor (Dense Embeddings)',
+                    content: `
+                        <h4 class="font-bold text-lg mb-3">Representasi Vektor Multidimensi</h4>
+                        <p class="mb-3">Setiap kata direpresentasikan sebagai vektor dense yang menangkap hubungan semantik antar kata.</p>
+                        <div class="bg-indigo-50 p-4 rounded-lg mb-3">
+                            <h5 class="font-semibold mb-2">Karakteristik Embedding:</h5>
+                            <ul class="space-y-1 text-sm">
+                                <li>• Setiap kata = vektor 128/256/512 dimensi</li>
+                                <li>• Kata serupa memiliki vektor yang mirip</li>
+                                <li>• Menangkap konteks dan makna</li>
+                                <li>• Dapat dipelajari selama training</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded text-sm">
+                            <strong>Contoh embedding:</strong><br>
+                            "grab" → [0.2, -0.1, 0.8, 0.3, ...]<br>
+                            "bagus" → [0.5, 0.7, -0.2, 0.9, ...]<br>
+                            <em>Vektor 128 dimensi per kata</em>
+                        </div>
+                    `
+                },
+                lstm: {
+                    title: '🧠 LSTM (Long Short-Term Memory)',
+                    content: `
+                        <h4 class="font-bold text-lg mb-3">Neural Network untuk Data Sekuensial</h4>
+                        <p class="mb-3">LSTM adalah jenis RNN yang dapat mengingat informasi jangka panjang dan memproses urutan kata secara berurutan.</p>
+                        <div class="bg-pink-50 p-4 rounded-lg mb-3">
+                            <h5 class="font-semibold mb-2">Komponen LSTM:</h5>
+                            <ul class="space-y-1 text-sm">
+                                <li>• <strong>Forget Gate:</strong> Menentukan informasi yang dilupakan</li>
+                                <li>• <strong>Input Gate:</strong> Menentukan informasi baru yang disimpan</li>
+                                <li>• <strong>Output Gate:</strong> Menentukan output berdasarkan cell state</li>
+                                <li>• <strong>Cell State:</strong> Menyimpan informasi jangka panjang</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded text-sm">
+                            <strong>Keunggulan:</strong><br>
+                            • Memahami konteks dan urutan kata<br>
+                            • Mengatasi masalah vanishing gradient<br>
+                            • Cocok untuk teks panjang dan kompleks
+                        </div>
+                    `
+                }
+            };
+
+            const data = modalData[type];
+            if (data) {
+                title.textContent = data.title;
+                content.innerHTML = data.content;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('modal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        function showFlow(type) {
+            // Hide all flows
+            document.getElementById('naiveFlow').classList.add('hidden');
+            document.getElementById('lstmFlow').classList.add('hidden');
+            document.getElementById('comparisonFlow').classList.add('hidden');
+
+            // Reset button styles
+            document.getElementById('naiveBtn').classList.remove('active-flow');
+            document.getElementById('lstmBtn').classList.remove('active-flow');
+            document.getElementById('bothBtn').classList.remove('active-flow');
+
+            // Show selected flow and highlight button
+            if (type === 'naive') {
+                document.getElementById('naiveFlow').classList.remove('hidden');
+                document.getElementById('naiveBtn').classList.add('active-flow');
+            } else if (type === 'lstm') {
+                document.getElementById('lstmFlow').classList.remove('hidden');
+                document.getElementById('lstmBtn').classList.add('active-flow');
+            } else if (type === 'both') {
+                document.getElementById('comparisonFlow').classList.remove('hidden');
+                document.getElementById('bothBtn').classList.add('active-flow');
+            }
+        }
+
+        function processText() {
+            const inputText = document.getElementById('inputText').value;
+            if (!inputText.trim()) {
+                alert('Silakan masukkan teks ulasan terlebih dahulu!');
+                return;
+            }
+
+            // Show result section
+            document.getElementById('demoResult').classList.remove('hidden');
+
+            // Simulate Naive Bayes processing
+            const words = inputText.toLowerCase().split(' ');
+            const positiveWords = ['bagus', 'baik', 'excellent', 'recommended', 'berkualitas', 'mantap', 'terjangkau', 'membantu', 'mudah', 'cepat', 'aman', 'nyaman'];
+            const negativeWords = ['buruk', 'jelek', 'kurang', 'tidak', 'kecewa', 'mahal', 'telat', 'lambat', 'susah', 'ribet', 'error', 'crash'];
+
+            let positiveScore = 0;
+            let negativeScore = 0;
+
+            words.forEach(word => {
+                if (positiveWords.some(pw => word.includes(pw))) positiveScore++;
+                if (negativeWords.some(nw => word.includes(nw))) negativeScore++;
+            });
+
+            const naiveResult = positiveScore > negativeScore ? 'POSITIF' :
+                negativeScore > positiveScore ? 'NEGATIF' : 'NETRAL';
+
+            // Display results
+            document.getElementById('naiveResult').innerHTML = `
+                <div class="space-y-1">
+                    <div>1. TF-IDF: ${words.length} kata diproses</div>
+                    <div>2. Skor Positif: ${positiveScore}</div>
+                    <div>3. Skor Negatif: ${negativeScore}</div>
+                    <div class="font-bold text-blue-700">Hasil: ${naiveResult}</div>
+                </div>
+            `;
+
+            document.getElementById('lstmResult').innerHTML = `
+                <div class="space-y-1">
+                    <div>1. Tokenizer: ${words.length} token</div>
+                    <div>2. Embedding: Vector [${words.length}x128]</div>
+                    <div>3. LSTM: Sequential processing</div>
+                    <div class="font-bold text-purple-700">Hasil: ${naiveResult}</div>
+                </div>
+            `;
+        }
+
+        // Show Naive Bayes by default
+        showFlow('naive');
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'989bade071b9411c',t:'MTc1OTY1NDMwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>

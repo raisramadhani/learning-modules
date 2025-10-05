@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Publikasi Artikel & Rating Jurnal SINTA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        .slide {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+
+        .rating-card {
+            transition: all 0.3s ease;
+        }
+
+        .rating-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 font-sans">
+    <div class="h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-lg p-4 flex-shrink-0">
+            <div class="max-w-6xl mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-bold text-gray-800">📚 Panduan Publikasi Artikel</h1>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Slide <span id="currentSlide">1</span> dari <span
+                            id="totalSlides">6</span></span>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="progress-bar h-full bg-blue-500 rounded-full"
+                            style="width: 16.67%"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 overflow-hidden">
+            <div class="max-w-6xl mx-auto h-full">
+
+                <!-- Slide 1: Pengenalan -->
+                <div class="slide active h-full flex items-center justify-center" id="slide1">
+                    <div class="text-center">
+                        <div class="text-6xl mb-6">🎓</div>
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4">Publikasi Artikel Ilmiah</h2>
+                        <p class="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+                            Panduan lengkap untuk memahami dasar-dasar publikasi artikel dan sistem rating jurnal SINTA
+                            di Indonesia
+                        </p>
+                        <div class="flex justify-center space-x-4">
+                            <div class="bg-blue-100 px-4 py-2 rounded-lg">
+                                <span class="text-blue-800 font-semibold">✓ Mudah Dipahami</span>
+                            </div>
+                            <div class="bg-green-100 px-4 py-2 rounded-lg">
+                                <span class="text-green-800 font-semibold">✓ Informatif</span>
+                            </div>
+                            <div class="bg-purple-100 px-4 py-2 rounded-lg">
+                                <span class="text-purple-800 font-semibold">✓ Praktis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Dasar Publikasi -->
+                <div class="slide h-full flex items-center hidden" id="slide2">
+                    <div class="w-full">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">📝 Dasar Publikasi Artikel</h2>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div class="bg-white p-4 rounded-xl shadow-lg">
+                                    <h3 class="text-lg font-bold text-blue-600 mb-2">🎯 Apa itu Publikasi Artikel?</h3>
+                                    <p class="text-gray-700 text-sm">Proses menerbitkan hasil penelitian dalam jurnal
+                                        ilmiah yang telah melalui peer review untuk dibaca dan dikutip oleh akademisi
+                                        lain.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-lg">
+                                    <h3 class="text-lg font-bold text-green-600 mb-2">🔍 Peer Review</h3>
+                                    <p class="text-gray-700 text-sm">Sistem evaluasi oleh ahli sejawat untuk memastikan
+                                        kualitas, validitas, dan kontribusi ilmiah artikel sebelum dipublikasikan.</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-white p-4 rounded-xl shadow-lg">
+                                    <h3 class="text-lg font-bold text-purple-600 mb-2">📊 Mengapa Penting?</h3>
+                                    <ul class="text-gray-700 space-y-1 text-sm">
+                                        <li>• Berbagi pengetahuan dengan komunitas ilmiah</li>
+                                        <li>• Meningkatkan reputasi akademik</li>
+                                        <li>• Memenuhi syarat kenaikan jabatan</li>
+                                        <li>• Berkontribusi pada perkembangan ilmu</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-lg">
+                                    <h3 class="text-lg font-bold text-orange-600 mb-2">⚡ Proses Singkat</h3>
+                                    <p class="text-gray-700 text-sm">Submit → Review → Revisi → Accepted → Published</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Sistem SINTA -->
+                <div class="slide h-full flex items-center hidden" id="slide3">
+                    <div class="w-full">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">🏆 Sistem Rating SINTA</h2>
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <div class="text-center mb-6">
+                                <div class="text-5xl mb-3">🇮🇩</div>
+                                <h3 class="text-xl font-bold text-blue-600 mb-3">Science and Technology Index (SINTA)
+                                </h3>
+                                <p class="text-gray-700 text-base max-w-3xl mx-auto">
+                                    Portal resmi Kementerian Riset dan Teknologi untuk mengindeks dan menilai kualitas
+                                    jurnal ilmiah Indonesia berdasarkan berbagai kriteria akademik.
+                                </p>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                    <div class="text-2xl mb-2">📈</div>
+                                    <h4 class="font-bold text-blue-600 text-sm">Akreditasi</h4>
+                                    <p class="text-xs text-gray-600">Penilaian kualitas jurnal</p>
+                                </div>
+                                <div class="text-center p-3 bg-green-50 rounded-lg">
+                                    <div class="text-2xl mb-2">🎯</div>
+                                    <h4 class="font-bold text-green-600 text-sm">Standarisasi</h4>
+                                    <p class="text-xs text-gray-600">Kriteria yang jelas</p>
+                                </div>
+                                <div class="text-center p-3 bg-purple-50 rounded-lg">
+                                    <div class="text-2xl mb-2">🌟</div>
+                                    <h4 class="font-bold text-purple-600 text-sm">Kredibilitas</h4>
+                                    <p class="text-xs text-gray-600">Pengakuan nasional</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Rating SINTA 1-3 -->
+                <div class="slide h-full flex items-center hidden" id="slide4">
+                    <div class="w-full">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">🥇 SINTA 1, 2, 3 - Tier Tertinggi
+                        </h2>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div
+                                class="rating-card bg-gradient-to-br from-yellow-400 to-yellow-600 p-4 rounded-xl shadow-lg text-white">
+                                <div class="text-center mb-3">
+                                    <div class="text-3xl mb-1">🥇</div>
+                                    <h3 class="text-xl font-bold">SINTA 1</h3>
+                                    <p class="text-yellow-100 text-sm">Kualitas Tertinggi</p>
+                                </div>
+                                <ul class="space-y-1 text-xs">
+                                    <li>• Terindeks Scopus/WoS</li>
+                                    <li>• Impact factor tinggi</li>
+                                    <li>• Peer review ketat</li>
+                                    <li>• Standar internasional</li>
+                                    <li>• Sitasi tinggi</li>
+                                </ul>
+                                <div class="mt-3 p-2 bg-yellow-500 rounded-lg">
+                                    <p class="text-xs font-semibold">Poin: 40 (Nasional) / 25 (Internasional)</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="rating-card bg-gradient-to-br from-gray-400 to-gray-600 p-4 rounded-xl shadow-lg text-white">
+                                <div class="text-center mb-3">
+                                    <div class="text-3xl mb-1">🥈</div>
+                                    <h3 class="text-xl font-bold">SINTA 2</h3>
+                                    <p class="text-gray-100 text-sm">Kualitas Sangat Baik</p>
+                                </div>
+                                <ul class="space-y-1 text-xs">
+                                    <li>• Terindeks database bereputasi</li>
+                                    <li>• Proses review berkualitas</li>
+                                    <li>• Manajemen editorial baik</li>
+                                    <li>• Publikasi teratur</li>
+                                    <li>• Visibilitas tinggi</li>
+                                </ul>
+                                <div class="mt-3 p-2 bg-gray-500 rounded-lg">
+                                    <p class="text-xs font-semibold">Poin: 30 (Nasional) / 20 (Internasional)</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="rating-card bg-gradient-to-br from-orange-400 to-orange-600 p-4 rounded-xl shadow-lg text-white">
+                                <div class="text-center mb-3">
+                                    <div class="text-3xl mb-1">🥉</div>
+                                    <h3 class="text-xl font-bold">SINTA 3</h3>
+                                    <p class="text-orange-100 text-sm">Kualitas Baik</p>
+                                </div>
+                                <ul class="space-y-1 text-xs">
+                                    <li>• Standar editorial memadai</li>
+                                    <li>• Peer review konsisten</li>
+                                    <li>• Publikasi berkala</li>
+                                    <li>• Cakupan bidang jelas</li>
+                                    <li>• Aksesibilitas baik</li>
+                                </ul>
+                                <div class="mt-3 p-2 bg-orange-500 rounded-lg">
+                                    <p class="text-xs font-semibold">Poin: 25 (Nasional) / 15 (Internasional)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 5: Rating SINTA 4-6 -->
+                <div class="slide h-full flex items-center hidden" id="slide5">
+                    <div class="w-full">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">📊 SINTA 4, 5, 6 - Tier
+                            Pengembangan</h2>
+                        <div class="grid grid-cols-3 gap-4 mb-4">
+                            <div
+                                class="rating-card bg-gradient-to-br from-blue-400 to-blue-600 p-4 rounded-xl shadow-lg text-white">
+                                <div class="text-center mb-3">
+                                    <div class="text-3xl mb-1">📘</div>
+                                    <h3 class="text-xl font-bold">SINTA 4</h3>
+                                    <p class="text-blue-100 text-sm">Kualitas Cukup</p>
+                                </div>
+                                <ul class="space-y-1 text-xs">
+                                    <li>• Standar dasar terpenuhi</li>
+                                    <li>• Review sederhana</li>
+                                    <li>• Publikasi cukup teratur</li>
+                                    <li>• Fokus bidang tertentu</li>
+                                </ul>
+                                <div class="mt-3 p-2 bg-blue-500 rounded-lg">
+                                    <p class="text-xs font-semibold">Poin: 20 (Nasional) / 10 (Internasional)</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="rating-card bg-gradient-to-br from-green-400 to-green-600 p-4 rounded-xl shadow-lg text-white">
+                                <div class="text-center mb-3">
+                                    <div class="text-3xl mb-1">📗</div>
+                                    <h3 class="text-xl font-bold">SINTA 5</h3>
+                                    <p class="text-green-100 text-sm">Tahap Berkembang</p>
+                                </div>
+                                <ul class="space-y-1 text-xs">
+                                    <li>• Memenuhi syarat minimal</li>
+                                    <li>• Proses review basic</li>
+                                    <li>• Publikasi tidak teratur</li>
+                                    <li>• Perlu perbaikan</li>
+                                </ul>
+                                <div class="mt-3 p-2 bg-green-500 rounded-lg">
+                                    <p class="text-xs font-semibold">Poin: 15 (Nasional) / 5 (Internasional)</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="rating-card bg-gradient-to-br from-red-400 to-red-600 p-4 rounded-xl shadow-lg text-white">
+                                <div class="text-center mb-3">
+                                    <div class="text-3xl mb-1">📕</div>
+                                    <h3 class="text-xl font-bold">SINTA 6</h3>
+                                    <p class="text-red-100 text-sm">Perlu Peningkatan</p>
+                                </div>
+                                <ul class="space-y-1 text-xs">
+                                    <li>• Standar minimum</li>
+                                    <li>• Review terbatas</li>
+                                    <li>• Publikasi jarang</li>
+                                    <li>• Butuh pengembangan</li>
+                                </ul>
+                                <div class="mt-3 p-2 bg-red-500 rounded-lg">
+                                    <p class="text-xs font-semibold">Poin: 10 (Nasional) / 3 (Internasional)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl shadow-lg">
+                            <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">💡 Tips Memilih Jurnal</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <h4 class="font-semibold text-green-600 mb-2 text-sm">✅ Yang Harus Dilakukan:</h4>
+                                    <ul class="text-xs text-gray-700 space-y-1">
+                                        <li>• Pilih sesuai bidang penelitian</li>
+                                        <li>• Cek rating SINTA terbaru</li>
+                                        <li>• Baca panduan untuk penulis</li>
+                                        <li>• Perhatikan biaya publikasi</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-red-600 mb-2 text-sm">❌ Yang Harus Dihindari:</h4>
+                                    <ul class="text-xs text-gray-700 space-y-1">
+                                        <li>• Jurnal predator (fake journal)</li>
+                                        <li>• Jurnal tanpa peer review</li>
+                                        <li>• Biaya publikasi tidak wajar</li>
+                                        <li>• Tidak terindeks SINTA</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 6: Tabel Perbandingan -->
+                <div class="slide h-full flex items-center hidden" id="slide6">
+                    <div class="w-full">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">📋 Tabel Perbandingan Rating SINTA
+                        </h2>
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs">
+                                    <thead class="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                                        <tr>
+                                            <th class="px-3 py-2 text-left font-bold">Rating</th>
+                                            <th class="px-3 py-2 text-left font-bold">Kualitas</th>
+                                            <th class="px-3 py-2 text-left font-bold">Karakteristik Utama</th>
+                                            <th class="px-3 py-2 text-center font-bold">Poin Nasional</th>
+                                            <th class="px-3 py-2 text-center font-bold">Poin Internasional</th>
+                                            <th class="px-3 py-2 text-center font-bold">Rekomendasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            class="bg-gradient-to-r from-yellow-50 to-yellow-100 border-b border-yellow-200">
+                                            <td class="px-3 py-2">
+                                                <div class="flex items-center">
+                                                    <span class="text-lg mr-1">🥇</span>
+                                                    <span class="font-bold text-yellow-700">SINTA 1</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-3 py-2 font-semibold text-yellow-800">Tertinggi</td>
+                                            <td class="px-3 py-2 text-gray-700">Terindeks Scopus/WoS, Impact factor
+                                                tinggi</td>
+                                            <td class="px-3 py-2 text-center font-bold text-yellow-700">40</td>
+                                            <td class="px-3 py-2 text-center font-bold text-yellow-700">25</td>
+                                            <td class="px-3 py-2 text-center">
+                                                <span
+                                                    class="bg-green-100 text-green-800 px-2 py-1 rounded-full font-semibold">Sangat
+                                                    Direkomendasikan</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                                            <td class="px-3 py-2">
+                                                <div class="flex items-center">
+                                                    <span class="text-lg mr-1">🥈</span>
+                                                    <span class="font-bold text-gray-700">SINTA 2</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-3 py-2 font-semibold text-gray-800">Sangat Baik</td>
+                                            <td class="px-3 py-2 text-gray-700">Database bereputasi, Review berkualitas
+                                            </td>
+                                            <td class="px-3 py-2 text-center font-bold text-gray-700">30</td>
+                                            <td class="px-3 py-2 text-center font-bold text-gray-700">20</td>
+                                            <td class="px-3 py-2 text-center">
+                                                <span
+                                                    class="bg-green-100 text-green-800 px-2 py-1 rounded-full font-semibold">Direkomendasikan</span>
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            class="bg-gradient-to-r from-orange-50 to-orange-100 border-b border-orange-200">
+                                            <td class="px-3 py-2">
+                                                <div class="flex items-center">
+                                                    <span class="text-lg mr-1">🥉</span>
+                                                    <span class="font-bold text-orange-700">SINTA 3</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-3 py-2 font-semibold text-orange-800">Baik</td>
+                                            <td class="px-3 py-2 text-gray-700">Standar editorial memadai, Peer review
+                                                konsisten</td>
+                                            <td class="px-3 py-2 text-center font-bold text-orange-700">25</td>
+                                            <td class="px-3 py-2 text-center font-bold text-orange-700">15</td>
+                                            <td class="px-3 py-2 text-center">
+                                                <span
+                                                    class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-semibold">Baik</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gradient-to-r from-blue-50 to-blue-100 border-b border-blue-200">
+                                            <td class="px-3 py-2">
+                                                <div class="flex items-center">
+                                                    <span class="text-lg mr-1">📘</span>
+                                                    <span class="font-bold text-blue-700">SINTA 4</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-3 py-2 font-semibold text-blue-800">Cukup</td>
+                                            <td class="px-3 py-2 text-gray-700">Standar dasar terpenuhi, Review
+                                                sederhana</td>
+                                            <td class="px-3 py-2 text-center font-bold text-blue-700">20</td>
+                                            <td class="px-3 py-2 text-center font-bold text-blue-700">10</td>
+                                            <td class="px-3 py-2 text-center">
+                                                <span
+                                                    class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-semibold">Cukup</span>
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            class="bg-gradient-to-r from-green-50 to-green-100 border-b border-green-200">
+                                            <td class="px-3 py-2">
+                                                <div class="flex items-center">
+                                                    <span class="text-lg mr-1">📗</span>
+                                                    <span class="font-bold text-green-700">SINTA 5</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-3 py-2 font-semibold text-green-800">Berkembang</td>
+                                            <td class="px-3 py-2 text-gray-700">Syarat minimal, Review basic</td>
+                                            <td class="px-3 py-2 text-center font-bold text-green-700">15</td>
+                                            <td class="px-3 py-2 text-center font-bold text-green-700">5</td>
+                                            <td class="px-3 py-2 text-center">
+                                                <span
+                                                    class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full font-semibold">Perlu
+                                                    Hati-hati</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gradient-to-r from-red-50 to-red-100">
+                                            <td class="px-3 py-2">
+                                                <div class="flex items-center">
+                                                    <span class="text-lg mr-1">📕</span>
+                                                    <span class="font-bold text-red-700">SINTA 6</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-3 py-2 font-semibold text-red-800">Perlu Peningkatan</td>
+                                            <td class="px-3 py-2 text-gray-700">Standar minimum, Review terbatas</td>
+                                            <td class="px-3 py-2 text-center font-bold text-red-700">10</td>
+                                            <td class="px-3 py-2 text-center font-bold text-red-700">3</td>
+                                            <td class="px-3 py-2 text-center">
+                                                <span
+                                                    class="bg-red-100 text-red-800 px-2 py-1 rounded-full font-semibold">Tidak
+                                                    Direkomendasikan</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 grid grid-cols-3 gap-3">
+                            <div class="bg-green-100 p-3 rounded-lg text-center">
+                                <div class="text-xl mb-1">🎯</div>
+                                <h4 class="font-bold text-green-800 text-sm">Target Utama</h4>
+                                <p class="text-xs text-green-700">SINTA 1-2 untuk karir akademik optimal</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-lg text-center">
+                                <div class="text-xl mb-1">⚖️</div>
+                                <h4 class="font-bold text-blue-800 text-sm">Pertimbangan</h4>
+                                <p class="text-xs text-blue-700">SINTA 3-4 masih dapat diterima untuk pemula</p>
+                            </div>
+                            <div class="bg-red-100 p-3 rounded-lg text-center">
+                                <div class="text-xl mb-1">⚠️</div>
+                                <h4 class="font-bold text-red-800 text-sm">Hindari</h4>
+                                <p class="text-xs text-red-700">SINTA 5-6 kurang memberikan nilai akademik</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Navigation -->
+        <footer class="bg-white shadow-lg p-4 flex-shrink-0">
+            <div class="max-w-6xl mx-auto flex justify-between items-center">
+                <button id="prevBtn"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                    ← Sebelumnya
+                </button>
+
+                <div class="flex space-x-2">
+                    <button class="slide-dot w-3 h-3 rounded-full bg-blue-500 transition-colors"
+                        data-slide="1"></button>
+                    <button class="slide-dot w-3 h-3 rounded-full bg-gray-300 transition-colors"
+                        data-slide="2"></button>
+                    <button class="slide-dot w-3 h-3 rounded-full bg-gray-300 transition-colors"
+                        data-slide="3"></button>
+                    <button class="slide-dot w-3 h-3 rounded-full bg-gray-300 transition-colors"
+                        data-slide="4"></button>
+                    <button class="slide-dot w-3 h-3 rounded-full bg-gray-300 transition-colors"
+                        data-slide="5"></button>
+                    <button class="slide-dot w-3 h-3 rounded-full bg-gray-300 transition-colors"
+                        data-slide="6"></button>
+                </div>
+
+                <button id="nextBtn"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors text-sm">
+                    Selanjutnya →
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 6;
+
+        function updateSlide(slideNumber) {
+            // Hide all slides
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+                slide.classList.add('hidden');
+            });
+
+            // Show current slide
+            const currentSlideElement = document.getElementById(`slide${slideNumber}`);
+            currentSlideElement.classList.add('active');
+            currentSlideElement.classList.remove('hidden');
+
+            // Update progress bar
+            const progressPercent = (slideNumber / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+            // Update slide counter
+            document.getElementById('currentSlide').textContent = slideNumber;
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = slideNumber === 1;
+            document.getElementById('nextBtn').disabled = slideNumber === totalSlides;
+
+            // Update dots
+            document.querySelectorAll('.slide-dot').forEach((dot, index) => {
+                if (index + 1 === slideNumber) {
+                    dot.classList.remove('bg-gray-300');
+                    dot.classList.add('bg-blue-500');
+                } else {
+                    dot.classList.remove('bg-blue-500');
+                    dot.classList.add('bg-gray-300');
+                }
+            });
+
+            currentSlide = slideNumber;
+        }
+
+        // Navigation buttons
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentSlide > 1) {
+                updateSlide(currentSlide - 1);
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentSlide < totalSlides) {
+                updateSlide(currentSlide + 1);
+            }
+        });
+
+        // Dot navigation
+        document.querySelectorAll('.slide-dot').forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                updateSlide(index + 1);
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentSlide > 1) {
+                updateSlide(currentSlide - 1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides) {
+                updateSlide(currentSlide + 1);
+            }
+        });
+
+        // Initialize
+        updateSlide(1);
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'989c024567e23e0d',t:'MTc1OTY1Nzc2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
