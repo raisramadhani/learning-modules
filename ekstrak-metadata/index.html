@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekstrak Metadata Foto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exif-js@2.3.0/exif.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        .upload-area {
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .metadata-card {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-tab {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body class="h-full bg-gradient-to-br from-blue-50 to-indigo-100 font-sans">
+    <div class="min-h-full p-6">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">📄 Ekstrak Metadata File</h1>
+                <p class="text-gray-600">Ekstrak informasi tersembunyi dari berbagai jenis file</p>
+            </div>
+
+            <!-- Navigation Menu -->
+            <div class="bg-white rounded-2xl shadow-lg p-2 mb-8">
+                <div class="flex flex-wrap justify-center gap-2">
+                    <button id="photoTab"
+                        class="nav-tab active px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center">
+                        <span class="mr-2">📸</span> Foto
+                    </button>
+                    <button id="documentTab"
+                        class="nav-tab px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center">
+                        <span class="mr-2">📄</span> Dokumen
+                    </button>
+                </div>
+            </div>
+
+            <!-- Photo Upload Area -->
+            <div id="photoUploadSection" class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+                <div id="photoUploadArea"
+                    class="upload-area border-3 border-dashed border-blue-300 rounded-xl p-12 text-center cursor-pointer bg-blue-50 hover:bg-blue-100">
+                    <div class="mb-4">
+                        <svg class="mx-auto h-16 w-16 text-blue-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Klik atau seret foto ke sini</h3>
+                    <p class="text-gray-500">Mendukung format JPG, PNG, TIFF</p>
+                    <input type="file" id="photoFileInput" class="hidden" accept="image/*">
+                </div>
+            </div>
+
+            <!-- Document Upload Area -->
+            <div id="documentUploadSection" class="hidden bg-white rounded-2xl shadow-lg p-8 mb-8">
+                <div id="documentUploadArea"
+                    class="upload-area border-3 border-dashed border-green-300 rounded-xl p-12 text-center cursor-pointer bg-green-50 hover:bg-green-100">
+                    <div class="mb-4">
+                        <svg class="mx-auto h-16 w-16 text-green-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Klik atau seret dokumen ke sini</h3>
+                    <p class="text-gray-500">Mendukung format PDF, DOCX</p>
+                    <input type="file" id="documentFileInput" class="hidden" accept=".pdf,.docx">
+                </div>
+            </div>
+
+            <!-- Preview Area -->
+            <div id="previewSection" class="hidden bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-3">Preview Foto</h2>
+                <div class="flex justify-center">
+                    <img id="imagePreview" class="max-w-full max-h-64 rounded-lg shadow-md" alt="Preview">
+                </div>
+            </div>
+
+            <!-- Metadata Results -->
+            <div id="metadataSection" class="hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">📊 Informasi Metadata</h2>
+
+                    <!-- Two Column Layout for Desktop -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <!-- Basic Info -->
+                            <div
+                                class="metadata-card bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                                <h3 class="text-lg font-semibold text-green-800 mb-4 flex items-center">
+                                    <span class="mr-2">📋</span> Informasi Dasar
+                                </h3>
+                                <div id="basicInfo" class="grid grid-cols-1 gap-3"></div>
+                            </div>
+
+                            <!-- Camera Info -->
+                            <div
+                                class="metadata-card bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-200">
+                                <h3 class="text-lg font-semibold text-purple-800 mb-4 flex items-center">
+                                    <span class="mr-2">📷</span> Informasi Kamera
+                                </h3>
+                                <div id="cameraInfo" class="grid grid-cols-1 gap-3"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <!-- Location Info -->
+                            <div
+                                class="metadata-card bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-6 border border-red-200">
+                                <h3 class="text-lg font-semibold text-red-800 mb-4 flex items-center">
+                                    <span class="mr-2">📍</span> Informasi Lokasi
+                                </h3>
+                                <div id="locationInfo"></div>
+                            </div>
+
+                            <!-- Technical Details -->
+                            <div
+                                class="metadata-card bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200">
+                                <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                                    <span class="mr-2">⚙️</span> Detail Teknis
+                                </h3>
+                                <div id="technicalInfo" class="grid grid-cols-1 gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Metadata Results -->
+            <div id="documentMetadataSection" class="hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">📊 Informasi Metadata Dokumen</h2>
+
+                    <!-- Document Info Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <!-- Basic Document Info -->
+                            <div
+                                class="metadata-card bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                                <h3 class="text-lg font-semibold text-green-800 mb-4 flex items-center">
+                                    <span class="mr-2">📋</span> Informasi Dasar
+                                </h3>
+                                <div id="documentBasicInfo" class="grid grid-cols-1 gap-3"></div>
+                            </div>
+
+                            <!-- Author Info -->
+                            <div
+                                class="metadata-card bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-200">
+                                <h3 class="text-lg font-semibold text-purple-800 mb-4 flex items-center">
+                                    <span class="mr-2">👤</span> Informasi Penulis
+                                </h3>
+                                <div id="documentAuthorInfo" class="grid grid-cols-1 gap-3"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <!-- Creation Info -->
+                            <div
+                                class="metadata-card bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200">
+                                <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                                    <span class="mr-2">📅</span> Informasi Waktu
+                                </h3>
+                                <div id="documentTimeInfo" class="grid grid-cols-1 gap-3"></div>
+                            </div>
+
+                            <!-- Technical Info -->
+                            <div
+                                class="metadata-card bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
+                                <h3 class="text-lg font-semibold text-orange-800 mb-4 flex items-center">
+                                    <span class="mr-2">⚙️</span> Detail Teknis
+                                </h3>
+                                <div id="documentTechnicalInfo" class="grid grid-cols-1 gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- No Metadata Message -->
+            <div id="noMetadataSection" class="hidden bg-white rounded-2xl shadow-lg p-8">
+                <div class="text-center">
+                    <div class="text-6xl mb-4">😔</div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Tidak Ada Metadata</h2>
+                    <p class="text-gray-600">File ini tidak memiliki metadata atau metadata telah dihapus.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation elements
+        const photoTab = document.getElementById('photoTab');
+        const documentTab = document.getElementById('documentTab');
+        const photoUploadSection = document.getElementById('photoUploadSection');
+        const documentUploadSection = document.getElementById('documentUploadSection');
+
+        // Photo elements
+        const photoUploadArea = document.getElementById('photoUploadArea');
+        const photoFileInput = document.getElementById('photoFileInput');
+        const previewSection = document.getElementById('previewSection');
+        const imagePreview = document.getElementById('imagePreview');
+        const metadataSection = document.getElementById('metadataSection');
+
+        // Document elements
+        const documentUploadArea = document.getElementById('documentUploadArea');
+        const documentFileInput = document.getElementById('documentFileInput');
+        const documentMetadataSection = document.getElementById('documentMetadataSection');
+
+        // Common elements
+        const noMetadataSection = document.getElementById('noMetadataSection');
+
+        // Navigation handlers
+        photoTab.addEventListener('click', () => {
+            switchTab('photo');
+        });
+
+        documentTab.addEventListener('click', () => {
+            switchTab('document');
+        });
+
+        function switchTab(tab) {
+            // Reset all sections
+            photoUploadSection.classList.add('hidden');
+            documentUploadSection.classList.add('hidden');
+            previewSection.classList.add('hidden');
+            metadataSection.classList.add('hidden');
+            documentMetadataSection.classList.add('hidden');
+            noMetadataSection.classList.add('hidden');
+
+            // Update tab styles
+            photoTab.classList.remove('active');
+            documentTab.classList.remove('active');
+
+            if (tab === 'photo') {
+                photoTab.classList.add('active');
+                photoUploadSection.classList.remove('hidden');
+            } else {
+                documentTab.classList.add('active');
+                documentUploadSection.classList.remove('hidden');
+            }
+        }
+
+        // Photo upload handlers
+        photoUploadArea.addEventListener('click', () => {
+            photoFileInput.click();
+        });
+
+        photoUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            photoUploadArea.classList.add('bg-blue-200');
+        });
+
+        photoUploadArea.addEventListener('dragleave', () => {
+            photoUploadArea.classList.remove('bg-blue-200');
+        });
+
+        photoUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            photoUploadArea.classList.remove('bg-blue-200');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handlePhotoFile(files[0]);
+            }
+        });
+
+        photoFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handlePhotoFile(e.target.files[0]);
+            }
+        });
+
+        // Document upload handlers
+        documentUploadArea.addEventListener('click', () => {
+            documentFileInput.click();
+        });
+
+        documentUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            documentUploadArea.classList.add('bg-green-200');
+        });
+
+        documentUploadArea.addEventListener('dragleave', () => {
+            documentUploadArea.classList.remove('bg-green-200');
+        });
+
+        documentUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            documentUploadArea.classList.remove('bg-green-200');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleDocumentFile(files[0]);
+            }
+        });
+
+        documentFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleDocumentFile(e.target.files[0]);
+            }
+        });
+
+        function handlePhotoFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Silakan pilih file gambar yang valid.');
+                return;
+            }
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                previewSection.classList.remove('hidden');
+
+                // Extract metadata
+                extractPhotoMetadata(file);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleDocumentFile(file) {
+            const fileType = file.type;
+            const fileName = file.name.toLowerCase();
+
+            if (fileType === 'application/pdf' || fileName.endsWith('.pdf')) {
+                extractPdfMetadata(file);
+            } else if (fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileName.endsWith('.docx')) {
+                extractDocxMetadata(file);
+            } else {
+                alert('Silakan pilih file PDF atau DOCX yang valid.');
+                return;
+            }
+        }
+
+        function extractPhotoMetadata(file) {
+            EXIF.getData(file, function () {
+                const allMetaData = EXIF.getAllTags(this);
+
+                if (Object.keys(allMetaData).length === 0) {
+                    showNoMetadata();
+                    return;
+                }
+
+                displayPhotoMetadata(allMetaData, file);
+            });
+        }
+
+        function displayPhotoMetadata(metadata, file) {
+            metadataSection.classList.remove('hidden');
+            documentMetadataSection.classList.add('hidden');
+            noMetadataSection.classList.add('hidden');
+
+            // Basic Info
+            const basicInfo = document.getElementById('basicInfo');
+            basicInfo.innerHTML = '';
+
+            const basicData = [
+                { label: 'Nama File', value: file.name },
+                { label: 'Ukuran File', value: formatFileSize(file.size) },
+                { label: 'Tipe File', value: file.type },
+                { label: 'Tanggal Diambil', value: metadata.DateTime || metadata.DateTimeOriginal || 'Tidak tersedia' },
+                { label: 'Lebar Gambar', value: metadata.ExifImageWidth || metadata.PixelXDimension || 'Tidak tersedia' },
+                { label: 'Tinggi Gambar', value: metadata.ExifImageHeight || metadata.PixelYDimension || 'Tidak tersedia' }
+            ];
+
+            basicData.forEach(item => {
+                basicInfo.innerHTML += createInfoItem(item.label, item.value);
+            });
+
+            // Camera Info
+            const cameraInfo = document.getElementById('cameraInfo');
+            cameraInfo.innerHTML = '';
+
+            const cameraData = [
+                { label: 'Merek Kamera', value: metadata.Make || 'Tidak tersedia' },
+                { label: 'Model Kamera', value: metadata.Model || 'Tidak tersedia' }
+            ];
+
+            cameraData.forEach(item => {
+                cameraInfo.innerHTML += createInfoItem(item.label, item.value);
+            });
+
+            // Location Info
+            const locationInfo = document.getElementById('locationInfo');
+            locationInfo.innerHTML = '';
+
+            if (metadata.GPSLatitude && metadata.GPSLongitude) {
+                const lat = convertDMSToDD(metadata.GPSLatitude, metadata.GPSLatitudeRef);
+                const lon = convertDMSToDD(metadata.GPSLongitude, metadata.GPSLongitudeRef);
+
+                locationInfo.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${createInfoItem('Latitude', lat.toFixed(6))}
+                            ${createInfoItem('Longitude', lon.toFixed(6))}
+                            ${createInfoItem('Altitude', metadata.GPSAltitude ? `${metadata.GPSAltitude}m` : 'Tidak tersedia')}
+                        </div>
+                        <div class="mt-4">
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-4">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dOWTgHz-TrU_T4&q=${lat},${lon}&zoom=15"
+                                    width="100%" 
+                                    height="250" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            </div>
+                            <a href="https://www.google.com/maps?q=${lat},${lon}" target="_blank" rel="noopener noreferrer" 
+                               class="inline-flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                                <span class="mr-2">🗺️</span> Buka di Google Maps
+                            </a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                locationInfo.innerHTML = '<p class="text-gray-600">Informasi lokasi GPS tidak tersedia dalam foto ini.</p>';
+            }
+
+            // Technical Details
+            const technicalInfo = document.getElementById('technicalInfo');
+            technicalInfo.innerHTML = '';
+
+            const technicalData = [
+                { label: 'Orientation', value: getOrientation(metadata.Orientation) },
+                { label: 'Color Space', value: metadata.ColorSpace === 1 ? 'sRGB' : metadata.ColorSpace || 'Tidak tersedia' },
+                { label: 'Resolution Unit', value: metadata.ResolutionUnit === 2 ? 'inches' : metadata.ResolutionUnit === 3 ? 'cm' : 'Tidak tersedia' },
+                { label: 'X Resolution', value: metadata.XResolution || 'Tidak tersedia' },
+                { label: 'Y Resolution', value: metadata.YResolution || 'Tidak tersedia' },
+                { label: 'Software', value: metadata.Software || 'Tidak tersedia' },
+                { label: 'Exposure Mode', value: getExposureMode(metadata.ExposureMode) },
+                { label: 'Scene Type', value: metadata.SceneCaptureType !== undefined ? getSceneType(metadata.SceneCaptureType) : 'Tidak tersedia' }
+            ];
+
+            technicalData.forEach(item => {
+                technicalInfo.innerHTML += createInfoItem(item.label, item.value);
+            });
+        }
+
+        async function extractPdfMetadata(file) {
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                const metadata = await pdf.getMetadata();
+
+                displayDocumentMetadata(metadata, file, 'PDF');
+            } catch (error) {
+                console.error('Error extracting PDF metadata:', error);
+                showNoMetadata();
+            }
+        }
+
+        async function extractDocxMetadata(file) {
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const zip = await JSZip.loadAsync(arrayBuffer);
+
+                // Extract core properties
+                const corePropsFile = zip.file('docProps/core.xml');
+                const appPropsFile = zip.file('docProps/app.xml');
+
+                let coreProps = '';
+                let appProps = '';
+
+                if (corePropsFile) {
+                    coreProps = await corePropsFile.async('text');
+                }
+                if (appPropsFile) {
+                    appProps = await appPropsFile.async('text');
+                }
+
+                const metadata = parseDocxMetadata(coreProps, appProps);
+                displayDocumentMetadata(metadata, file, 'DOCX');
+            } catch (error) {
+                console.error('Error extracting DOCX metadata:', error);
+                showNoMetadata();
+            }
+        }
+
+        function parseDocxMetadata(coreProps, appProps) {
+            const metadata = {};
+
+            // Parse core properties
+            if (coreProps) {
+                metadata.title = extractXmlValue(coreProps, 'dc:title');
+                metadata.creator = extractXmlValue(coreProps, 'dc:creator');
+                metadata.lastModifiedBy = extractXmlValue(coreProps, 'cp:lastModifiedBy');
+                metadata.created = extractXmlValue(coreProps, 'dcterms:created');
+                metadata.modified = extractXmlValue(coreProps, 'dcterms:modified');
+                metadata.subject = extractXmlValue(coreProps, 'dc:subject');
+                metadata.description = extractXmlValue(coreProps, 'dc:description');
+                metadata.keywords = extractXmlValue(coreProps, 'cp:keywords');
+                metadata.category = extractXmlValue(coreProps, 'cp:category');
+            }
+
+            // Parse app properties
+            if (appProps) {
+                metadata.application = extractXmlValue(appProps, 'Application');
+                metadata.appVersion = extractXmlValue(appProps, 'AppVersion');
+                metadata.totalTime = extractXmlValue(appProps, 'TotalTime');
+                metadata.pages = extractXmlValue(appProps, 'Pages');
+                metadata.words = extractXmlValue(appProps, 'Words');
+                metadata.characters = extractXmlValue(appProps, 'Characters');
+                metadata.company = extractXmlValue(appProps, 'Company');
+            }
+
+            return metadata;
+        }
+
+        function extractXmlValue(xml, tagName) {
+            const regex = new RegExp(`<${tagName}[^>]*>([^<]*)<\/${tagName}>`, 'i');
+            const match = xml.match(regex);
+            return match ? match[1].trim() : null;
+        }
+
+        function displayDocumentMetadata(metadata, file, fileType) {
+            documentMetadataSection.classList.remove('hidden');
+            metadataSection.classList.add('hidden');
+            noMetadataSection.classList.add('hidden');
+
+            // Basic Document Info
+            const documentBasicInfo = document.getElementById('documentBasicInfo');
+            documentBasicInfo.innerHTML = '';
+
+            const basicData = [
+                { label: 'Nama File', value: file.name },
+                { label: 'Ukuran File', value: formatFileSize(file.size) },
+                { label: 'Tipe File', value: fileType },
+                { label: 'Judul', value: getMetadataValue(metadata, 'title') || getMetadataValue(metadata, 'info', 'Title') },
+                { label: 'Subjek', value: getMetadataValue(metadata, 'subject') || getMetadataValue(metadata, 'info', 'Subject') }
+            ];
+
+            basicData.forEach(item => {
+                documentBasicInfo.innerHTML += createInfoItem(item.label, item.value);
+            });
+
+            // Author Info
+            const documentAuthorInfo = document.getElementById('documentAuthorInfo');
+            documentAuthorInfo.innerHTML = '';
+
+            const authorData = [
+                { label: 'Penulis', value: getMetadataValue(metadata, 'creator') || getMetadataValue(metadata, 'info', 'Author') },
+                { label: 'Terakhir Diubah Oleh', value: getMetadataValue(metadata, 'lastModifiedBy') },
+                { label: 'Perusahaan', value: getMetadataValue(metadata, 'company') },
+                { label: 'Kata Kunci', value: getMetadataValue(metadata, 'keywords') || getMetadataValue(metadata, 'info', 'Keywords') }
+            ];
+
+            authorData.forEach(item => {
+                documentAuthorInfo.innerHTML += createInfoItem(item.label, item.value);
+            });
+
+            // Time Info
+            const documentTimeInfo = document.getElementById('documentTimeInfo');
+            documentTimeInfo.innerHTML = '';
+
+            const timeData = [
+                { label: 'Dibuat', value: formatDate(getMetadataValue(metadata, 'created')) || formatDate(getMetadataValue(metadata, 'info', 'CreationDate')) },
+                { label: 'Dimodifikasi', value: formatDate(getMetadataValue(metadata, 'modified')) || formatDate(getMetadataValue(metadata, 'info', 'ModDate')) },
+                { label: 'Total Waktu Edit', value: formatTotalTime(getMetadataValue(metadata, 'totalTime')) }
+            ];
+
+            timeData.forEach(item => {
+                documentTimeInfo.innerHTML += createInfoItem(item.label, item.value);
+            });
+
+            // Technical Info
+            const documentTechnicalInfo = document.getElementById('documentTechnicalInfo');
+            documentTechnicalInfo.innerHTML = '';
+
+            const technicalData = [
+                { label: 'Aplikasi', value: getMetadataValue(metadata, 'application') || getMetadataValue(metadata, 'info', 'Producer') },
+                { label: 'Versi Aplikasi', value: getMetadataValue(metadata, 'appVersion') },
+                { label: 'Jumlah Halaman', value: getMetadataValue(metadata, 'pages') || (metadata.numPages ? metadata.numPages.toString() : 'Tidak tersedia') },
+                { label: 'Jumlah Kata', value: getMetadataValue(metadata, 'words') },
+                { label: 'Jumlah Karakter', value: getMetadataValue(metadata, 'characters') }
+            ];
+
+            technicalData.forEach(item => {
+                documentTechnicalInfo.innerHTML += createInfoItem(item.label, item.value);
+            });
+        }
+
+        function getMetadataValue(metadata, key, subKey = null) {
+            if (subKey && metadata[key]) {
+                return metadata[key][subKey] || 'Tidak tersedia';
+            }
+            return metadata[key] || 'Tidak tersedia';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString || dateString === 'Tidak tersedia') return 'Tidak tersedia';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleString('id-ID');
+            } catch {
+                return dateString;
+            }
+        }
+
+        function formatTotalTime(minutes) {
+            if (!minutes || minutes === 'Tidak tersedia') return 'Tidak tersedia';
+            const totalMinutes = parseInt(minutes);
+            if (isNaN(totalMinutes)) return 'Tidak tersedia';
+
+            const hours = Math.floor(totalMinutes / 60);
+            const mins = totalMinutes % 60;
+            return `${hours} jam ${mins} menit`;
+        }
+
+        function showNoMetadata() {
+            metadataSection.classList.add('hidden');
+            documentMetadataSection.classList.add('hidden');
+            noMetadataSection.classList.remove('hidden');
+        }
+
+        function createInfoItem(label, value) {
+            return `
+                <div class="bg-white bg-opacity-50 rounded-lg p-3">
+                    <div class="text-sm font-medium text-gray-600">${label}</div>
+                    <div class="text-lg font-semibold text-gray-800">${value}</div>
+                </div>
+            `;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function convertDMSToDD(dms, ref) {
+            let dd = dms[0] + dms[1] / 60 + dms[2] / 3600;
+            if (ref === "S" || ref === "W") dd = dd * -1;
+            return dd;
+        }
+
+        function getOrientation(orientation) {
+            const orientations = {
+                1: 'Normal',
+                2: 'Flip horizontal',
+                3: 'Rotate 180°',
+                4: 'Flip vertical',
+                5: 'Rotate 90° CCW + flip horizontal',
+                6: 'Rotate 90° CW',
+                7: 'Rotate 90° CW + flip horizontal',
+                8: 'Rotate 90° CCW'
+            };
+            return orientations[orientation] || 'Tidak tersedia';
+        }
+
+        function getExposureMode(mode) {
+            const modes = {
+                0: 'Auto',
+                1: 'Manual',
+                2: 'Auto bracket'
+            };
+            return modes[mode] || 'Tidak tersedia';
+        }
+
+        function getSceneType(type) {
+            const types = {
+                0: 'Standard',
+                1: 'Landscape',
+                2: 'Portrait',
+                3: 'Night scene'
+            };
+            return types[type] || 'Tidak tersedia';
+        }
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98baae83b7354028',t:'MTc1OTk3OTM5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>

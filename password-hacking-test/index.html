@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Security Toolkit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        @keyframes matrix {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes typewriter {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        .matrix-char {
+            animation: matrix 2s linear infinite;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+        }
+
+        .hacking-text {
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .terminal {
+            background: #000;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            min-height: 200px;
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="min-h-full bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold text-green-400">🔐 Password Security Toolkit</h1>
+                </div>
+                <div class="flex space-x-4">
+                    <button id="navHackTest"
+                        class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition-colors font-semibold">
+                        🚀 Hack Test
+                    </button>
+                    <button id="navHashGen"
+                        class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors font-semibold">
+                        🔒 Hash Generator
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Hack Test Page -->
+        <div id="hackTestPage" class="page-content">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1
+                    class="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
+                    🚀 Password Hacking Simulator
+                </h1>
+                <p class="text-gray-300 text-lg">Simulasi edukatif untuk memahami keamanan password</p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Password Setup Section -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <h2 class="text-2xl font-semibold mb-4 text-green-400">🎯 Buat Password Anda</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Password (6 digit):</label>
+                                <input type="password" id="userPassword" maxlength="6"
+                                    class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-white text-center text-xl font-mono"
+                                    placeholder="••••••">
+                                <div class="text-xs text-gray-400 mt-1">Gunakan kombinasi huruf, angka, dan simbol</div>
+                            </div>
+
+                            <div class="flex space-x-3">
+                                <button id="setPasswordBtn"
+                                    class="flex-1 bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-lg font-semibold transition-colors">
+                                    📝 Set Password
+                                </button>
+                                <button id="hackPasswordBtn"
+                                    class="flex-1 bg-red-600 hover:bg-red-700 px-4 py-3 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled>
+                                    🚀 Hack Password
+                                </button>
+                            </div>
+
+                            <div id="passwordStatus" class="text-center text-gray-400 text-sm"></div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Section -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <h2 class="text-2xl font-semibold mb-4 text-blue-400">📊 Statistik Hacking</h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span>Fase Saat Ini:</span>
+                                <span id="currentPhase" class="font-mono text-cyan-400">Dictionary Attack</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Waktu Elapsed:</span>
+                                <span id="timeElapsed" class="font-mono text-green-400">00:00:00</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Percobaan:</span>
+                                <span id="attempts" class="font-mono text-yellow-400">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Kecepatan:</span>
+                                <span id="speed" class="font-mono text-purple-400">0 /detik</span>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="mt-4">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Progress:</span>
+                                    <span id="progressPercent">0%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-3">
+                                    <div id="progressBar"
+                                        class="progress-bar bg-gradient-to-r from-red-500 to-green-500 h-3 rounded-full"
+                                        style="width: 0%"></div>
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">
+                                    <span id="progressInfo">Siap untuk memulai...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terminal Section -->
+                <div class="mt-8 bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <h2 class="text-2xl font-semibold mb-4 text-green-400">💻 Terminal Hacking</h2>
+                    <div id="terminal" class="terminal">
+                        <div class="text-green-400">Sistem siap untuk simulasi hacking...</div>
+                        <div class="text-gray-500">Ketik password dan klik 'Set Password' untuk memulai</div>
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="mt-8 bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <h2 class="text-2xl font-semibold mb-4 text-purple-400">ℹ️ Metode Hacking</h2>
+                    <div class="grid md:grid-cols-2 gap-6 text-sm">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-yellow-400 mb-3">📚 Dictionary Attack</h4>
+                            <ul class="text-gray-400 space-y-2">
+                                <li>• <strong>Fase 1:</strong> Mencoba password umum</li>
+                                <li>• Menggunakan daftar password populer</li>
+                                <li>• Sangat cepat dan efisien</li>
+                                <li>• Efektif untuk password lemah</li>
+                                <li>• Contoh: "123456", "password", "qwerty"</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-400 mb-3">🔧 Brute Force Attack</h4>
+                            <ul class="text-gray-400 space-y-2">
+                                <li>• <strong>Fase 2:</strong> Mencoba semua kombinasi</li>
+                                <li>• Karakter per karakter</li>
+                                <li>• Lebih lambat tapi pasti berhasil</li>
+                                <li>• Waktu tergantung kompleksitas password</li>
+                                <li>• Digunakan jika dictionary gagal</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-4 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                        <p class="text-blue-300 text-sm">
+                            <strong>💡 Tips Keamanan:</strong> Gunakan password yang panjang, acak, dan tidak ada di
+                            kamus.
+                            Kombinasikan huruf besar/kecil, angka, dan simbol untuk meningkatkan keamanan.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Matrix Background Effect -->
+                <div id="matrixEffect"
+                    class="fixed inset-0 pointer-events-none opacity-0 transition-opacity duration-1000"
+                    style="z-index: -1;">
+                    <div class="absolute inset-0 overflow-hidden">
+                        <!-- Matrix characters will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hash Generator Page -->
+        <div id="hashGenPage" class="page-content hidden">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1
+                    class="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                    🔒 Password Hash Generator
+                </h1>
+                <p class="text-gray-300 text-lg">Konversi password menjadi hash untuk keamanan</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- Input Section -->
+                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-400">📝 Input Password</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Password:</label>
+                            <input type="text" id="passwordInput"
+                                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
+                                placeholder="Masukkan password yang ingin di-hash...">
+                        </div>
+
+                        <button id="generateHashBtn"
+                            class="w-full bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-lg font-semibold transition-colors">
+                            🔒 Generate Hash
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hash Results -->
+                <div class="grid md:grid-cols-1 gap-6">
+                    <!-- MD5 Hash -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-red-400">MD5 Hash</h3>
+                            <span class="text-xs bg-red-600 px-2 py-1 rounded">Legacy - Tidak Aman</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-3">Hash pertama yang populer (1991), sekarang sudah tidak
+                            aman untuk password</p>
+                        <div class="bg-gray-900 p-4 rounded-lg border">
+                            <div class="flex items-center justify-between">
+                                <code id="md5Result" class="text-red-300 font-mono text-sm break-all">-</code>
+                                <button id="copyMd5"
+                                    class="ml-2 px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-xs transition-colors">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHA-256 Hash -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-yellow-400">SHA-256 Hash</h3>
+                            <span class="text-xs bg-yellow-600 px-2 py-1 rounded">Populer</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-3">Hash yang sangat populer saat ini, bagian dari keluarga
+                            SHA-2</p>
+                        <div class="bg-gray-900 p-4 rounded-lg border">
+                            <div class="flex items-center justify-between">
+                                <code id="sha256Result" class="text-yellow-300 font-mono text-sm break-all">-</code>
+                                <button id="copySha256"
+                                    class="ml-2 px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-xs transition-colors">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHA-512 Hash -->
+                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-green-400">SHA-512 Hash</h3>
+                            <span class="text-xs bg-green-600 px-2 py-1 rounded">Sangat Aman</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-3">Hash terkuat dari keluarga SHA-2, sangat aman untuk
+                            aplikasi modern</p>
+                        <div class="bg-gray-900 p-4 rounded-lg border">
+                            <div class="flex items-center justify-between">
+                                <code id="sha512Result" class="text-green-300 font-mono text-sm break-all">-</code>
+                                <button id="copySha512"
+                                    class="ml-2 px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-xs transition-colors">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="mt-8 bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-4 text-purple-400">ℹ️ Informasi Hash</h3>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-400 mb-2">MD5</h4>
+                            <ul class="text-gray-400 space-y-1">
+                                <li>• Panjang: 128 bit (32 hex)</li>
+                                <li>• Tahun: 1991</li>
+                                <li>• Status: Deprecated</li>
+                                <li>• Kegunaan: Legacy systems</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-yellow-400 mb-2">SHA-256</h4>
+                            <ul class="text-gray-400 space-y-1">
+                                <li>• Panjang: 256 bit (64 hex)</li>
+                                <li>• Tahun: 2001</li>
+                                <li>• Status: Aman</li>
+                                <li>• Kegunaan: Bitcoin, SSL</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-400 mb-2">SHA-512</h4>
+                            <ul class="text-gray-400 space-y-1">
+                                <li>• Panjang: 512 bit (128 hex)</li>
+                                <li>• Tahun: 2001</li>
+                                <li>• Status: Sangat Aman</li>
+                                <li>• Kegunaan: High security</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation variables
+        let currentPage = 'hackTest';
+
+        // Hack Test variables
+        let targetPassword = '';
+        let isHacking = false;
+        let startTime = 0;
+        let hackingInterval = null;
+        let timeInterval = null;
+        let attempts = 0;
+        let currentGuess = '';
+        let currentPhase = 'dictionary'; // 'dictionary' or 'bruteforce'
+        let dictionaryIndex = 0;
+
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+        // Common passwords to try first (6 characters exactly)
+        const commonPasswords = [
+            '123456',
+            'passwo', // password (truncated to 6)
+            'admin1',
+            'qwerty',
+            'abc123',
+            'pass12',
+            'login1',
+            '111111',
+            '000000',
+            'master'
+        ];
+
+        // Navigation elements
+        const navHackTest = document.getElementById('navHackTest');
+        const navHashGen = document.getElementById('navHashGen');
+        const hackTestPage = document.getElementById('hackTestPage');
+        const hashGenPage = document.getElementById('hashGenPage');
+
+        // Hash Generator elements
+        const passwordInput = document.getElementById('passwordInput');
+        const generateHashBtn = document.getElementById('generateHashBtn');
+        const md5Result = document.getElementById('md5Result');
+        const sha256Result = document.getElementById('sha256Result');
+        const sha512Result = document.getElementById('sha512Result');
+        const copyMd5 = document.getElementById('copyMd5');
+        const copySha256 = document.getElementById('copySha256');
+        const copySha512 = document.getElementById('copySha512');
+
+        // Hack Test elements
+        const setPasswordBtn = document.getElementById('setPasswordBtn');
+        const hackPasswordBtn = document.getElementById('hackPasswordBtn');
+        const userPasswordInput = document.getElementById('userPassword');
+        const passwordStatus = document.getElementById('passwordStatus');
+        const terminal = document.getElementById('terminal');
+        const timeElapsed = document.getElementById('timeElapsed');
+        const attemptsDisplay = document.getElementById('attempts');
+        const speedDisplay = document.getElementById('speed');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const matrixEffect = document.getElementById('matrixEffect');
+        const currentPhaseDisplay = document.getElementById('currentPhase');
+        const progressInfo = document.getElementById('progressInfo');
+
+        // Navigation functions
+        function showPage(pageName) {
+            // Hide all pages
+            hackTestPage.classList.add('hidden');
+            hashGenPage.classList.add('hidden');
+
+            // Update navigation buttons
+            navHackTest.classList.remove('bg-red-700');
+            navHackTest.classList.add('bg-red-600');
+            navHashGen.classList.remove('bg-blue-700');
+            navHashGen.classList.add('bg-blue-600');
+
+            // Show selected page and highlight nav
+            if (pageName === 'hackTest') {
+                hackTestPage.classList.remove('hidden');
+                navHackTest.classList.remove('bg-red-600');
+                navHackTest.classList.add('bg-red-700');
+            } else if (pageName === 'hashGen') {
+                hashGenPage.classList.remove('hidden');
+                navHashGen.classList.remove('bg-blue-600');
+                navHashGen.classList.add('bg-blue-700');
+            }
+
+            currentPage = pageName;
+        }
+
+        // Navigation event listeners
+        navHackTest.addEventListener('click', () => showPage('hackTest'));
+        navHashGen.addEventListener('click', () => showPage('hashGen'));
+
+        // Hash Generator functions
+        function generateHashes() {
+            const password = passwordInput.value.trim();
+            if (!password) {
+                alert('Masukkan password terlebih dahulu!');
+                return;
+            }
+
+            // Generate MD5
+            const md5Hash = CryptoJS.MD5(password).toString();
+            md5Result.textContent = md5Hash;
+
+            // Generate SHA-256
+            const sha256Hash = CryptoJS.SHA256(password).toString();
+            sha256Result.textContent = sha256Hash;
+
+            // Generate SHA-512
+            const sha512Hash = CryptoJS.SHA512(password).toString();
+            sha512Result.textContent = sha512Hash;
+        }
+
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('bg-green-600');
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('bg-green-600');
+                }, 2000);
+            }).catch(() => {
+                alert('Gagal menyalin ke clipboard');
+            });
+        }
+
+        // Hash Generator event listeners
+        generateHashBtn.addEventListener('click', generateHashes);
+        passwordInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                generateHashes();
+            }
+        });
+
+        copyMd5.addEventListener('click', () => copyToClipboard(md5Result.textContent, copyMd5));
+        copySha256.addEventListener('click', () => copyToClipboard(sha256Result.textContent, copySha256));
+        copySha512.addEventListener('click', () => copyToClipboard(sha512Result.textContent, copySha512));
+
+        setPasswordBtn.addEventListener('click', function () {
+            const password = userPasswordInput.value.trim();
+            if (password.length !== 6) {
+                passwordStatus.textContent = '❌ Password harus tepat 6 karakter!';
+                passwordStatus.className = 'text-center text-red-400 text-sm';
+                return;
+            }
+
+            targetPassword = password;
+            passwordStatus.textContent = '✅ Password berhasil di-set! Siap untuk di-hack.';
+            passwordStatus.className = 'text-center text-green-400 text-sm';
+            hackPasswordBtn.disabled = false;
+
+            // Reset display elements
+            currentPhaseDisplay.textContent = 'Dictionary Attack';
+            currentPhaseDisplay.className = 'font-mono text-cyan-400';
+            progressInfo.textContent = 'Siap untuk memulai...';
+
+            addToTerminal('🔒 Password target telah di-set');
+            addToTerminal(`📏 Panjang password: ${password.length} karakter`);
+            addToTerminal('⚡ Sistem siap untuk memulai brute force attack...');
+            addToTerminal('📚 Akan dimulai dengan dictionary attack (password umum)');
+        });
+
+        hackPasswordBtn.addEventListener('click', function () {
+            if (isHacking) return;
+
+            startHacking();
+        });
+
+        function startHacking() {
+            isHacking = true;
+            startTime = Date.now();
+            attempts = 0;
+            currentGuess = '';
+            currentPhase = 'dictionary';
+            dictionaryIndex = 0;
+
+            hackPasswordBtn.textContent = '⏳ Hacking...';
+            hackPasswordBtn.disabled = true;
+            setPasswordBtn.disabled = true;
+
+            // Start matrix effect
+            matrixEffect.style.opacity = '0.3';
+            createMatrixEffect();
+
+            addToTerminal('🚀 MEMULAI BRUTE FORCE ATTACK...');
+            addToTerminal('🔍 Menganalisis target...');
+            addToTerminal('💻 Inisialisasi algoritma cracking...');
+            addToTerminal('📚 FASE 1: Mencoba password umum...');
+
+            // Start hacking simulation
+            hackingInterval = setInterval(simulateHacking, 150); // Slightly slower for better readability
+            timeInterval = setInterval(updateTimer, 100);
+        }
+
+        function simulateHacking() {
+            attempts++;
+
+            if (currentPhase === 'dictionary') {
+                // Update display
+                currentPhaseDisplay.textContent = 'Dictionary Attack';
+                currentPhaseDisplay.className = 'font-mono text-yellow-400';
+
+                // Dictionary attack phase - try common passwords
+                if (dictionaryIndex < commonPasswords.length) {
+                    const commonPassword = commonPasswords[dictionaryIndex];
+                    addToTerminal(`🔍 Mencoba password umum: "${commonPassword}" (Percobaan #${attempts})`);
+
+                    if (commonPassword === targetPassword) {
+                        // Found the password in dictionary!
+                        currentGuess = targetPassword;
+                        passwordCracked();
+                        return;
+                    } else {
+                        addToTerminal(`❌ "${commonPassword}" tidak cocok`);
+                        dictionaryIndex++;
+                    }
+
+                    // Update progress for dictionary phase (first 20% of progress)
+                    const dictionaryProgress = (dictionaryIndex / commonPasswords.length) * 20;
+                    progressBar.style.width = dictionaryProgress + '%';
+                    progressPercent.textContent = Math.round(dictionaryProgress) + '%';
+                    progressInfo.textContent = `Mencoba ${dictionaryIndex}/${commonPasswords.length} password umum...`;
+                } else {
+                    // Dictionary phase complete, switch to brute force
+                    currentPhase = 'bruteforce';
+                    currentGuess = '';
+                    addToTerminal('');
+                    addToTerminal('📚 FASE 1 SELESAI: Password tidak ditemukan di daftar umum');
+                    addToTerminal('🔧 FASE 2: Memulai brute force attack karakter per karakter...');
+                    addToTerminal('');
+                }
+            } else if (currentPhase === 'bruteforce') {
+                // Update display
+                currentPhaseDisplay.textContent = 'Brute Force Attack';
+                currentPhaseDisplay.className = 'font-mono text-red-400';
+
+                // Brute force phase - try character by character
+                const currentPosition = currentGuess.length;
+
+                if (currentPosition < 6) {
+                    // Try random character for current position
+                    const randomChar = characters[Math.floor(Math.random() * characters.length)];
+                    const testGuess = currentGuess + randomChar;
+
+                    // Check if this character matches the target at this position
+                    if (randomChar === targetPassword[currentPosition]) {
+                        // Found the correct character! Lock it in
+                        currentGuess = testGuess;
+                        addToTerminal(`✅ Karakter ${currentPosition + 1} ditemukan: '${randomChar}' - LOCKED!`);
+                        addToTerminal(`🔒 Progress: ${currentGuess}${'•'.repeat(6 - currentGuess.length)}`);
+                    } else {
+                        // Wrong character, show attempt
+                        const displayGuess = currentGuess + randomChar + '•'.repeat(5 - currentPosition);
+                        addToTerminal(`❌ Mencoba posisi ${currentPosition + 1}: ${displayGuess} (Percobaan #${attempts})`);
+                    }
+                }
+
+                // Update progress based on characters found (20% + 80% for brute force)
+                const bruteforceProgress = 20 + (currentGuess.length / 6) * 80;
+                progressBar.style.width = bruteforceProgress + '%';
+                progressPercent.textContent = Math.round(bruteforceProgress) + '%';
+                progressInfo.textContent = `Brute force: ${currentGuess.length}/6 karakter ditemukan...`;
+
+                // Check if password is completely cracked
+                if (currentGuess === targetPassword) {
+                    passwordCracked();
+                }
+            }
+
+            // Update stats
+            attemptsDisplay.textContent = attempts.toLocaleString();
+            const elapsed = (Date.now() - startTime) / 1000;
+            speedDisplay.textContent = Math.round(attempts / elapsed) + ' /detik';
+
+            // Auto-scroll terminal
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function passwordCracked() {
+            isHacking = false;
+            clearInterval(hackingInterval);
+            clearInterval(timeInterval);
+
+            const totalTime = (Date.now() - startTime) / 1000;
+
+            // Final updates
+            progressBar.style.width = '100%';
+            progressPercent.textContent = '100%';
+
+            // Success messages
+            addToTerminal('');
+            addToTerminal('🎉 ===============================');
+            addToTerminal('✅ PASSWORD BERHASIL DI-CRACK!');
+            addToTerminal(`🔓 Password: ${targetPassword}`);
+            addToTerminal(`⏱️  Waktu total: ${formatTime(totalTime)}`);
+            addToTerminal(`🔢 Total percobaan: ${attempts.toLocaleString()}`);
+
+            // Show which method was successful
+            if (currentPhase === 'dictionary') {
+                addToTerminal(`🎯 Metode: Dictionary Attack (Password umum)`);
+                addToTerminal(`📚 Ditemukan di posisi ${dictionaryIndex + 1} dari ${commonPasswords.length} password umum`);
+            } else {
+                addToTerminal(`🎯 Metode: Brute Force Attack (Karakter per karakter)`);
+                addToTerminal(`🔧 Password tidak ditemukan di daftar umum, berhasil di-crack dengan brute force`);
+            }
+
+            addToTerminal('🎉 ===============================');
+
+            // Reset buttons
+            hackPasswordBtn.textContent = '🚀 Hack Password';
+            hackPasswordBtn.disabled = true;
+            setPasswordBtn.disabled = false;
+
+            // Stop matrix effect
+            setTimeout(() => {
+                matrixEffect.style.opacity = '0';
+            }, 2000);
+
+            passwordStatus.textContent = '🎉 Password berhasil di-crack! Set password baru untuk mencoba lagi.';
+            passwordStatus.className = 'text-center text-green-400 text-sm';
+        }
+
+        function addToTerminal(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            div.className = 'hacking-text';
+            terminal.appendChild(div);
+
+            // Keep only last 20 lines
+            while (terminal.children.length > 20) {
+                terminal.removeChild(terminal.firstChild);
+            }
+        }
+
+        function updateTimer() {
+            const elapsed = (Date.now() - startTime) / 1000;
+            timeElapsed.textContent = formatTime(elapsed);
+        }
+
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function createMatrixEffect() {
+            const matrixContainer = matrixEffect.querySelector('.absolute');
+            matrixContainer.innerHTML = '';
+
+            for (let i = 0; i < 50; i++) {
+                const char = document.createElement('div');
+                char.textContent = characters[Math.floor(Math.random() * characters.length)];
+                char.className = 'matrix-char absolute text-green-500';
+                char.style.left = Math.random() * 100 + '%';
+                char.style.animationDelay = Math.random() * 2 + 's';
+                char.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                matrixContainer.appendChild(char);
+            }
+        }
+
+        // Allow Enter key to set password
+        userPasswordInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                setPasswordBtn.click();
+            }
+        });
+    </script>
+</body>
+
+</html>
