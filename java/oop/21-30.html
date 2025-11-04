@@ -25,7 +25,7 @@
                 <li><a href="week4.html">Week 4</a></li>
                 <li><a href="week6.html">Week 6</a></li>
                 <li><a href="week7.html">Week 7</a></li>
-                <li><a href="solution.html">Pembahasan Lengkap</a></li>
+                <li><a href="solution.html">Pembahasan Soal</a></li>
                 <li><a href="1-10.html">Soal 1-10</a></li>
                 <li><a href="11-20.html">Soal 11-20</a></li>
                 <li><a href="21-30.html" class="active">Soal 21-30</a></li>
@@ -305,12 +305,14 @@ class Test implements A, B {
             <div class="explanation-box">
                 <h3>Penjelasan:</h3>
                 <p>Ketika sebuah class mengimplementasikan multiple interfaces dengan method signature yang sama,
-                    <strong>satu implementasi cukup untuk memenuhi contract dari semua interface</strong>.</p>
+                    <strong>satu implementasi cukup untuk memenuhi contract dari semua interface</strong>.
+                </p>
 
                 <h4>Mengapa Valid:</h4>
                 <ul>
                     <li>Kedua interface (A dan B) punya method dengan <strong>signature yang identik</strong>:
-                        <code>void show()</code></li>
+                        <code>void show()</code>
+                    </li>
                     <li>Class Test mengimplementasikan method <code>show()</code> sekali</li>
                     <li>Implementasi ini memenuhi contract dari <strong>kedua interface</strong></li>
                     <li>Tidak ada konflik karena signature-nya sama</li>
@@ -429,7 +431,8 @@ class Test implements A, B {
                     <li><code>Integer a = 100;</code> - Autoboxing, nilai 100 ada dalam cache</li>
                     <li><code>Integer b = 100;</code> - Menggunakan object yang sama dari cache</li>
                     <li><code>a == b</code> - Membandingkan reference, <strong>sama</strong> (cached) →
-                        <strong>true</strong></li>
+                        <strong>true</strong>
+                    </li>
                     <li><code>Integer c = 200;</code> - Di luar cache range, membuat objek baru</li>
                     <li><code>Integer d = 200;</code> - Membuat objek baru lagi (tidak dari cache)</li>
                     <li><code>c == d</code> - Membandingkan reference, <strong>berbeda</strong> → <strong>false</strong>
@@ -935,7 +938,8 @@ void sum(int[] nums) {
 sum(new int[]{1, 2, 3});  // Less flexible</code></pre>
                     </div>
                     <p><strong>Contoh Real-world:</strong> <code>String.format(String format, Object... args)</code>,
-                        <code>System.out.printf(String format, Object... args)</code></p>
+                        <code>System.out.printf(String format, Object... args)</code>
+                    </p>
                 </div>
             </div>
         </section>
