@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembahasan Soal 1-10 - OOP Java</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/solution.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="java-icon">{ }</span>
+                <span>OOP Java</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="week1.html">Week 1</a></li>
+                <li><a href="week2.html">Week 2</a></li>
+                <li><a href="week3.html">Week 3</a></li>
+                <li><a href="week4.html">Week 4</a></li>
+                <li><a href="week6.html">Week 6</a></li>
+                <li><a href="week7.html">Week 7</a></li>
+                <li><a href="solution.html">Pembahasan Lengkap</a></li>
+                <li><a href="1-10.html" class="active">Soal 1-10</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="learning-header">
+        <h1>Pembahasan Soal 1-10</h1>
+        <p>Penjelasan lengkap untuk soal nomor 1 sampai 10 dengan analisis mendalam</p>
+    </div>
+
+    <div class="container">
+        <!-- Floating Navigation Widget -->
+        <div class="floating-nav" id="floatingNav">
+            <div class="floating-nav-header">
+                <span>Navigasi Soal</span>
+                <button class="toggle-nav" id="toggleNav">▼</button>
+            </div>
+            <div class="floating-nav-content" id="navContent">
+                <a href="#soal1" class="nav-item" data-soal="1">1</a>
+                <a href="#soal2" class="nav-item" data-soal="2">2</a>
+                <a href="#soal3" class="nav-item" data-soal="3">3</a>
+                <a href="#soal4" class="nav-item" data-soal="4">4</a>
+                <a href="#soal5" class="nav-item" data-soal="5">5</a>
+                <a href="#soal6" class="nav-item" data-soal="6">6</a>
+                <a href="#soal7" class="nav-item" data-soal="7">7</a>
+                <a href="#soal8" class="nav-item" data-soal="8">8</a>
+                <a href="#soal9" class="nav-item" data-soal="9">9</a>
+                <a href="#soal10" class="nav-item" data-soal="10">10</a>
+            </div>
+        </div>
+
+        <!-- Soal 1 -->
+        <section class="content-section" id="soal1">
+            <div class="question-header">
+                <h2>Soal 1: Static Variable dan Constructor</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Output dari program berikut adalah ...</p>
+                <div class="question-image">
+                    <img src="assets/questions/1.png" alt="Soal 1"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Demo {
+    static int count = 0;
+    Demo() { count++; }
+}
+public class Test {
+    public static void main(String[] args) {
+        Demo d1 = new Demo();
+        Demo d2 = new Demo();
+        d1.count++;
+        System.out.println(Demo.count);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. 3</p>
+                    <p>b. 1</p>
+                    <p>c. 2</p>
+                    <p>d. Error karena count diakses secara salah</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: a. 3</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p><strong>Static variable</strong> adalah variabel yang dimiliki oleh class, bukan oleh objek
+                    individual. Artinya, semua objek berbagi satu variabel static yang sama.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>static int count = 0;</code> - Variabel count diinisialisasi dengan nilai 0</li>
+                    <li><code>Demo d1 = new Demo();</code> - Constructor dipanggil, count++ → count = 1</li>
+                    <li><code>Demo d2 = new Demo();</code> - Constructor dipanggil lagi, count++ → count = 2</li>
+                    <li><code>d1.count++;</code> - count bertambah 1 → count = 3</li>
+                    <li><code>System.out.println(Demo.count);</code> - Mencetak nilai count = 3</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>b. 1</strong> - Salah karena constructor dipanggil 2 kali (saat new Demo()) dan ada
+                        increment tambahan (d1.count++)</li>
+                    <li><strong>c. 2</strong> - Salah karena ada increment tambahan setelah kedua objek dibuat</li>
+                    <li><strong>d. Error</strong> - Salah karena mengakses static variable melalui objek (d1.count)
+                        diperbolehkan di Java, meskipun lebih baik menggunakan Demo.count</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p>Static variable hanya ada satu salinan untuk seluruh class. Semua objek mengakses dan
+                        memodifikasi variabel yang sama. Cara terbaik mengaksesnya adalah melalui nama class
+                        (Demo.count), bukan melalui objek.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 2 -->
+        <section class="content-section" id="soal2">
+            <div class="question-header">
+                <h2>Soal 2: Method Overloading</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Perhatikan kode berikut:</p>
+                <div class="question-image">
+                    <img src="assets/questions/2.png" alt="Soal 2"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Calculator {
+    int add(int a, int b) {
+        return a + b;
+    }
+    double add(double a, double b) {
+        return a + b;
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println(calc.add(5, 3));
+        System.out.println(calc.add(5.5, 3.2));
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. 8 dan 8.7</p>
+                    <p>b. Error kompilasi</p>
+                    <p>c. 8.0 dan 8.7</p>
+                    <p>d. 8 dan 8.0</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: a. 8 dan 8.7</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>method overloading</strong> - kemampuan membuat beberapa
+                    method dengan nama yang sama tetapi parameter berbeda.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>calc.add(5, 3)</code> - Memanggil method <code>add(int a, int b)</code> karena parameter
+                        bertipe int</li>
+                    <li>Return value: 5 + 3 = <strong>8</strong> (int)</li>
+                    <li><code>calc.add(5.5, 3.2)</code> - Memanggil method <code>add(double a, double b)</code> karena
+                        parameter bertipe double</li>
+                    <li>Return value: 5.5 + 3.2 = <strong>8.7</strong> (double)</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>b. Error kompilasi</strong> - Salah. Method overloading diperbolehkan di Java selama
+                        signature method berbeda (jumlah/tipe parameter)</li>
+                    <li><strong>c. 8.0 dan 8.7</strong> - Salah. Method pertama return tipe int, jadi hasilnya 8, bukan
+                        8.0</li>
+                    <li><strong>d. 8 dan 8.0</strong> - Salah. Hasil 5.5 + 3.2 adalah 8.7, bukan 8.0</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Method Overloading</strong> memungkinkan kita membuat method dengan nama sama tetapi
+                        signature berbeda. Compiler menentukan method mana yang dipanggil berdasarkan tipe dan jumlah
+                        argumen saat compile-time.</p>
+                    <p><strong>Syarat Overloading:</strong></p>
+                    <ul>
+                        <li>Nama method harus sama</li>
+                        <li>Parameter harus berbeda (tipe, jumlah, atau urutan)</li>
+                        <li>Return type boleh berbeda</li>
+                        <li>Access modifier boleh berbeda</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 3 -->
+        <section class="content-section" id="soal3">
+            <div class="question-header">
+                <h2>Soal 3: Inheritance dan Constructor</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Output dari program berikut adalah ...</p>
+                <div class="question-image">
+                    <img src="assets/questions/3.png" alt="Soal 3"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Parent {
+    Parent() {
+        System.out.println("Parent Constructor");
+    }
+}
+class Child extends Parent {
+    Child() {
+        System.out.println("Child Constructor");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Child c = new Child();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Child Constructor</p>
+                    <p>b. Parent Constructor</p>
+                    <p>c. Parent Constructor<br>Child Constructor</p>
+                    <p>d. Error kompilasi</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: c. Parent Constructor<br>Child Constructor</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>constructor chaining</strong> dalam inheritance. Ketika
+                    objek child class dibuat, constructor parent class dipanggil terlebih dahulu.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>Child c = new Child();</code> - Membuat objek Child</li>
+                    <li>Sebelum constructor Child dijalankan, Java otomatis memanggil <code>super()</code> (constructor
+                        Parent tanpa parameter)</li>
+                    <li>Constructor Parent dijalankan → Output: "Parent Constructor"</li>
+                    <li>Constructor Child dijalankan → Output: "Child Constructor"</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Child Constructor</strong> - Salah. Constructor parent selalu dipanggil terlebih
+                        dahulu</li>
+                    <li><strong>b. Parent Constructor</strong> - Salah. Constructor child juga dijalankan setelah parent
+                    </li>
+                    <li><strong>d. Error kompilasi</strong> - Salah. Kode ini valid dan akan compile dengan baik</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Constructor Chaining:</strong> Ketika objek child class dibuat, constructor parent class
+                        selalu dipanggil terlebih dahulu (implicitly atau explicitly menggunakan super()).</p>
+                    <p><strong>Urutan Eksekusi:</strong></p>
+                    <ol>
+                        <li>Constructor parent class (dari atas ke bawah dalam hierarki)</li>
+                        <li>Constructor child class</li>
+                    </ol>
+                    <p>Jika parent class tidak punya constructor tanpa parameter, child class harus explicitly memanggil
+                        constructor parent dengan <code>super(args)</code>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 4 -->
+        <section class="content-section" id="soal4">
+            <div class="question-header">
+                <h2>Soal 4: Method Overriding</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/4.png" alt="Soal 4"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Animal {
+    void sound() {
+        System.out.println("Animal makes sound");
+    }
+}
+class Dog extends Animal {
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Dog();
+        a.sound();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Animal makes sound</p>
+                    <p>b. Dog barks</p>
+                    <p>c. Error kompilasi</p>
+                    <p>d. Tidak ada output</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Dog barks</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>method overriding</strong> dan <strong>runtime
+                        polymorphism</strong>.</p>
+
+                <h4>Analisis Kode:</h4>
+                <ol>
+                    <li><code>Animal a = new Dog();</code> - Ini adalah <strong>upcasting</strong>. Referensi bertipe
+                        Animal, tetapi objek aktualnya adalah Dog</li>
+                    <li><code>a.sound();</code> - Memanggil method sound()</li>
+                    <li>Karena method sound() di-override di class Dog, maka versi Dog yang dipanggil</li>
+                    <li>Output: "Dog barks"</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Animal makes sound</strong> - Salah. Meskipun referensi bertipe Animal, Java
+                        menggunakan tipe objek aktual (Dog) untuk menentukan method mana yang dipanggil (runtime
+                        polymorphism)</li>
+                    <li><strong>c. Error kompilasi</strong> - Salah. Upcasting diperbolehkan dan kode ini valid</li>
+                    <li><strong>d. Tidak ada output</strong> - Salah. Method sound() dipanggil dan menghasilkan output
+                    </li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Method Overriding:</strong> Child class dapat meng-override method dari parent class
+                        dengan signature yang sama.</p>
+                    <p><strong>Runtime Polymorphism:</strong></p>
+                    <ul>
+                        <li>Method mana yang dipanggil ditentukan saat <strong>runtime</strong> berdasarkan tipe objek
+                            aktual</li>
+                        <li>Bukan berdasarkan tipe referensi</li>
+                        <li>Ini berbeda dengan method overloading yang ditentukan saat compile-time</li>
+                    </ul>
+                    <p><strong>Syarat Override:</strong></p>
+                    <ul>
+                        <li>Nama method dan parameter harus sama persis</li>
+                        <li>Return type harus sama atau covariant</li>
+                        <li>Access modifier tidak boleh lebih ketat</li>
+                        <li>Gunakan @Override annotation untuk keamanan</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 5 -->
+        <section class="content-section" id="soal5">
+            <div class="question-header">
+                <h2>Soal 5: Static Reference ke Instance Variable</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Statement mana yang benar mengenai kode berikut:</p>
+                <div class="question-image">
+                    <img src="assets/questions/5.png" alt="Soal 5"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>public class CobaFinal {
+    private static int x = 100;
+    
+    public static void main(String args[]) {
+        CobaFinal cf1 = new CobaFinal();
+        cf1.x++;
+        CobaFinal cf2 = new CobaFinal();
+        cf2.x++;
+        cf1 = new CobaFinal();
+        cf1.x++;
+        CobaFinal.x++;
+        System.out.println("x =" + x);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. cf1.x++; tidak akan di-compile karena sebuah static di-reference kepada variable private</p>
+                    <p>b. CobaFinal.x++ tidak akan di-compile, karena sebuah static di-reference kepada variable private
+                    </p>
+                    <p>c. Kode akan di-compile dan memiliki output x = 104</p>
+                    <p>d. Kode akan di-compile dan memiliki output x = 105</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: c. Kode akan di-compile dan memiliki output x = 104</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Variabel x adalah <strong>private static</strong>, yang berarti variabel ini milik class dan hanya
+                    bisa diakses dari dalam class itu sendiri.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>private static int x = 100;</code> - x diinisialisasi dengan 100</li>
+                    <li><code>cf1.x++;</code> - x bertambah 1 → x = 101 (akses melalui objek, tapi tetap mengakses
+                        static variable)</li>
+                    <li><code>cf2.x++;</code> - x bertambah 1 → x = 102</li>
+                    <li><code>cf1 = new CobaFinal();</code> - cf1 sekarang referensi ke objek baru</li>
+                    <li><code>cf1.x++;</code> - x bertambah 1 → x = 103</li>
+                    <li><code>CobaFinal.x++;</code> - x bertambah 1 → x = 104 (cara yang benar untuk akses static
+                        variable)</li>
+                    <li><code>System.out.println("x =" + x);</code> - Output: x = 104</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. cf1.x++ tidak compile</strong> - Salah. Mengakses static variable melalui objek
+                        diperbolehkan (meskipun tidak recommended). Private hanya membatasi akses dari luar class.</li>
+                    <li><strong>b. CobaFinal.x++ tidak compile</strong> - Salah. Ini adalah cara yang benar untuk
+                        mengakses static variable, dan bisa diakses dari dalam class sendiri.</li>
+                    <li><strong>d. x = 105</strong> - Salah. Hanya ada 4 operasi increment (cf1.x++, cf2.x++, cf1.x++,
+                        CobaFinal.x++), jadi 100 + 4 = 104</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Private</strong> membatasi akses dari luar class, bukan dari dalam class sendiri. Method
+                        main() adalah bagian dari class CobaFinal, jadi bisa mengakses variabel private.</p>
+                    <p><strong>Static Variable:</strong> Meskipun bisa diakses melalui objek (cf1.x), cara yang benar
+                        adalah melalui nama class (CobaFinal.x).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 6 -->
+        <section class="content-section" id="soal6">
+            <div class="question-header">
+                <h2>Soal 6: Final Variable</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa yang terjadi jika kita mencoba mengubah nilai variabel final?</p>
+                <div class="question-image">
+                    <img src="assets/questions/6.png" alt="Soal 6"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Test {
+    final int MAX_VALUE = 100;
+    
+    void changeValue() {
+        MAX_VALUE = 200;
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Nilai berubah menjadi 200</p>
+                    <p>b. Error kompilasi</p>
+                    <p>c. Error runtime</p>
+                    <p>d. Nilai tetap 100</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Error kompilasi</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Keyword <strong>final</strong> pada variabel berarti nilai variabel tersebut tidak dapat diubah
+                    setelah diinisialisasi (konstanta).</p>
+
+                <h4>Analisis:</h4>
+                <ul>
+                    <li><code>final int MAX_VALUE = 100;</code> - Variabel MAX_VALUE dideklarasikan sebagai final dengan
+                        nilai 100</li>
+                    <li><code>MAX_VALUE = 200;</code> - Mencoba mengubah nilai variabel final</li>
+                    <li>Compiler akan mendeteksi ini dan menghasilkan <strong>error kompilasi</strong>: "cannot assign a
+                        value to final variable MAX_VALUE"</li>
+                </ul>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Nilai berubah menjadi 200</strong> - Salah. Final variable tidak bisa diubah</li>
+                    <li><strong>c. Error runtime</strong> - Salah. Error terjadi saat kompilasi, bukan runtime</li>
+                    <li><strong>d. Nilai tetap 100</strong> - Salah. Kode tidak akan compile, jadi tidak ada eksekusi
+                    </li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Final Variable:</strong></p>
+                    <ul>
+                        <li>Harus diinisialisasi saat deklarasi atau di constructor</li>
+                        <li>Nilainya tidak dapat diubah setelah inisialisasi</li>
+                        <li>Biasa digunakan untuk konstanta</li>
+                        <li>Naming convention: UPPER_CASE_WITH_UNDERSCORES</li>
+                    </ul>
+                    <p><strong>Final pada reference type:</strong> Reference tidak bisa diubah, tapi isi objek bisa
+                        dimodifikasi.</p>
+                    <div class="code-box">
+                        <pre><code>final List<String> list = new ArrayList<>();
+list.add("item");  // OK - mengubah isi
+list = new ArrayList<>();  // ERROR - mengubah reference</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 7 -->
+        <section class="content-section" id="soal7">
+            <div class="question-header">
+                <h2>Soal 7: This Keyword</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa fungsi dari keyword 'this' dalam kode berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/7.png" alt="Soal 7"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Student {
+    String name;
+    
+    Student(String name) {
+        this.name = name;
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Mereferensi ke class parent</p>
+                    <p>b. Mereferensi ke objek saat ini</p>
+                    <p>c. Membuat objek baru</p>
+                    <p>d. Error kompilasi</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Mereferensi ke objek saat ini</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Keyword <strong>this</strong> mereferensi ke objek instance saat ini (current object). Dalam konteks
+                    ini, digunakan untuk membedakan antara parameter constructor dan instance variable.</p>
+
+                <h4>Analisis Kode:</h4>
+                <ul>
+                    <li><code>String name;</code> - Instance variable (variabel milik objek)</li>
+                    <li><code>Student(String name)</code> - Parameter constructor juga bernama 'name'</li>
+                    <li><code>this.name</code> - Mereferensi ke instance variable</li>
+                    <li><code>name</code> (tanpa this) - Mereferensi ke parameter</li>
+                    <li><code>this.name = name;</code> - Mengassign nilai parameter ke instance variable</li>
+                </ul>
+
+                <h4>Tanpa 'this':</h4>
+                <div class="code-box">
+                    <pre><code>Student(String name) {
+    name = name;  // Ambigu! Parameter di-assign ke dirinya sendiri
+    // Instance variable tetap null
+}</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Mereferensi ke class parent</strong> - Salah. Untuk parent class digunakan keyword
+                        <code>super</code></li>
+                    <li><strong>c. Membuat objek baru</strong> - Salah. Untuk membuat objek baru digunakan keyword
+                        <code>new</code></li>
+                    <li><strong>d. Error kompilasi</strong> - Salah. Penggunaan 'this' ini valid dan umum digunakan</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Kegunaan 'this':</strong></p>
+                    <ol>
+                        <li><strong>Membedakan instance variable dan parameter/local variable</strong> dengan nama sama
+                        </li>
+                        <li><strong>Memanggil constructor lain</strong> dalam class yang sama: <code>this(args)</code>
+                        </li>
+                        <li><strong>Mengembalikan objek saat ini</strong> dari method (method chaining)</li>
+                        <li><strong>Passing current object</strong> sebagai argumen ke method lain</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 8 -->
+        <section class="content-section" id="soal8">
+            <div class="question-header">
+                <h2>Soal 8: Abstract Class</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa yang terjadi jika kita mencoba membuat instance dari abstract class?</p>
+                <div class="question-image">
+                    <img src="assets/questions/8.png" alt="Soal 8"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>abstract class Shape {
+    abstract void draw();
+}
+public class Test {
+    public static void main(String[] args) {
+        Shape s = new Shape();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Objek Shape berhasil dibuat</p>
+                    <p>b. Error kompilasi</p>
+                    <p>c. Error runtime</p>
+                    <p>d. Objek null dibuat</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Error kompilasi</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p><strong>Abstract class</strong> tidak dapat di-instantiate (tidak bisa dibuat objeknya secara
+                    langsung). Abstract class hanya bisa digunakan sebagai parent class untuk inheritance.</p>
+
+                <h4>Analisis:</h4>
+                <ul>
+                    <li><code>abstract class Shape</code> - Class dideklarasikan sebagai abstract</li>
+                    <li><code>Shape s = new Shape();</code> - Mencoba membuat instance dari abstract class</li>
+                    <li>Compiler akan mendeteksi ini dan menghasilkan error: "Shape is abstract; cannot be instantiated"
+                    </li>
+                </ul>
+
+                <h4>Cara yang benar:</h4>
+                <div class="code-box">
+                    <pre><code>abstract class Shape {
+    abstract void draw();
+}
+class Circle extends Shape {
+    void draw() {
+        System.out.println("Drawing Circle");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Shape s = new Circle();  // OK - polymorphism
+        s.draw();
+    }
+}</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Objek Shape berhasil dibuat</strong> - Salah. Abstract class tidak bisa
+                        di-instantiate</li>
+                    <li><strong>c. Error runtime</strong> - Salah. Error terjadi saat kompilasi</li>
+                    <li><strong>d. Objek null dibuat</strong> - Salah. Kode tidak akan compile</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Abstract Class:</strong></p>
+                    <ul>
+                        <li>Tidak bisa di-instantiate langsung</li>
+                        <li>Bisa memiliki abstract method (tanpa implementasi) dan concrete method (dengan implementasi)
+                        </li>
+                        <li>Child class harus meng-implement semua abstract method atau juga dideklarasikan abstract
+                        </li>
+                        <li>Bisa memiliki constructor, instance variable, dan static variable</li>
+                        <li>Digunakan untuk mendefinisikan template/blueprint untuk child class</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 9 -->
+        <section class="content-section" id="soal9">
+            <div class="question-header">
+                <h2>Soal 9: Interface Implementation</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Berapa method yang harus di-implement dari interface berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/9.png" alt="Soal 9"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>interface Drawable {
+    void draw();
+    void erase();
+}
+class Shape implements Drawable {
+    // Berapa method yang harus di-implement?
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. 0 - tidak wajib implement</p>
+                    <p>b. 1 - salah satu saja</p>
+                    <p>c. 2 - kedua method harus di-implement</p>
+                    <p>d. Tergantung kebutuhan</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: c. 2 - kedua method harus di-implement</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Ketika sebuah class meng-implement sebuah interface, class tersebut <strong>wajib</strong>
+                    meng-implement <strong>semua</strong> method yang ada di interface (kecuali default method di Java
+                    8+).</p>
+
+                <h4>Kode yang benar:</h4>
+                <div class="code-box">
+                    <pre><code>interface Drawable {
+    void draw();
+    void erase();
+}
+class Shape implements Drawable {
+    public void draw() {
+        System.out.println("Drawing shape");
+    }
+    public void erase() {
+        System.out.println("Erasing shape");
+    }
+}</code></pre>
+                </div>
+
+                <h4>Jika tidak implement semua method:</h4>
+                <div class="code-box">
+                    <pre><code>class Shape implements Drawable {
+    public void draw() {
+        System.out.println("Drawing shape");
+    }
+    // ERROR: Shape is not abstract and does not override abstract method erase()
+}</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. 0 - tidak wajib implement</strong> - Salah. Semua method wajib di-implement atau
+                        class harus abstract</li>
+                    <li><strong>b. 1 - salah satu saja</strong> - Salah. Semua method harus di-implement</li>
+                    <li><strong>d. Tergantung kebutuhan</strong> - Salah. Interface membuat kontrak yang harus dipatuhi
+                    </li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Interface:</strong></p>
+                    <ul>
+                        <li>Semua method (kecuali default dan static di Java 8+) harus di-implement</li>
+                        <li>Method di interface implicitly public dan abstract</li>
+                        <li>Class bisa implement multiple interface (tidak seperti inheritance yang hanya single parent)
+                        </li>
+                        <li>Jika tidak implement semua method, class harus dideklarasikan abstract</li>
+                    </ul>
+                    <p><strong>Alternatif:</strong> Jika tidak ingin implement semua method, jadikan class abstract:</p>
+                    <div class="code-box">
+                        <pre><code>abstract class Shape implements Drawable {
+    public void draw() {
+        System.out.println("Drawing");
+    }
+    // erase() tidak perlu di-implement
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 10 -->
+        <section class="content-section" id="soal10">
+            <div class="question-header">
+                <h2>Soal 10: Super Keyword</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/10.png" alt="Soal 10"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Parent {
+    int x = 10;
+}
+class Child extends Parent {
+    int x = 20;
+    void display() {
+        System.out.println("Child x: " + x);
+        System.out.println("Parent x: " + super.x);
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Child c = new Child();
+        c.display();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Child x: 10<br>Parent x: 10</p>
+                    <p>b. Child x: 20<br>Parent x: 20</p>
+                    <p>c. Child x: 20<br>Parent x: 10</p>
+                    <p>d. Error kompilasi</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: c. Child x: 20<br>Parent x: 10</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Keyword <strong>super</strong> digunakan untuk mengakses member (variabel atau method) dari parent
+                    class ketika ada member dengan nama yang sama di child class.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li>Child class memiliki variabel <code>x = 20</code> yang meng-hide variabel <code>x = 10</code>
+                        dari Parent</li>
+                    <li><code>x</code> (tanpa super) mereferensi ke variabel x di Child = 20</li>
+                    <li><code>super.x</code> mereferensi ke variabel x di Parent = 10</li>
+                    <li>Output:
+                        <ul>
+                            <li>Child x: 20</li>
+                            <li>Parent x: 10</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Child x: 10, Parent x: 10</strong> - Salah. Child x adalah 20, bukan 10</li>
+                    <li><strong>b. Child x: 20, Parent x: 20</strong> - Salah. Parent x tetap 10, tidak terpengaruh oleh
+                        Child</li>
+                    <li><strong>d. Error kompilasi</strong> - Salah. Kode ini valid dan akan compile dengan baik</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Super Keyword digunakan untuk:</strong></p>
+                    <ol>
+                        <li><strong>Mengakses variabel parent</strong> yang di-hide oleh child:
+                            <code>super.variableName</code></li>
+                        <li><strong>Memanggil method parent</strong> yang di-override: <code>super.methodName()</code>
+                        </li>
+                        <li><strong>Memanggil constructor parent</strong>: <code>super(args)</code> - harus di baris
+                            pertama constructor</li>
+                    </ol>
+                    <p><strong>Perbedaan dengan 'this':</strong></p>
+                    <ul>
+                        <li><code>this</code> → mereferensi ke objek saat ini (current class)</li>
+                        <li><code>super</code> → mereferensi ke parent class</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="page-navigation">
+            <a href="solution.html" class="nav-btn">Pembahasan Lengkap</a>
+            <a href="index.html" class="nav-btn">Kembali ke Beranda</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Pembelajaran OOP Java. Dibuat dengan ❤️ untuk pembelajaran interaktif.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/solution.js"></script>
+</body>
+
+</html>
