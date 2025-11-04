@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Class & Object - OOP Java</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="java-icon">{ }</span>
+                <span>OOP Java</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="week1.html" class="active">Week 1</a></li>
+                <li><a href="week2.html">Week 2</a></li>
+                <li><a href="week3.html">Week 3</a></li>
+                <li><a href="week4.html">Week 4</a></li>
+                <li><a href="week6.html">Week 6</a></li>
+                <li><a href="week7.html">Week 7</a></li>
+                <li><a href="solution.html">Pembahasan Soal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="learning-header">
+        <h1>Week 1: Class & Object</h1>
+        <p>Memahami dasar-dasar OOP: Class, Object, Constructor, dan Memory Management</p>
+    </div>
+
+    <div class="container">
+        <!-- Pengenalan OOP -->
+        <section class="content-section">
+            <h2>Pemrograman Berorientasi Objek (OOP)</h2>
+            <p><strong>OOP</strong> adalah paradigma pemrograman yang berbasis pada konsep "objek" yang
+                merepresentasikan entitas dunia nyata.</p>
+            <p>Bayangkan dunia nyata: mobil, manusia, hewan - semuanya adalah objek dengan karakteristik (atribut) dan
+                kemampuan (metode).</p>
+        </section>
+
+        <!-- Visualisasi Class vs Object -->
+        <div class="visualization-box">
+            <h3>Visualisasi: Class sebagai Blueprint</h3>
+            <div>
+                <img src="assets/class-dog.png" alt="">
+            </div>
+            <div class="interactive-demo">
+                <div id="classObjectDemo" style="min-height: 300px;">
+                    <div
+                        style="display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap; gap: 30px;">
+                        <!-- Blueprint (Class) -->
+                        <div id="blueprint" style="text-align: center;">
+                            <div
+                                style="background: linear-gradient(135deg, #5B8DBE, #4A7BA7); color: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); min-width: 200px;">
+                                <h4 style="margin-bottom: 15px;">Class: Mobil</h4>
+                                <div style="text-align: left; font-size: 14px;">
+                                    <p><strong>Atribut:</strong></p>
+                                    <p>- warna</p>
+                                    <p>- merk</p>
+                                    <p>- kecepatan</p>
+                                    <p style="margin-top: 10px;"><strong>Metode:</strong></p>
+                                    <p>- nyalakan()</p>
+                                    <p>- matikan()</p>
+                                    <p>- berjalan()</p>
+                                </div>
+                            </div>
+                            <p style="margin-top: 10px; color: #6C757D;">Blueprint/Template</p>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div id="arrow" style="font-size: 48px; color: #F89820; align-self: center; opacity: 0;">→</div>
+
+                        <!-- Objects Container -->
+                        <div id="objectsContainer" style="display: flex; flex-direction: column; gap: 20px;">
+                            <!-- Objects will be added here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-controls">
+                    <button class="btn-demo" onclick="createCarObject()">Buat Objek Mobil</button>
+                    <button class="btn-demo secondary" onclick="resetObjects()">Reset</button>
+                </div>
+                <p style="margin-top: 20px; color: #6C757D; font-style: italic;">
+                    Klik "Buat Objek Mobil" untuk melihat bagaimana class menjadi objek!
+                </p>
+            </div>
+        </div>
+
+        <!-- Penjelasan Class -->
+        <section class="content-section">
+            <h2>Apa itu Class?</h2>
+            <p><strong>Class</strong> adalah blueprint atau template untuk membuat objek. Class berisi:</p>
+            <ul>
+                <li><strong>Atribut (Variabel)</strong>: Karakteristik dari objek</li>
+                <li><strong>Metode (Fungsi)</strong>: Perilaku atau aksi yang bisa dilakukan objek</li>
+            </ul>
+
+            <div class="code-box">
+                <pre><code>// Contoh Class Mobil
+public class Mobil {
+    // Atribut
+    String warna;
+    String merk;
+    int kecepatan;
+    
+    // Metode
+    void nyalakan() {
+        System.out.println("Mobil dinyalakan");
+    }
+    
+    void berjalan() {
+        System.out.println("Mobil berjalan");
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Penjelasan Object -->
+        <section class="content-section">
+            <h2>Apa itu Object?</h2>
+            <p><strong>Object</strong> adalah instance (wujud nyata) dari sebuah class. Jika class adalah cetakan kue,
+                object adalah kue yang sudah jadi!</p>
+
+            <div class="code-box">
+                <pre><code>// Membuat Object dari Class Mobil
+Mobil mobil1 = new Mobil();
+mobil1.warna = "Merah";
+mobil1.merk = "Toyota";
+mobil1.kecepatan = 0;
+
+Mobil mobil2 = new Mobil();
+mobil2.warna = "Biru";
+mobil2.merk = "Honda";
+mobil2.kecepatan = 0;
+
+// Memanggil metode
+mobil1.nyalakan();  // Output: Mobil dinyalakan
+mobil1.berjalan();  // Output: Mobil berjalan</code></pre>
+            </div>
+        </section>
+
+        <!-- Constructor -->
+        <section class="content-section">
+            <h2>Constructor</h2>
+            <p><strong>Constructor</strong> adalah metode khusus yang dipanggil otomatis saat objek dibuat. Fungsinya
+                untuk menginisialisasi nilai awal objek.</p>
+
+            <h3>Karakteristik Constructor:</h3>
+            <ul>
+                <li>Nama sama dengan nama class</li>
+                <li>Tidak memiliki tipe return (bahkan void)</li>
+                <li>Dipanggil otomatis dengan keyword <code>new</code></li>
+            </ul>
+
+            <div class="code-box">
+                <pre><code>public class Mobil {
+    String warna;
+    String merk;
+    int kecepatan;
+    
+    // Constructor
+    public Mobil(String warna, String merk) {
+        this.warna = warna;
+        this.merk = merk;
+        this.kecepatan = 0;
+    }
+}
+
+// Menggunakan Constructor
+Mobil mobil1 = new Mobil("Merah", "Toyota");
+// Sekarang mobil1 langsung punya warna dan merk!</code></pre>
+            </div>
+        </section>
+
+        <!-- Memory Management Visualization -->
+        <div class="visualization-box">
+            <h3>Visualisasi: Memory Allocation</h3>
+            <div class="interactive-demo">
+                <div style="display: flex; justify-content: space-around; gap: 30px; flex-wrap: wrap;">
+                    <!-- Stack Memory -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: #5B8DBE; margin-bottom: 15px;">Stack Memory</h4>
+                        <div id="stackMemory"
+                            style="background: #F8F9FA; border: 3px solid #5B8DBE; border-radius: 10px; padding: 20px; min-height: 200px;">
+                            <p style="color: #6C757D; font-style: italic;">Menyimpan referensi variabel</p>
+                            <div id="stackContent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Heap Memory -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: #F89820; margin-bottom: 15px;">Heap Memory</h4>
+                        <div id="heapMemory"
+                            style="background: #F8F9FA; border: 3px solid #F89820; border-radius: 10px; padding: 20px; min-height: 200px;">
+                            <p style="color: #6C757D; font-style: italic;">Menyimpan objek aktual</p>
+                            <div id="heapContent"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-controls">
+                    <button class="btn-demo" onclick="demonstrateMemory()">Demonstrasi Memory</button>
+                    <button class="btn-demo secondary" onclick="clearMemory()">Bersihkan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Management Explanation -->
+        <section class="content-section">
+            <h2>Memory Allocation di Java</h2>
+
+            <h3>Stack Memory</h3>
+            <ul>
+                <li>Menyimpan <strong>referensi</strong> ke objek dan variabel lokal</li>
+                <li>Ukuran lebih kecil dan akses lebih cepat</li>
+                <li>Otomatis dibersihkan saat metode selesai</li>
+            </ul>
+
+            <h3>Heap Memory</h3>
+            <ul>
+                <li>Menyimpan <strong>objek aktual</strong> yang dibuat dengan <code>new</code></li>
+                <li>Ukuran lebih besar, akses lebih lambat</li>
+                <li>Dikelola oleh Garbage Collector</li>
+            </ul>
+
+            <h3>Garbage Collection</h3>
+            <ul>
+                <li>Java mengelola memori secara otomatis</li>
+                <li>Objek yang tidak lagi direferensi akan dihapus otomatis</li>
+                <li>Programmer tidak perlu manual <code>delete</code> objek seperti di C++</li>
+            </ul>
+
+            <div class="code-box">
+                <pre><code>// Contoh Memory Allocation
+Mobil mobil1 = new Mobil("Merah", "Toyota");
+// Stack: menyimpan variabel 'mobil1' (referensi)
+// Heap: menyimpan objek Mobil dengan data "Merah", "Toyota"
+
+mobil1 = null; // Referensi dihapus
+// Objek di heap sekarang tidak punya referensi
+// Garbage Collector akan membersihkannya</code></pre>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <div class="quiz-box">
+            <h3>Kuis: Uji Pemahaman Anda!</h3>
+            <div class="quiz-question">
+                <p><strong>Pertanyaan:</strong> Apa perbedaan utama antara Class dan Object?</p>
+                <div class="quiz-options" id="quiz1">
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                        A. Tidak ada perbedaan, keduanya sama
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz1')">
+                        B. Class adalah template/blueprint, Object adalah instance dari class
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                        C. Class lebih besar dari Object
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                        D. Object hanya bisa dibuat sekali dari Class
+                    </div>
+                </div>
+                <div id="quiz1Result"></div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <section class="content-section">
+            <h2>Ringkasan Week 1</h2>
+            <ul>
+                <li><strong>OOP</strong> adalah paradigma pemrograman berbasis objek</li>
+                <li><strong>Class</strong> adalah blueprint untuk membuat objek</li>
+                <li><strong>Object</strong> adalah instance dari class</li>
+                <li><strong>Constructor</strong> menginisialisasi objek saat dibuat</li>
+                <li><strong>Stack</strong> menyimpan referensi, <strong>Heap</strong> menyimpan objek</li>
+                <li><strong>Garbage Collection</strong> membersihkan objek otomatis</li>
+            </ul>
+        </section>
+
+        <!-- Navigation -->
+        <div class="page-navigation">
+            <a href="index.html" class="nav-btn prev">← Kembali ke Beranda</a>
+            <a href="week2.html" class="nav-btn">Week 2: Variables & Data Types →</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Pembelajaran OOP Java. Dibuat dengan ❤️ untuk pembelajaran interaktif.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/week1.js"></script>
+</body>
+
+</html>

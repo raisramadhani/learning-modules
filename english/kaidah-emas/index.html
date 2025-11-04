@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Rules: Panduan Praktis Bahasa Inggris Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .card-content.expanded {
+            max-height: 500px;
+        }
+
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans leading-relaxed h-full">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 py-6">
+            <h1 class="text-xl font-bold text-indigo-700 text-center">
+                Golden Rules: Bahasa Inggris Profesional
+            </h1>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-indigo-50 to-blue-50 py-12">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-4">
+                Panduan Praktis Bahasa Inggris Profesional
+            </h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                Lupakan teori rumit. Kuasai pola kalimat ini untuk komunikasi kerja sehari-hari.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-12">
+
+        <!-- Bagian 1: Fondasi Komunikasi -->
+        <section>
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-3">
+                    Bagian 1: Fondasi Komunikasi
+                </h3>
+                <p class="text-slate-600">
+                    Kuasai ini untuk menyelesaikan tugas dasar dan memastikan tidak ada miskomunikasi.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Kaidah 1 -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">
+                        Meminta dengan Sopan
+                    </h4>
+                    <p class="text-indigo-600 font-medium mb-4">
+                        Pola Kunci: Could you please...?
+                    </p>
+                    <button onclick="toggleContent('content-1')"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        Lihat Contoh
+                        <svg id="arrow-1" class="w-4 h-4 transition-transform duration-200" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="content-1" class="card-content mt-4">
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-indigo-500">
+                            <p class="text-slate-700 mb-2">
+                                <strong>Contoh:</strong> Could you please send the file?
+                            </p>
+                            <p class="text-slate-700">
+                                <strong>Hindari:</strong> Send the file.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kaidah 2 -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">
+                        Memberi Update Jelas
+                    </h4>
+                    <p class="text-indigo-600 font-medium mb-4">
+                        Pola Kunci: I have + [finished/sent/checked]...
+                    </p>
+                    <button onclick="toggleContent('content-2')"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        Lihat Contoh
+                        <svg id="arrow-2" class="w-4 h-4 transition-transform duration-200" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="content-2" class="card-content mt-4">
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-indigo-500">
+                            <p class="text-slate-700">
+                                <strong>Contoh:</strong> I have sent the invoice.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kaidah 3 -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">
+                        Menyatakan Rencana Berikutnya
+                    </h4>
+                    <p class="text-indigo-600 font-medium mb-4">
+                        Pola Kunci: I will + [kata kerja dasar]...
+                    </p>
+                    <button onclick="toggleContent('content-3')"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        Lihat Contoh
+                        <svg id="arrow-3" class="w-4 h-4 transition-transform duration-200" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="content-3" class="card-content mt-4">
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-indigo-500">
+                            <p class="text-slate-700">
+                                <strong>Contoh:</strong> I will call the client tomorrow morning.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 2: Berkontribusi Aktif -->
+        <section>
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-3">
+                    Bagian 2: Berkontribusi Aktif dalam Diskusi
+                </h3>
+                <p class="text-slate-600">
+                    Gunakan ini untuk memberi opini, tidak setuju, dan berpartisipasi aktif dalam rapat.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Kaidah 4 -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">
+                        Memberi Opini Terstruktur
+                    </h4>
+                    <p class="text-indigo-600 font-medium mb-4">
+                        Pola Kunci: I think... because...
+                    </p>
+                    <button onclick="toggleContent('content-4')"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        Lihat Contoh
+                        <svg id="arrow-4" class="w-4 h-4 transition-transform duration-200" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="content-4" class="card-content mt-4">
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-indigo-500">
+                            <p class="text-slate-700">
+                                <strong>Contoh:</strong> I think we should use this design because it's more
+                                user-friendly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kaidah 5 -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">
+                        Tidak Setuju Secara Halus
+                    </h4>
+                    <p class="text-indigo-600 font-medium mb-4">
+                        Pola Kunci: I see your point, but...
+                    </p>
+                    <button onclick="toggleContent('content-5')"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        Lihat Contoh
+                        <svg id="arrow-5" class="w-4 h-4 transition-transform duration-200" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="content-5" class="card-content mt-4">
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-indigo-500">
+                            <p class="text-slate-700">
+                                <strong>Contoh:</strong> I see your point about the budget, but I'm concerned about the
+                                timeline.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kaidah 6 -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">
+                        Memastikan Pemahaman
+                    </h4>
+                    <p class="text-indigo-600 font-medium mb-4">
+                        Pola Kunci: So, if I understand correctly...
+                    </p>
+                    <button onclick="toggleContent('content-6')"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        Lihat Contoh
+                        <svg id="arrow-6" class="w-4 h-4 transition-transform duration-200" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="content-6" class="card-content mt-4">
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-indigo-500">
+                            <p class="text-slate-700">
+                                <strong>Contoh:</strong> So, if I understand correctly, the main priority is quality?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 3: Komunikasi Tingkat Lanjut -->
+        <section>
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-3">
+                    Bagian 3: Komunikasi Tingkat Lanjut
+                </h3>
+                <p class="text-slate-600">
+                    Kuasai ini untuk memengaruhi keputusan dan menangani situasi yang lebih kompleks.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Kaidah 7 -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">
+                        Membingkai Saran
+                    </h4>
+                    <p class="text-indigo-600 font-medium mb-4">
+                        Pola Kunci: By doing X, we can achieve Y
+                    </p>
+                    <button onclick="toggleContent('content-7')"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        Lihat Contoh
+                        <svg id="arrow-7" class="w-4 h-4 transition-transform duration-200" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="content-7" class="card-content mt-4">
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-indigo-500">
+                            <p class="text-slate-700 mb-2">
+                                <strong>Fokus:</strong> Keuntungan bersama
+                            </p>
+                            <p class="text-slate-700">
+                                <strong>Contoh:</strong> By using this software, we can save about 5 hours per week.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kaidah 8 -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-slate-200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">
+                        Teknik Negosiasi
+                    </h4>
+                    <p class="text-indigo-600 font-medium mb-4">
+                        Pola Kunci: If we were to..., would it be possible to...?
+                    </p>
+                    <button onclick="toggleContent('content-8')"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2">
+                        Lihat Contoh
+                        <svg id="arrow-8" class="w-4 h-4 transition-transform duration-200" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="content-8" class="card-content mt-4">
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-indigo-500">
+                            <p class="text-slate-700 mb-2">
+                                <strong>Teknik:</strong> Gunakan pengandaian
+                            </p>
+                            <p class="text-slate-700">
+                                <strong>Contoh:</strong> If we were to sign a longer contract, would it be possible to
+                                get a better price?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-16">
+        <div class="max-w-4xl mx-auto px-4 py-8 text-center">
+            <p class="text-slate-600 mb-4">© 2025 Golden Rules English Guide</p>
+            <a href="#top" onclick="scrollToTop()" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                ↑ Kembali ke Atas
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleContent(contentId) {
+            const content = document.getElementById(contentId);
+            const arrow = document.getElementById('arrow-' + contentId.split('-')[1]);
+
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                arrow.classList.remove('rotate-180');
+            } else {
+                content.classList.add('expanded');
+                arrow.classList.add('rotate-180');
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98ecef2cb710fd84',t:'MTc2MDUwNjMyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>

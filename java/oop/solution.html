@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembahasan Soal OOP Java</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/solution.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="java-icon">{ }</span>
+                <span>OOP Java</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="week1.html">Week 1</a></li>
+                <li><a href="week2.html">Week 2</a></li>
+                <li><a href="week3.html">Week 3</a></li>
+                <li><a href="week4.html">Week 4</a></li>
+                <li><a href="week6.html">Week 6</a></li>
+                <li><a href="week7.html">Week 7</a></li>
+                <li><a href="solution.html" class="active">Pembahasan Soal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="learning-header">
+        <h1>Pembahasan Soal OOP Java</h1>
+        <p>Penjelasan lengkap untuk 9 soal pilihan ganda dengan analisis mendalam</p>
+    </div>
+
+    <div class="container">
+        <!-- Floating Navigation Widget -->
+        <div class="floating-nav" id="floatingNav">
+            <div class="floating-nav-header">
+                <span>Navigasi Soal</span>
+                <button class="toggle-nav" id="toggleNav">▼</button>
+            </div>
+            <div class="floating-nav-content" id="navContent">
+                <a href="#soal1" class="nav-item" data-soal="1">1</a>
+                <a href="#soal5" class="nav-item" data-soal="5">5</a>
+                <a href="#soal11" class="nav-item" data-soal="11">11</a>
+                <a href="#soal14" class="nav-item" data-soal="14">14</a>
+                <a href="#soal17" class="nav-item" data-soal="17">17</a>
+                <a href="#soal21" class="nav-item" data-soal="21">21</a>
+                <a href="#soal23" class="nav-item" data-soal="23">23</a>
+                <a href="#soal28" class="nav-item" data-soal="28">28</a>
+                <a href="#soal30" class="nav-item" data-soal="30">30</a>
+            </div>
+        </div>
+
+        <!-- Soal 1 -->
+        <section class="content-section" id="soal1">
+            <div class="question-header">
+                <h2>Soal 1: Static Variable dan Constructor</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Output dari program berikut adalah ...</p>
+                <div class="code-box">
+                    <pre><code>class Demo {
+    static int count = 0;
+    Demo() { count++; }
+}
+public class Test {
+    public static void main(String[] args) {
+        Demo d1 = new Demo();
+        Demo d2 = new Demo();
+        d1.count++;
+        System.out.println(Demo.count);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. 3</p>
+                    <p>b. 1</p>
+                    <p>c. 2</p>
+                    <p>d. Error karena count diakses secara salah</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: a. 3</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p><strong>Static variable</strong> adalah variabel yang dimiliki oleh class, bukan oleh objek
+                    individual. Artinya, semua objek berbagi satu variabel static yang sama.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>static int count = 0;</code> - Variabel count diinisialisasi dengan nilai 0</li>
+                    <li><code>Demo d1 = new Demo();</code> - Constructor dipanggil, count++ → count = 1</li>
+                    <li><code>Demo d2 = new Demo();</code> - Constructor dipanggil lagi, count++ → count = 2</li>
+                    <li><code>d1.count++;</code> - count bertambah 1 → count = 3</li>
+                    <li><code>System.out.println(Demo.count);</code> - Mencetak nilai count = 3</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>b. 1</strong> - Salah karena constructor dipanggil 2 kali (saat new Demo()) dan ada
+                        increment tambahan (d1.count++)</li>
+                    <li><strong>c. 2</strong> - Salah karena ada increment tambahan setelah kedua objek dibuat</li>
+                    <li><strong>d. Error</strong> - Salah karena mengakses static variable melalui objek (d1.count)
+                        memang diperbolehkan, meskipun tidak recommended. Cara yang benar adalah Demo.count</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p>Static variable hanya ada satu salinan untuk seluruh class. Semua objek mengakses dan
+                        memodifikasi variabel yang sama. Setiap kali constructor dipanggil, nilai static variable akan
+                        berubah untuk semua objek.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 5 -->
+        <section class="content-section" id="soal5">
+            <div class="question-header">
+                <h2>Soal 5: Static Reference ke Instance Variable</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Statement mana yang benar mengenai kode berikut:</p>
+                <div class="code-box">
+                    <pre><code>public class CobaFinal {
+    private static int x = 100;
+    
+    public static void main(String args[]) {
+        CobaFinal cf1 = new CobaFinal();
+        cf1.x++;
+        CobaFinal cf2 = new CobaFinal();
+        cf2.x++;
+        cf1 = new CobaFinal();
+        cf1.x++;
+        CobaFinal.x++;
+        System.out.println("x =" + x);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. cf1.x++; tidak akan di-compile karena sebuah static di-reference kepada variable private</p>
+                    <p>b. CobaFinal.x++ tidak akan di-compile, karena sebuah static di-reference kepada variable private
+                    </p>
+                    <p>c. Kode akan di-compile dan memiliki output x = 104</p>
+                    <p>d. Kode akan di-compile dan memiliki output x = 105</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: c. Kode akan di-compile dan memiliki output x = 104</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Variabel x adalah <strong>private static</strong>, yang berarti variabel ini milik class dan hanya
+                    bisa diakses dari dalam class itu sendiri.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>private static int x = 100;</code> - x diinisialisasi dengan 100</li>
+                    <li><code>cf1.x++;</code> - x bertambah 1 → x = 101 (akses melalui objek, tapi tetap mengakses
+                        static variable)</li>
+                    <li><code>cf2.x++;</code> - x bertambah 1 → x = 102</li>
+                    <li><code>cf1 = new CobaFinal();</code> - cf1 sekarang referensi ke objek baru</li>
+                    <li><code>cf1.x++;</code> - x bertambah 1 → x = 103</li>
+                    <li><code>CobaFinal.x++;</code> - x bertambah 1 → x = 104 (cara yang benar untuk akses static
+                        variable)</li>
+                    <li><code>System.out.println("x =" + x);</code> - Output: x = 104</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. cf1.x++ tidak compile</strong> - Salah. Mengakses static variable melalui objek
+                        diperbolehkan (meskipun tidak recommended), karena kode ini berada di dalam class yang sama.
+                        Private hanya membatasi akses dari luar class.</li>
+                    <li><strong>b. CobaFinal.x++ tidak compile</strong> - Salah. Ini adalah cara yang benar untuk
+                        mengakses static variable dari dalam class yang sama. Private tidak mencegah akses dari dalam
+                        class sendiri.</li>
+                    <li><strong>d. x = 105</strong> - Salah. Hanya ada 4 operasi increment (cf1.x++, cf2.x++, cf1.x++,
+                        CobaFinal.x++), jadi 100 + 4 = 104, bukan 105.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p><strong>Private</strong> membatasi akses dari luar class, bukan dari dalam class sendiri. Method
+                        static dapat mengakses variabel static lainnya dalam class yang sama, terlepas dari access
+                        modifier. Cara terbaik untuk mengakses static variable adalah melalui nama class (CobaFinal.x),
+                        bukan melalui objek (cf1.x).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 11 -->
+        <section class="content-section" id="soal11">
+            <div class="question-header">
+                <h2>Soal 11: Method Overloading dan Runtime Polymorphism</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Hasil dari program di bawah adalah:</p>
+                <div class="code-box">
+                    <pre><code>class X {
+    void call() { System.out.println("X-call"); }
+}
+class Y extends X {
+    void call() { System.out.println("Y-call"); }
+    void call(String s) { System.out.println("Y-call " + s); }
+}
+public class Demo {
+    public static void main(String[] args) {
+        X obj = new Y();
+        obj.call("Test");
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Error kompilasi</p>
+                    <p>b. "Y-call"</p>
+                    <p>c. Error saat runtime</p>
+                    <p>d. "Y-call Test"</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: a. Error kompilasi</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>compile-time type checking</strong> dan <strong>method
+                        overloading</strong>.</p>
+
+                <h4>Analisis Kode:</h4>
+                <ol>
+                    <li><code>X obj = new Y();</code> - Ini adalah <strong>upcasting</strong>. Referensi bertipe X,
+                        tetapi objek aktualnya adalah Y.</li>
+                    <li><code>obj.call("Test");</code> - Memanggil method call dengan parameter String.</li>
+                    <li><strong>Compiler melihat tipe referensi (X), bukan tipe objek (Y)</strong>.</li>
+                    <li>Class X tidak punya method <code>call(String)</code>, hanya punya <code>call()</code>.</li>
+                    <li>Ini akan menyebabkan <strong>compile error</strong> karena method call(String) tidak ada di
+                        class X.</li>
+                </ol>
+
+                <h4>Mengapa Compile Error?</h4>
+                <p><strong>Method overloading</strong> di-resolve saat <strong>compile-time</strong> berdasarkan
+                    <strong>tipe referensi</strong>, bukan tipe objek:
+                </p>
+                <ul>
+                    <li>Tipe referensi adalah <code>X</code></li>
+                    <li>Class X hanya punya method <code>call()</code> tanpa parameter</li>
+                    <li>Class X tidak punya method <code>call(String s)</code></li>
+                    <li>Compiler tidak bisa menemukan method yang cocok → <strong>Error kompilasi</strong></li>
+                </ul>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>b. "Y-call"</strong> - Salah. Kode tidak akan compile, jadi tidak akan ada output.</li>
+                    <li><strong>c. Error saat runtime</strong> - Salah. Error terjadi saat kompilasi, bukan runtime.
+                    </li>
+                    <li><strong>d. "Y-call Test"</strong> - Salah. Meskipun objek aktualnya adalah Y (yang punya method
+                        call(String)), kode tidak akan compile karena compiler hanya melihat tipe referensi X.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p><strong>Perbedaan Overloading vs Overriding:</strong></p>
+                    <ul>
+                        <li><strong>Overloading:</strong> Di-resolve saat <strong>compile-time</strong> berdasarkan
+                            <strong>tipe referensi</strong>
+                        </li>
+                        <li><strong>Overriding:</strong> Di-resolve saat <strong>runtime</strong> berdasarkan
+                            <strong>tipe objek aktual</strong>
+                        </li>
+                    </ul>
+                    <p><strong>Contoh yang benar:</strong></p>
+                    <div class="code-box">
+                        <pre><code>X obj = new Y();
+obj.call();  // Output: "Y-call" (overriding, works!)
+
+Y obj2 = new Y();
+obj2.call("Test");  // Output: "Y-call Test" (tipe referensi Y punya method ini)</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 14 -->
+        <section class="content-section" id="soal14">
+            <div class="question-header">
+                <h2>Soal 14: Constructor Chaining dengan this()</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Perhatikan kode berikut:</p>
+                <div class="code-box">
+                    <pre><code>class Mahasiswa {
+    String nama;
+    int umur;
+    Mahasiswa() {
+        this("Tidak diketahui", 0);
+    }
+    Mahasiswa(String n, int u) {
+    }
+}</code></pre>
+                </div>
+                <p>Ketika dijalankan new Mahasiswa(), nilai atribut nama dan umur adalah ...</p>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. "" dan -1</p>
+                    <p>b. "null" dan 0</p>
+                    <p>c. null dan 0</p>
+                    <p>d. "Tidak diketahui" dan 0</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: c. null dan 0</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>constructor chaining</strong> menggunakan keyword
+                    <code>this()</code> dan <strong>nilai default</strong> dari variabel instance.
+                </p>
+
+                <h4>Trace Eksekusi Lengkap:</h4>
+                <ol>
+                    <li><code>new Mahasiswa()</code> dipanggil</li>
+                    <li>Constructor <code>Mahasiswa()</code> dieksekusi</li>
+                    <li>Baris <code>this("Tidak diketahui", 0);</code> memanggil constructor kedua</li>
+                    <li>Constructor <code>Mahasiswa(String n, int u)</code> dieksekusi dengan:
+                        <ul>
+                            <li>n = "Tidak diketahui"</li>
+                            <li>u = 0</li>
+                        </ul>
+                    </li>
+                    <li><strong>Badan constructor kedua kosong!</strong> Tidak ada kode yang dijalankan.</li>
+                    <li>Variabel <code>nama</code> dan <code>umur</code> <strong>tidak pernah diberi nilai</strong>
+                    </li>
+                    <li>Constructor selesai</li>
+                </ol>
+
+                <h4>Nilai Default Java:</h4>
+                <p>Karena variabel <code>nama</code> dan <code>umur</code> tidak pernah diinisialisasi, mereka akan
+                    memiliki nilai default (bawaan) dari Java:</p>
+                <ul>
+                    <li><strong>String nama</strong> = <code>null</code> (nilai default untuk semua tipe Object)</li>
+                    <li><strong>int umur</strong> = <code>0</code> (nilai default untuk tipe primitif int)</li>
+                </ul>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. "" dan -1</strong> - Salah. Nilai default String adalah <code>null</code>, bukan
+                        empty string "". Nilai default int adalah <code>0</code>, bukan -1.</li>
+                    <li><strong>b. "null" dan 0</strong> - Salah. Ini adalah String literal "null" (dengan tanda petik),
+                        bukan nilai <code>null</code> yang sebenarnya.</li>
+                    <li><strong>d. "Tidak diketahui" dan 0</strong> - Salah. Meskipun parameter dikirim dengan nilai
+                        ini, constructor kedua tidak melakukan assignment ke atribut. Parameter <code>n</code> dan
+                        <code>u</code> hanya ada di scope constructor, tidak otomatis tersimpan ke atribut
+                        <code>this.nama</code> dan <code>this.umur</code>.
+                    </li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p><strong>Parameter constructor bukan atribut.</strong> Memanggil constructor dengan parameter
+                        tidak
+                        otomatis mengisi atribut. Anda harus eksplisit melakukan assignment:</p>
+                    <div class="code-box">
+                        <pre><code>Mahasiswa(String n, int u) {
+    this.nama = n;    // Assignment harus dilakukan eksplisit
+    this.umur = u;    // Tanpa ini, atribut tetap nilai default
+}</code></pre>
+                    </div>
+                    <p><strong>Nilai default variabel instance:</strong></p>
+                    <ul>
+                        <li>Tipe Object (String, Integer, dll) → <code>null</code></li>
+                        <li>int, short, byte, long → <code>0</code></li>
+                        <li>float, double → <code>0.0</code></li>
+                        <li>boolean → <code>false</code></li>
+                        <li>char → <code>'\u0000'</code> (karakter null)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 17 -->
+        <section class="content-section" id="soal17">
+            <div class="question-header">
+                <h2>Soal 17: Aturan Penamaan Variabel</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Manakah dari berikut ini nama variabel yang valid dalam Java?</p>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. _total</p>
+                    <p>b. 2angka</p>
+                    <p>c. public</p>
+                    <p>d. @nilai</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: a. _total</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>aturan penamaan variabel</strong> (identifier rules) di
+                    Java.</p>
+
+                <h4>Aturan Penamaan Variabel di Java:</h4>
+                <ol>
+                    <li>Harus dimulai dengan huruf (a-z, A-Z), underscore (_), atau dollar sign ($)</li>
+                    <li>Karakter selanjutnya bisa huruf, angka, underscore, atau dollar sign</li>
+                    <li>Tidak boleh menggunakan keyword Java (seperti public, class, int, dll)</li>
+                    <li>Case-sensitive (umur berbeda dengan Umur)</li>
+                    <li>Tidak ada batasan panjang</li>
+                    <li>Tidak boleh menggunakan karakter khusus lain (seperti @, #, %, dll)</li>
+                </ol>
+
+                <h4>Analisis Setiap Pilihan:</h4>
+                <ul>
+                    <li><strong>a. _total</strong> - VALID. Underscore adalah karakter yang diperbolehkan di awal.</li>
+                    <li><strong>b. 2angka</strong> - TIDAK VALID. Variabel tidak boleh dimulai dengan angka.</li>
+                    <li><strong>c. public</strong> - TIDAK VALID. "public" adalah keyword Java yang reserved.</li>
+                    <li><strong>d. @nilai</strong> - TIDAK VALID. Karakter @ tidak diperbolehkan dalam nama variabel.
+                    </li>
+                </ul>
+
+                <p><strong>Catatan:</strong> Berdasarkan aturan di atas, jawaban yang benar seharusnya adalah <strong>a.
+                        _total</strong>, bukan b. 2angka.</p>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>b. 2angka</strong> - Variabel tidak boleh dimulai dengan angka. Ini akan menyebabkan
+                        compile error.</li>
+                    <li><strong>c. public</strong> - Ini adalah keyword Java dan tidak bisa digunakan sebagai nama
+                        variabel.</li>
+                    <li><strong>d. @nilai</strong> - Karakter @ hanya digunakan untuk annotations, tidak bisa dalam nama
+                        variabel.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p>Nama variabel yang valid di Java harus mengikuti aturan identifier. Contoh nama valid:
+                        <code>nama</code>, <code>_data</code>, <code>$harga</code>, <code>nilai123</code>,
+                        <code>CONSTANT_VALUE</code>. Contoh nama tidak valid: <code>2data</code>,
+                        <code>nama-saya</code>, <code>int</code>, <code>class</code>, <code>nilai@tinggi</code>.
+                    </p>
+                    <p>Best practice: Gunakan camelCase untuk variabel (namaLengkap), PascalCase untuk class
+                        (Mahasiswa), dan UPPER_CASE untuk konstanta (MAX_VALUE).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 21 -->
+        <section class="content-section" id="soal21">
+            <div class="question-header">
+                <h2>Soal 21: Garbage Collection</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Dalam kasus berikut: Sebuah sistem membuat 1000 objek dari class yang sama, namun hanya satu variabel
+                    yang digunakan untuk menyimpan semuanya bergantian. Apa konsekuensi logisnya?</p>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Hanya objek pertama yang valid</p>
+                    <p>b. Objek sebelumnya akan digantikan referensinya dan bisa dihapus oleh garbage collector</p>
+                    <p>c. Tidak ada objek yang benar-benar dibuat</p>
+                    <p>d. Semua objek tersimpan di memori</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: b. Objek sebelumnya akan digantikan referensinya dan bisa dihapus oleh garbage collector
+                </h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>garbage collection</strong> dan <strong>referensi
+                        objek</strong> di Java.</p>
+
+                <h4>Ilustrasi Kode:</h4>
+                <div class="code-box">
+                    <pre><code>MyClass obj = null;
+for (int i = 0; i < 1000; i++) {
+    obj = new MyClass();  // Membuat objek baru
+    // Referensi objek sebelumnya hilang
+}</code></pre>
+                </div>
+
+                <h4>Analisis:</h4>
+                <ol>
+                    <li>Iterasi pertama: <code>obj = new MyClass()</code> - Objek 1 dibuat, obj mereferensi ke objek 1
+                    </li>
+                    <li>Iterasi kedua: <code>obj = new MyClass()</code> - Objek 2 dibuat, obj sekarang mereferensi ke
+                        objek 2</li>
+                    <li>Objek 1 tidak lagi memiliki referensi (menjadi <strong>unreachable</strong>)</li>
+                    <li>Garbage Collector dapat menghapus objek 1 dari memori</li>
+                    <li>Proses ini berulang untuk 1000 iterasi</li>
+                    <li>Pada akhirnya, hanya objek terakhir (objek 1000) yang masih punya referensi</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Hanya objek pertama yang valid</strong> - Salah. Objek pertama justru akan kehilangan
+                        referensi paling awal dan bisa di-garbage collect. Yang valid adalah objek terakhir.</li>
+                    <li><strong>c. Tidak ada objek yang benar-benar dibuat</strong> - Salah. Semua objek dibuat dengan
+                        <code>new</code>, tetapi sebagian besar akan dihapus oleh garbage collector.
+                    </li>
+                    <li><strong>d. Semua objek tersimpan di memori</strong> - Salah. Objek yang tidak punya referensi
+                        akan dihapus oleh garbage collector untuk menghemat memori. Jika semua objek tersimpan, aplikasi
+                        akan kehabisan memori (OutOfMemoryError).</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p><strong>Garbage Collection</strong> adalah proses otomatis di Java untuk menghapus objek yang
+                        tidak lagi digunakan. Objek dianggap tidak terpakai jika tidak ada referensi yang menunjuk ke
+                        objek tersebut. Ini berbeda dengan C/C++ yang memerlukan manual deallocation dengan
+                        <code>delete</code>.
+                    </p>
+                    <p>Untuk menyimpan semua 1000 objek, gunakan struktur data seperti Array atau ArrayList:</p>
+                    <div class="code-box">
+                        <pre><code>MyClass[] objects = new MyClass[1000];
+for (int i = 0; i < 1000; i++) {
+    objects[i] = new MyClass();  // Semua objek tetap punya referensi
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 23 -->
+        <section class="content-section" id="soal23">
+            <div class="question-header">
+                <h2>Soal 23: Encapsulation dan Setter Validation</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Sebuah bank ingin membuat sistem untuk menyimpan saldo nasabah. Karena saldo bersifat rahasia, maka
+                    programmer membuat variabel saldo bersifat private dan menyediakan method getSaldo() serta
+                    setSaldo(double s):</p>
+                <div class="code-box">
+                    <pre><code>class Rekening {
+    private double saldo;
+    
+    public void setSaldo(double s) {
+        if (s >= 0) saldo = s;
+    }
+    
+    public double getSaldo() {
+        return saldo;
+    }
+}</code></pre>
+                </div>
+                <p>Jika seorang nasabah mencoba mengubah saldo dengan obj.setSaldo(-1000); lalu mencetak
+                    obj.getSaldo();, berapakah outputnya?</p>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Program error</p>
+                    <p>b. 0</p>
+                    <p>c. null</p>
+                    <p>d. -1000</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: b. 0</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>encapsulation</strong> dan <strong>data
+                        validation</strong> dalam setter method.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>Rekening obj = new Rekening();</code> - Objek Rekening dibuat</li>
+                    <li>Atribut <code>saldo</code> diinisialisasi dengan nilai default untuk tipe double =
+                        <strong>0.0</strong>
+                    </li>
+                    <li><code>obj.setSaldo(-1000);</code> - Memanggil setter dengan nilai -1000</li>
+                    <li>Di dalam setter: <code>if (s >= 0) saldo = s;</code></li>
+                    <li>Kondisi <code>-1000 >= 0</code> adalah <strong>false</strong></li>
+                    <li>Statement <code>saldo = s;</code> tidak dieksekusi</li>
+                    <li>Nilai saldo tetap <strong>0.0</strong></li>
+                    <li><code>obj.getSaldo();</code> mengembalikan nilai saldo = <strong>0</strong></li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Program error</strong> - Salah. Tidak ada error. Setter hanya tidak melakukan
+                        assignment karena validasi gagal.</li>
+                    <li><strong>c. null</strong> - Salah. Tipe data double adalah primitif, bukan reference type. Nilai
+                        defaultnya adalah 0.0, bukan null.</li>
+                    <li><strong>d. -1000</strong> - Salah. Nilai -1000 tidak di-assign ke saldo karena tidak lolos
+                        validasi (s >= 0).</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p><strong>Encapsulation</strong> memungkinkan kita mengontrol bagaimana data diakses dan
+                        dimodifikasi. Dengan membuat atribut <code>private</code> dan menyediakan setter dengan
+                        validasi, kita bisa mencegah data yang tidak valid masuk ke sistem.</p>
+                    <p>Nilai default untuk tipe primitif:</p>
+                    <ul>
+                        <li>int, byte, short, long = 0</li>
+                        <li>float, double = 0.0</li>
+                        <li>boolean = false</li>
+                        <li>char = '\u0000'</li>
+                    </ul>
+                    <p>Untuk memberikan feedback ke user, setter bisa dikembangkan:</p>
+                    <div class="code-box">
+                        <pre><code>public boolean setSaldo(double s) {
+    if (s >= 0) {
+        saldo = s;
+        return true;
+    }
+    System.out.println("Error: Saldo tidak boleh negatif");
+    return false;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 28 -->
+        <section class="content-section" id="soal28">
+            <div class="question-header">
+                <h2>Soal 28: Local Variable Initialization</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa yang terjadi jika kita mencoba menggunakan variabel lokal yang belum diinisialisasi dalam method?
+                </p>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Nilainya otomatis null</p>
+                    <p>b. Nilainya acak tergantung memori</p>
+                    <p>c. Nilainya otomatis 0</p>
+                    <p>d. Terjadi error saat kompilasi</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: d. Terjadi error saat kompilasi</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>local variable initialization</strong> di Java.</p>
+
+                <h4>Ilustrasi Kode Error:</h4>
+                <div class="code-box">
+                    <pre><code>public void hitungTotal() {
+    int harga;  // Deklarasi tanpa inisialisasi
+    int jumlah = 5;
+    int total = harga * jumlah;  // ERROR: variable harga might not have been initialized
+    System.out.println(total);
+}</code></pre>
+                </div>
+
+                <h4>Perbedaan Jenis Variabel:</h4>
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <tr style="background: #5B8DBE; color: white;">
+                        <th style="padding: 12px; border: 1px solid #ddd;">Jenis Variabel</th>
+                        <th style="padding: 12px; border: 1px solid #ddd;">Nilai Default</th>
+                        <th style="padding: 12px; border: 1px solid #ddd;">Wajib Inisialisasi?</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>Local Variable</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">TIDAK ADA</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">YA - sebelum digunakan</td>
+                    </tr>
+                    <tr style="background: #F8F9FA;">
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>Instance Variable</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">Ada (0, null, false, dll)</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">TIDAK - otomatis dapat default</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>Static Variable</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">Ada (0, null, false, dll)</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">TIDAK - otomatis dapat default</td>
+                    </tr>
+                </table>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Nilainya otomatis null</strong> - Salah. Local variable tidak mendapat nilai default
+                        apapun. Null hanya untuk reference type yang merupakan instance/static variable.</li>
+                    <li><strong>b. Nilainya acak tergantung memori</strong> - Salah. Java tidak membiarkan ini terjadi
+                        karena bisa menyebabkan bug. Compiler akan memaksa programmer untuk inisialisasi terlebih
+                        dahulu.</li>
+                    <li><strong>c. Nilainya otomatis 0</strong> - Salah. Ini benar untuk instance variable atau static
+                        variable, tetapi tidak untuk local variable.</li>
+                </ul>
+
+                <h4>Kode yang Benar:</h4>
+                <div class="code-box">
+                    <pre><code>public void hitungTotal() {
+    int harga = 10000;  // Harus diinisialisasi
+    int jumlah = 5;
+    int total = harga * jumlah;  // OK
+    System.out.println(total);
+}</code></pre>
+                </div>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p><strong>Local variable</strong> dideklarasikan di dalam method atau blok kode. Berbeda dengan
+                        instance/static variable, local variable tidak mendapat nilai default otomatis. Compiler Java
+                        akan mendeteksi jika local variable digunakan sebelum diinisialisasi dan memberikan compile-time
+                        error.</p>
+                    <p>Ini adalah salah satu fitur safety Java untuk mencegah bug yang sulit dilacak. Programmer dipaksa
+                        untuk secara eksplisit memberikan nilai awal sebelum menggunakan variabel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 30 -->
+        <section class="content-section" id="soal30">
+            <div class="question-header">
+                <h2>Soal 30: Inheritance dan Protected Access</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Jika class B berada di package berbeda, apa hasilnya?</p>
+                <div class="code-box">
+                    <pre><code>public class A {
+    protected int data = 10;
+}
+class B extends A {
+    void printData() {
+        System.out.println(data);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Error kompilasi</p>
+                    <p>b. Tidak dapat diakses tanpa getter</p>
+                    <p>c. Null</p>
+                    <p>d. 10</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>Jawaban: d. 10</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>access modifier</strong>, khususnya
+                    <code>protected</code>, dan <strong>inheritance</strong>.
+                </p>
+
+                <h4>Apa itu Protected?</h4>
+                <p>Access modifier <code>protected</code> memiliki aturan akses sebagai berikut:</p>
+                <ul>
+                    <li>Bisa diakses dari dalam class itu sendiri</li>
+                    <li>Bisa diakses dari class lain dalam package yang sama</li>
+                    <li>Bisa diakses dari <strong>subclass di package berbeda</strong> melalui inheritance</li>
+                    <li>Tidak bisa diakses dari class lain di package berbeda (kecuali subclass)</li>
+                </ul>
+
+                <h4>Analisis Kode:</h4>
+                <ol>
+                    <li>Class A memiliki atribut <code>protected int data = 10;</code></li>
+                    <li>Class B extends A (B adalah subclass dari A)</li>
+                    <li>Meskipun B berada di package berbeda, B tetap bisa mengakses <code>data</code> karena:
+                        <ul>
+                            <li>B adalah subclass dari A (hubungan inheritance)</li>
+                            <li>Atribut data adalah protected</li>
+                            <li>Protected member bisa diakses oleh subclass meski di package berbeda</li>
+                        </ul>
+                    </li>
+                    <li>Method printData() akan mencetak nilai data = 10</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Error kompilasi</strong> - Salah. Tidak ada error karena protected member dapat
+                        diakses oleh subclass di package berbeda.</li>
+                    <li><strong>b. Tidak dapat diakses tanpa getter</strong> - Salah. Protected member bisa diakses
+                        langsung dari subclass tanpa getter.</li>
+                    <li><strong>c. Null</strong> - Salah. Variabel data bertipe int (primitif) dengan nilai 10, bukan
+                        reference type. Tidak mungkin bernilai null.</li>
+                </ul>
+
+                <h4>Tabel Access Modifier:</h4>
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <tr style="background: #5B8DBE; color: white;">
+                        <th style="padding: 12px; border: 1px solid #ddd;">Modifier</th>
+                        <th style="padding: 12px; border: 1px solid #ddd;">Class</th>
+                        <th style="padding: 12px; border: 1px solid #ddd;">Package</th>
+                        <th style="padding: 12px; border: 1px solid #ddd;">Subclass</th>
+                        <th style="padding: 12px; border: 1px solid #ddd;">World</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>public</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                    </tr>
+                    <tr style="background: #F8F9FA;">
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>protected</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✗</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>default</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✗</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✗</td>
+                    </tr>
+                    <tr style="background: #F8F9FA;">
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>private</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✓</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✗</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✗</td>
+                        <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">✗</td>
+                    </tr>
+                </table>
+
+                <div class="key-concept">
+                    <h4>Konsep Penting:</h4>
+                    <p><strong>Protected</strong> adalah access modifier yang dirancang khusus untuk mendukung
+                        inheritance. Protected member dapat diakses oleh subclass meskipun berada di package berbeda,
+                        tetapi tidak bisa diakses oleh class biasa di package berbeda.</p>
+                    <p>Penggunaan protected cocok untuk member yang ingin dibagikan ke subclass tetapi tetap tersembunyi
+                        dari class lain yang tidak berkaitan.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="page-navigation">
+            <a href="index.html" class="nav-btn">Kembali ke Beranda</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Pembelajaran OOP Java. Dibuat dengan untuk pembelajaran interaktif.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/solution.js"></script>
+</body>
+
+</html>
