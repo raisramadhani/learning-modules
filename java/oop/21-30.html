@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembahasan Soal 21-30 - OOP Java</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/solution.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="java-icon">{ }</span>
+                <span>OOP Java</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="week1.html">Week 1</a></li>
+                <li><a href="week2.html">Week 2</a></li>
+                <li><a href="week3.html">Week 3</a></li>
+                <li><a href="week4.html">Week 4</a></li>
+                <li><a href="week6.html">Week 6</a></li>
+                <li><a href="week7.html">Week 7</a></li>
+                <li><a href="solution.html">Pembahasan Lengkap</a></li>
+                <li><a href="1-10.html">Soal 1-10</a></li>
+                <li><a href="11-20.html">Soal 11-20</a></li>
+                <li><a href="21-30.html" class="active">Soal 21-30</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="learning-header">
+        <h1>Pembahasan Soal 21-30</h1>
+        <p>Penjelasan lengkap untuk soal nomor 21 sampai 30 dengan analisis mendalam</p>
+    </div>
+
+    <div class="container">
+        <!-- Floating Navigation Widget -->
+        <div class="floating-nav" id="floatingNav">
+            <div class="floating-nav-header">
+                <span>Navigasi Soal</span>
+                <button class="toggle-nav" id="toggleNav">▼</button>
+            </div>
+            <div class="floating-nav-content" id="navContent">
+                <a href="#soal21" class="nav-item" data-soal="21">21</a>
+                <a href="#soal22" class="nav-item" data-soal="22">22</a>
+                <a href="#soal23" class="nav-item" data-soal="23">23</a>
+                <a href="#soal24" class="nav-item" data-soal="24">24</a>
+                <a href="#soal25" class="nav-item" data-soal="25">25</a>
+                <a href="#soal26" class="nav-item" data-soal="26">26</a>
+                <a href="#soal27" class="nav-item" data-soal="27">27</a>
+                <a href="#soal28" class="nav-item" data-soal="28">28</a>
+                <a href="#soal29" class="nav-item" data-soal="29">29</a>
+                <a href="#soal30" class="nav-item" data-soal="30">30</a>
+            </div>
+        </div>
+
+        <!-- Soal 21 -->
+        <section class="content-section" id="soal21">
+            <div class="question-header">
+                <h2>Soal 21: Casting Object</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/21.png" alt="Soal 21"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Parent {
+    void show() { System.out.println("Parent"); }
+}
+class Child extends Parent {
+    void show() { System.out.println("Child"); }
+}
+public class Test {
+    public static void main(String[] args) {
+        Parent p = new Child();
+        Child c = (Child) p;
+        c.show();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Parent</p>
+                    <p>b. Child</p>
+                    <p>c. Error kompilasi</p>
+                    <p>d. ClassCastException</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Child</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>downcasting</strong> dan <strong>method
+                        overriding</strong>.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>Parent p = new Child();</code> - <strong>Upcasting</strong> otomatis. Objek aktualnya
+                        adalah Child.</li>
+                    <li><code>Child c = (Child) p;</code> - <strong>Downcasting</strong> eksplisit. Ini aman karena
+                        objek p memang Child.</li>
+                    <li><code>c.show();</code> - Memanggil method show()</li>
+                    <li>Karena method show() di-override di Child, versi Child yang dipanggil</li>
+                    <li>Output: <strong>"Child"</strong></li>
+                </ol>
+
+                <h4>Mengapa Downcasting Berhasil:</h4>
+                <ul>
+                    <li>Objek aktual yang ditunjuk oleh p adalah <code>new Child()</code></li>
+                    <li>Downcasting dari Parent ke Child <strong>valid</strong> karena objek memang Child</li>
+                    <li>Tidak ada ClassCastException karena cast sesuai dengan tipe objek aktual</li>
+                </ul>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Parent</strong> - Salah. Method show() di-override, jadi versi Child yang dipanggil.
+                    </li>
+                    <li><strong>c. Error kompilasi</strong> - Salah. Kode ini valid dan akan compile.</li>
+                    <li><strong>d. ClassCastException</strong> - Salah. Exception ini terjadi jika objek aktual bukan
+                        Child, tapi di sini memang Child.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Upcasting vs Downcasting:</strong></p>
+                    <ul>
+                        <li><strong>Upcasting</strong> - Cast dari child ke parent (otomatis, selalu aman)</li>
+                        <li><strong>Downcasting</strong> - Cast dari parent ke child (eksplisit, perlu hati-hati)</li>
+                    </ul>
+                    <p><strong>Kapan Downcasting Gagal:</strong></p>
+                    <div class="code-box">
+                        <pre><code>Parent p = new Parent();  // Objek aktual adalah Parent
+Child c = (Child) p;       // ClassCastException!
+// Parent tidak bisa di-cast ke Child
+
+// Gunakan instanceof untuk keamanan
+if (p instanceof Child) {
+    Child c = (Child) p;  // Safe
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 22 -->
+        <section class="content-section" id="soal22">
+            <div class="question-header">
+                <h2>Soal 22: Static Block</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/22.png" alt="Soal 22"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>public class Test {
+    static {
+        System.out.println("Static block 1");
+    }
+    
+    public Test() {
+        System.out.println("Constructor");
+    }
+    
+    static {
+        System.out.println("Static block 2");
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("Main method");
+        Test t = new Test();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Main method<br>Constructor<br>Static block 1<br>Static block 2</p>
+                    <p>b. Static block 1<br>Static block 2<br>Main method<br>Constructor</p>
+                    <p>c. Constructor<br>Static block 1<br>Static block 2<br>Main method</p>
+                    <p>d. Static block 1<br>Constructor<br>Static block 2<br>Main method</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Static block 1<br>Static block 2<br>Main method<br>Constructor</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>urutan inisialisasi class</strong> di Java.</p>
+
+                <h4>Urutan Eksekusi:</h4>
+                <ol>
+                    <li><strong>Class loading</strong> - JVM memuat class Test</li>
+                    <li><strong>Static blocks dieksekusi</strong> - Sesuai urutan penulisan:
+                        <ul>
+                            <li>Output: "Static block 1"</li>
+                            <li>Output: "Static block 2"</li>
+                        </ul>
+                    </li>
+                    <li><strong>main() method dieksekusi</strong>:
+                        <ul>
+                            <li>Output: "Main method"</li>
+                        </ul>
+                    </li>
+                    <li><strong>Object creation</strong> - <code>new Test()</code>:
+                        <ul>
+                            <li>Constructor dipanggil</li>
+                            <li>Output: "Constructor"</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>Mengapa Static Block Pertama:</h4>
+                <ul>
+                    <li><strong>Static block</strong> dieksekusi saat <strong>class loading</strong>, sebelum method
+                        apapun</li>
+                    <li>Static block dieksekusi <strong>hanya sekali</strong> saat class pertama kali dimuat</li>
+                    <li>Urutan eksekusi sesuai dengan urutan penulisan dalam class</li>
+                    <li>Static block dieksekusi sebelum main() method</li>
+                </ul>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Main method pertama</strong> - Salah. Static block dieksekusi sebelum main().</li>
+                    <li><strong>c. Constructor pertama</strong> - Salah. Constructor dieksekusi saat object creation,
+                        bukan saat class loading.</li>
+                    <li><strong>d. Urutan static block salah</strong> - Salah. Static block 1 sebelum static block 2.
+                    </li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Urutan Inisialisasi Lengkap:</strong></p>
+                    <ol>
+                        <li><strong>Static variables</strong> - Inisialisasi static field</li>
+                        <li><strong>Static blocks</strong> - Eksekusi static initialization block</li>
+                        <li><strong>Instance variables</strong> - Inisialisasi instance field</li>
+                        <li><strong>Instance blocks</strong> - Eksekusi initialization block</li>
+                        <li><strong>Constructor</strong> - Eksekusi constructor</li>
+                    </ol>
+                    <p><strong>Kegunaan Static Block:</strong></p>
+                    <ul>
+                        <li>Inisialisasi static variables yang kompleks</li>
+                        <li>Load configuration atau resources saat class loading</li>
+                        <li>Exception handling untuk static initialization</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 23 -->
+        <section class="content-section" id="soal23">
+            <div class="question-header">
+                <h2>Soal 23: Multiple Interface Implementation</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa yang terjadi jika class mengimplementasikan dua interface dengan method signature yang sama?</p>
+                <div class="code-box">
+                    <pre><code>interface A {
+    void show();
+}
+interface B {
+    void show();
+}
+class Test implements A, B {
+    public void show() {
+        System.out.println("Show method");
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Error kompilasi - ambiguous method</p>
+                    <p>b. Harus override method show() dua kali</p>
+                    <p>c. Valid - satu implementasi untuk kedua interface</p>
+                    <p>d. Harus pilih salah satu interface</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: c. Valid - satu implementasi untuk kedua interface</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Ketika sebuah class mengimplementasikan multiple interfaces dengan method signature yang sama,
+                    <strong>satu implementasi cukup untuk memenuhi contract dari semua interface</strong>.</p>
+
+                <h4>Mengapa Valid:</h4>
+                <ul>
+                    <li>Kedua interface (A dan B) punya method dengan <strong>signature yang identik</strong>:
+                        <code>void show()</code></li>
+                    <li>Class Test mengimplementasikan method <code>show()</code> sekali</li>
+                    <li>Implementasi ini memenuhi contract dari <strong>kedua interface</strong></li>
+                    <li>Tidak ada konflik karena signature-nya sama</li>
+                </ul>
+
+                <h4>Contoh Penggunaan:</h4>
+                <div class="code-box">
+                    <pre><code>Test t = new Test();
+t.show();  // Output: "Show method"
+
+A a = new Test();
+a.show();  // Output: "Show method"
+
+B b = new Test();
+b.show();  // Output: "Show method"
+
+// Semua memanggil implementasi yang sama</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Error kompilasi</strong> - Salah. Tidak ada ambiguitas karena signature sama persis.
+                    </li>
+                    <li><strong>b. Override dua kali</strong> - Salah. Tidak mungkin punya dua method dengan signature
+                        yang sama dalam satu class.</li>
+                    <li><strong>d. Pilih salah satu</strong> - Salah. Tidak perlu pilih, satu implementasi untuk semua.
+                    </li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Kapan Terjadi Konflik:</strong></p>
+                    <div class="code-box">
+                        <pre><code>// Konflik jika return type berbeda
+interface A {
+    int getValue();
+}
+interface B {
+    String getValue();  // Return type berbeda
+}
+class Test implements A, B {  // ERROR!
+    // Tidak bisa implement keduanya
+}</code></pre>
+                    </div>
+                    <p><strong>Default Method di Interface (Java 8+):</strong></p>
+                    <div class="code-box">
+                        <pre><code>interface A {
+    default void show() { System.out.println("A"); }
+}
+interface B {
+    default void show() { System.out.println("B"); }
+}
+class Test implements A, B {
+    // Harus override untuk resolve konflik
+    public void show() {
+        A.super.show();  // Atau B.super.show()
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 24 -->
+        <section class="content-section" id="soal24">
+            <div class="question-header">
+                <h2>Soal 24: Wrapper Class dan Autoboxing</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/24.png" alt="Soal 24"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>public class Test {
+    public static void main(String[] args) {
+        Integer a = 100;
+        Integer b = 100;
+        Integer c = 200;
+        Integer d = 200;
+        
+        System.out.println(a == b);
+        System.out.println(c == d);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. true<br>true</p>
+                    <p>b. false<br>false</p>
+                    <p>c. true<br>false</p>
+                    <p>d. false<br>true</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: c. true<br>false</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>Integer caching</strong> dan <strong>autoboxing</strong>
+                    di Java.</p>
+
+                <h4>Integer Caching:</h4>
+                <p>Java melakukan <strong>caching</strong> untuk nilai Integer dalam range <strong>-128 sampai
+                        127</strong>. Objek Integer dengan nilai dalam range ini akan <strong>reuse object yang
+                        sama</strong>.</p>
+
+                <h4>Analisis:</h4>
+                <ol>
+                    <li><code>Integer a = 100;</code> - Autoboxing, nilai 100 ada dalam cache</li>
+                    <li><code>Integer b = 100;</code> - Menggunakan object yang sama dari cache</li>
+                    <li><code>a == b</code> - Membandingkan reference, <strong>sama</strong> (cached) →
+                        <strong>true</strong></li>
+                    <li><code>Integer c = 200;</code> - Di luar cache range, membuat objek baru</li>
+                    <li><code>Integer d = 200;</code> - Membuat objek baru lagi (tidak dari cache)</li>
+                    <li><code>c == d</code> - Membandingkan reference, <strong>berbeda</strong> → <strong>false</strong>
+                    </li>
+                </ol>
+
+                <h4>Visualisasi Memory:</h4>
+                <div class="code-box">
+                    <pre><code>// Nilai 100 (dalam cache)
+Integer a = 100;  // Referensi ke cached object
+Integer b = 100;  // Referensi ke cached object yang sama
+// a == b → true (same object)
+
+// Nilai 200 (di luar cache)
+Integer c = 200;  // new Integer(200) - Object 1
+Integer d = 200;  // new Integer(200) - Object 2
+// c == d → false (different objects)</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. true, true</strong> - Salah. Nilai 200 di luar cache range, jadi object berbeda.</li>
+                    <li><strong>b. false, false</strong> - Salah. Nilai 100 dalam cache range, jadi object sama.</li>
+                    <li><strong>d. false, true</strong> - Salah. Kebalikan dari jawaban yang benar.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Integer Caching Range:</strong></p>
+                    <ul>
+                        <li>Range: <strong>-128 to 127</strong></li>
+                        <li>Objek dengan nilai dalam range ini di-reuse (cached)</li>
+                        <li>Di luar range, selalu membuat objek baru</li>
+                    </ul>
+                    <p><strong>Best Practice:</strong></p>
+                    <div class="code-box">
+                        <pre><code>// Jangan gunakan == untuk wrapper objects
+Integer a = 200;
+Integer b = 200;
+System.out.println(a == b);        // false - berbeda object
+System.out.println(a.equals(b));   // true - nilai sama
+
+// Atau unbox ke primitif
+int x = a;
+int y = b;
+System.out.println(x == y);        // true</code></pre>
+                    </div>
+                    <p><strong>Wrapper Classes yang Di-cache:</strong></p>
+                    <ul>
+                        <li><strong>Integer, Byte, Short, Long:</strong> -128 to 127</li>
+                        <li><strong>Character:</strong> 0 to 127</li>
+                        <li><strong>Boolean:</strong> true dan false selalu cached</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 25 -->
+        <section class="content-section" id="soal25">
+            <div class="question-header">
+                <h2>Soal 25: Method Overriding dengan Covariant Return Type</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apakah kode berikut valid?</p>
+                <div class="code-box">
+                    <pre><code>class Animal {
+    Animal getAnimal() {
+        return new Animal();
+    }
+}
+class Dog extends Animal {
+    Dog getAnimal() {
+        return new Dog();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Error - return type berbeda</p>
+                    <p>b. Valid - covariant return type</p>
+                    <p>c. Error - tidak bisa override</p>
+                    <p>d. Valid tapi harus sama return type-nya</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Valid - covariant return type</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Sejak Java 5, <strong>covariant return type</strong> diperbolehkan dalam method overriding. Ini
+                    berarti method yang meng-override dapat mengembalikan <strong>subtype</strong> dari return type
+                    method parent.</p>
+
+                <h4>Covariant Return Type:</h4>
+                <ul>
+                    <li>Method di parent class: return type <code>Animal</code></li>
+                    <li>Method di child class: return type <code>Dog</code></li>
+                    <li><strong>Dog adalah subclass dari Animal</strong></li>
+                    <li>Ini diperbolehkan dan disebut <strong>covariant return type</strong></li>
+                </ul>
+
+                <h4>Keuntungan:</h4>
+                <div class="code-box">
+                    <pre><code>Dog dog = new Dog();
+Dog result = dog.getAnimal();  // Tidak perlu casting!
+
+// Tanpa covariant return type, perlu:
+Animal result = dog.getAnimal();
+Dog d = (Dog) result;  // Perlu casting</code></pre>
+                </div>
+
+                <h4>Aturan Covariant Return Type:</h4>
+                <ol>
+                    <li>Return type harus <strong>subclass</strong> dari return type parent</li>
+                    <li>Tidak berlaku untuk <strong>primitif types</strong> (harus sama persis)</li>
+                    <li>Method signature lainnya harus sama (nama, parameter)</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Error - return type berbeda</strong> - Salah. Covariant return type diperbolehkan
+                        sejak Java 5.</li>
+                    <li><strong>c. Error - tidak bisa override</strong> - Salah. Ini adalah valid overriding.</li>
+                    <li><strong>d. Valid tapi harus sama</strong> - Salah. Tidak harus sama, covariant diperbolehkan.
+                    </li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Contoh Tidak Valid:</strong></p>
+                    <div class="code-box">
+                        <pre><code>class Parent {
+    Animal getAnimal() { return new Animal(); }
+}
+class Child extends Parent {
+    Cat getAnimal() { return new Cat(); }
+}
+// ERROR jika Cat bukan subclass dari Animal
+
+// Primitif tidak bisa covariant
+class Parent {
+    int getValue() { return 1; }
+}
+class Child extends Parent {
+    long getValue() { return 1L; }  // ERROR!
+}</code></pre>
+                    </div>
+                    <p><strong>Contoh Real-world:</strong></p>
+                    <div class="code-box">
+                        <pre><code>class CloneableObject {
+    CloneableObject clone() {
+        return new CloneableObject();
+    }
+}
+class Person extends CloneableObject {
+    Person clone() {  // Covariant return
+        return new Person();
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 26 -->
+        <section class="content-section" id="soal26">
+            <div class="question-header">
+                <h2>Soal 26: Null Reference dan Method Call</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/26.png" alt="Soal 26"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>public class Test {
+    public static void display() {
+        System.out.println("Static method");
+    }
+    
+    public static void main(String[] args) {
+        Test obj = null;
+        obj.display();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. NullPointerException</p>
+                    <p>b. Error kompilasi</p>
+                    <p>c. "Static method"</p>
+                    <p>d. null</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: c. "Static method"</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>static method</strong> dan bagaimana mereka dipanggil.</p>
+
+                <h4>Mengapa Tidak NullPointerException:</h4>
+                <ul>
+                    <li><code>display()</code> adalah <strong>static method</strong></li>
+                    <li>Static method <strong>tidak membutuhkan instance object</strong> untuk dipanggil</li>
+                    <li>Meskipun dipanggil melalui reference null (<code>obj.display()</code>), compiler menganggapnya
+                        sebagai <code>Test.display()</code></li>
+                    <li>Static method di-resolve saat <strong>compile time</strong> berdasarkan tipe reference, bukan
+                        nilai object</li>
+                </ul>
+
+                <h4>Cara Kerja:</h4>
+                <ol>
+                    <li><code>Test obj = null;</code> - obj adalah null reference</li>
+                    <li><code>obj.display();</code> - Compiler melihat tipe obj adalah Test</li>
+                    <li>Method display() adalah static di class Test</li>
+                    <li>Compiler mengubah menjadi <code>Test.display()</code></li>
+                    <li>Object reference tidak pernah diakses, jadi tidak ada NullPointerException</li>
+                    <li>Output: "Static method"</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. NullPointerException</strong> - Salah. Exception ini terjadi saat mengakses instance
+                        member dari null reference, bukan static member.</li>
+                    <li><strong>b. Error kompilasi</strong> - Salah. Kode ini valid, meskipun gaya pemanggilan static
+                        method tidak direkomendasikan.</li>
+                    <li><strong>d. null</strong> - Salah. Method display() mencetak "Static method", bukan null.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Best Practice untuk Static Method:</strong></p>
+                    <div class="code-box">
+                        <pre><code>// Bad practice
+Test obj = null;
+obj.display();  // Membingungkan, terlihat seperti instance call
+
+// Good practice
+Test.display();  // Jelas bahwa ini static method call</code></pre>
+                    </div>
+                    <p><strong>NullPointerException terjadi pada:</strong></p>
+                    <div class="code-box">
+                        <pre><code>class Test {
+    int value;  // Instance variable
+    void show() {  // Instance method
+        System.out.println("Instance method");
+    }
+}
+
+Test obj = null;
+obj.value = 10;   // NullPointerException!
+obj.show();        // NullPointerException!
+
+// Static tidak throw NPE
+Test.staticMethod();  // OK, meskipun obj null</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 27 -->
+        <section class="content-section" id="soal27">
+            <div class="question-header">
+                <h2>Soal 27: Abstract Class vs Interface</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa perbedaan utama antara abstract class dan interface?</p>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Abstract class bisa punya constructor, interface tidak</p>
+                    <p>b. Interface bisa punya method dengan body, abstract class tidak</p>
+                    <p>c. Abstract class tidak bisa diinstantiasi, interface bisa</p>
+                    <p>d. Interface bisa punya instance variables, abstract class tidak</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: a. Abstract class bisa punya constructor, interface tidak</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Perbedaan utama antara <strong>abstract class</strong> dan <strong>interface</strong> adalah abstract
+                    class dapat memiliki constructor, sedangkan interface tidak.</p>
+
+                <h4>Perbedaan Abstract Class dan Interface:</h4>
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <tr style="background: #5B8DBE; color: white;">
+                        <th style="padding: 12px; border: 1px solid #ddd;">Fitur</th>
+                        <th style="padding: 12px; border: 1px solid #ddd;">Abstract Class</th>
+                        <th style="padding: 12px; border: 1px solid #ddd;">Interface</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>Constructor</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✓ Bisa punya</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✗ Tidak bisa</td>
+                    </tr>
+                    <tr style="background: #F8F9FA;">
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>Instance Variables</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✓ Bisa (any access)</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✗ Hanya public static final</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>Method Implementation</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✓ Bisa concrete & abstract</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✓ Default/static method (Java 8+)</td>
+                    </tr>
+                    <tr style="background: #F8F9FA;">
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>Multiple Inheritance</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✗ Single inheritance</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✓ Multiple implementation</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ddd;"><strong>Access Modifiers</strong></td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✓ Any (private, protected, dll)</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">✗ Hanya public</td>
+                    </tr>
+                </table>
+
+                <h4>Contoh Abstract Class dengan Constructor:</h4>
+                <div class="code-box">
+                    <pre><code>abstract class Animal {
+    String name;
+    
+    // Abstract class BISA punya constructor
+    Animal(String name) {
+        this.name = name;
+    }
+    
+    abstract void sound();
+}
+
+class Dog extends Animal {
+    Dog(String name) {
+        super(name);  // Memanggil constructor parent
+    }
+    
+    void sound() {
+        System.out.println(name + " says: Woof!");
+    }
+}</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>b. Interface bisa punya method dengan body</strong> - Benar sejak Java 8 (default
+                        method), tapi bukan perbedaan utama. Abstract class juga bisa.</li>
+                    <li><strong>c. Abstract class tidak bisa diinstantiasi, interface bisa</strong> - Salah. Keduanya
+                        tidak bisa diinstantiasi langsung.</li>
+                    <li><strong>d. Interface bisa punya instance variables</strong> - Salah. Interface hanya bisa punya
+                        public static final constants.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Kapan Menggunakan Abstract Class:</strong></p>
+                    <ul>
+                        <li>Perlu shared state (instance variables)</li>
+                        <li>Perlu constructor untuk inisialisasi</li>
+                        <li>Perlu access modifiers (private, protected)</li>
+                        <li>Ada "IS-A" relationship yang kuat</li>
+                    </ul>
+                    <p><strong>Kapan Menggunakan Interface:</strong></p>
+                    <ul>
+                        <li>Perlu multiple inheritance</li>
+                        <li>Mendefinisikan contract/capability</li>
+                        <li>Tidak ada shared state</li>
+                        <li>Ada "CAN-DO" relationship (Flyable, Readable, dll)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 28 -->
+        <section class="content-section" id="soal28">
+            <div class="question-header">
+                <h2>Soal 28: Varargs (Variable Arguments)</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/28.png" alt="Soal 28"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>public class Test {
+    static void display(int... values) {
+        System.out.println("Length: " + values.length);
+    }
+    
+    public static void main(String[] args) {
+        display();
+        display(1, 2, 3);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Error kompilasi</p>
+                    <p>b. Length: 0<br>Length: 3</p>
+                    <p>c. Length: null<br>Length: 3</p>
+                    <p>d. NullPointerException</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Length: 0<br>Length: 3</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>varargs (variable-length arguments)</strong> di Java.</p>
+
+                <h4>Varargs Explained:</h4>
+                <ul>
+                    <li>Sintaks: <code>type... variableName</code></li>
+                    <li>Memungkinkan passing 0 atau lebih argument</li>
+                    <li>Di dalam method, varargs diperlakukan sebagai <strong>array</strong></li>
+                    <li>Jika tidak ada argument, array dengan length 0 dibuat (bukan null)</li>
+                </ul>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>display();</code> - Dipanggil tanpa argument
+                        <ul>
+                            <li>values adalah array kosong dengan length 0</li>
+                            <li>Output: "Length: 0"</li>
+                        </ul>
+                    </li>
+                    <li><code>display(1, 2, 3);</code> - Dipanggil dengan 3 argument
+                        <ul>
+                            <li>values = {1, 2, 3}</li>
+                            <li>values.length = 3</li>
+                            <li>Output: "Length: 3"</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>Varargs Rules:</h4>
+                <div class="code-box">
+                    <pre><code>// Valid
+void method(int... nums) { }
+void method(String s, int... nums) { }
+
+// Invalid - varargs harus parameter terakhir
+void method(int... nums, String s) { }  // ERROR!
+
+// Invalid - hanya satu varargs per method
+void method(int... nums, String... strs) { }  // ERROR!
+
+// Pemanggilan
+method();              // OK
+method(1);             // OK
+method(1, 2, 3);       // OK
+method(new int[]{1,2}); // OK - passing array langsung</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Error kompilasi</strong> - Salah. Varargs bisa dipanggil tanpa argument.</li>
+                    <li><strong>c. Length: null</strong> - Salah. Varargs kosong adalah array dengan length 0, bukan
+                        null.</li>
+                    <li><strong>d. NullPointerException</strong> - Salah. Array tidak null, jadi tidak ada exception.
+                    </li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Varargs vs Array:</strong></p>
+                    <div class="code-box">
+                        <pre><code>// Dengan varargs
+void sum(int... nums) {
+    int total = 0;
+    for (int n : nums) {
+        total += n;
+    }
+    return total;
+}
+sum(1, 2, 3);  // Flexible
+
+// Tanpa varargs (old way)
+void sum(int[] nums) {
+    // Same implementation
+}
+sum(new int[]{1, 2, 3});  // Less flexible</code></pre>
+                    </div>
+                    <p><strong>Contoh Real-world:</strong> <code>String.format(String format, Object... args)</code>,
+                        <code>System.out.printf(String format, Object... args)</code></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 29 -->
+        <section class="content-section" id="soal29">
+            <div class="question-header">
+                <h2>Soal 29: Enum</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/29.png" alt="Soal 29"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>enum Day {
+    MONDAY, TUESDAY, WEDNESDAY
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Day d = Day.MONDAY;
+        System.out.println(d);
+        System.out.println(d.ordinal());
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. MONDAY<br>0</p>
+                    <p>b. 0<br>MONDAY</p>
+                    <p>c. MONDAY<br>1</p>
+                    <p>d. Error kompilasi</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: a. MONDAY<br>0</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>Enum</strong> di Java.</p>
+
+                <h4>Enum Basics:</h4>
+                <ul>
+                    <li>Enum adalah tipe data khusus untuk mendefinisikan konstanta</li>
+                    <li>Setiap enum constant punya nama dan ordinal (index position)</li>
+                    <li>Ordinal dimulai dari <strong>0</strong></li>
+                </ul>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>Day d = Day.MONDAY;</code> - d menunjuk ke enum constant MONDAY</li>
+                    <li><code>System.out.println(d);</code>
+                        <ul>
+                            <li>Mencetak nama enum constant</li>
+                            <li>Output: <strong>"MONDAY"</strong></li>
+                        </ul>
+                    </li>
+                    <li><code>System.out.println(d.ordinal());</code>
+                        <ul>
+                            <li>ordinal() mengembalikan position index</li>
+                            <li>MONDAY adalah enum pertama → index 0</li>
+                            <li>Output: <strong>"0"</strong></li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>Ordinal Values:</h4>
+                <div class="code-box">
+                    <pre><code>enum Day {
+    MONDAY,    // ordinal = 0
+    TUESDAY,   // ordinal = 1
+    WEDNESDAY  // ordinal = 2
+}
+
+Day.MONDAY.ordinal();    // 0
+Day.TUESDAY.ordinal();   // 1
+Day.WEDNESDAY.ordinal(); // 2</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>b. 0, MONDAY</strong> - Salah. Urutan output terbalik.</li>
+                    <li><strong>c. MONDAY, 1</strong> - Salah. Ordinal dimulai dari 0, bukan 1.</li>
+                    <li><strong>d. Error kompilasi</strong> - Salah. Kode ini valid.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Enum Methods:</strong></p>
+                    <div class="code-box">
+                        <pre><code>enum Day {
+    MONDAY, TUESDAY, WEDNESDAY
+}
+
+// Built-in methods
+Day d = Day.MONDAY;
+d.name();        // "MONDAY" (String)
+d.ordinal();     // 0 (int)
+d.toString();    // "MONDAY" (String)
+
+// Static methods
+Day.values();    // Array of all enum constants
+Day.valueOf("MONDAY");  // Convert string to enum</code></pre>
+                    </div>
+                    <p><strong>Enum dengan Fields dan Methods:</strong></p>
+                    <div class="code-box">
+                        <pre><code>enum Day {
+    MONDAY("Weekend starts in 5 days"),
+    FRIDAY("Weekend tomorrow!");
+    
+    private String message;
+    
+    Day(String message) {
+        this.message = message;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+}
+
+System.out.println(Day.MONDAY.getMessage());
+// Output: "Weekend starts in 5 days"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 30 -->
+        <section class="content-section" id="soal30">
+            <div class="question-header">
+                <h2>Soal 30: Method Hiding (Static Method Override)</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="question-image">
+                    <img src="assets/questions/30.png" alt="Soal 30"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Parent {
+    static void display() {
+        System.out.println("Parent static");
+    }
+}
+class Child extends Parent {
+    static void display() {
+        System.out.println("Child static");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Parent p = new Child();
+        p.display();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. "Child static"</p>
+                    <p>b. "Parent static"</p>
+                    <p>c. Error kompilasi</p>
+                    <p>d. Tergantung runtime type</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. "Parent static"</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>method hiding</strong> (bukan overriding) untuk static
+                    methods.</p>
+
+                <h4>Method Hiding vs Method Overriding:</h4>
+                <ul>
+                    <li><strong>Instance method</strong> - Menggunakan <strong>overriding</strong> (runtime
+                        polymorphism)</li>
+                    <li><strong>Static method</strong> - Menggunakan <strong>hiding</strong> (compile-time resolution)
+                    </li>
+                </ul>
+
+                <h4>Analisis:</h4>
+                <ol>
+                    <li><code>Parent p = new Child();</code> - Referensi bertipe Parent, objek Child</li>
+                    <li><code>p.display();</code> - Memanggil static method</li>
+                    <li>Static method di-resolve saat <strong>compile-time</strong> berdasarkan <strong>tipe
+                            referensi</strong></li>
+                    <li>Tipe referensi adalah <code>Parent</code></li>
+                    <li>Method yang dipanggil adalah <code>Parent.display()</code></li>
+                    <li>Output: <strong>"Parent static"</strong></li>
+                </ol>
+
+                <h4>Perbedaan dengan Instance Method:</h4>
+                <div class="code-box">
+                    <pre><code>// Instance method (overriding)
+class Parent {
+    void display() { System.out.println("Parent"); }
+}
+class Child extends Parent {
+    void display() { System.out.println("Child"); }
+}
+Parent p = new Child();
+p.display();  // Output: "Child" (runtime polymorphism)
+
+// Static method (hiding)
+class Parent {
+    static void display() { System.out.println("Parent"); }
+}
+class Child extends Parent {
+    static void display() { System.out.println("Child"); }
+}
+Parent p = new Child();
+p.display();  // Output: "Parent" (compile-time resolution)</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. "Child static"</strong> - Salah. Static method tidak menggunakan runtime
+                        polymorphism.</li>
+                    <li><strong>c. Error kompilasi</strong> - Salah. Method hiding valid, tidak ada error.</li>
+                    <li><strong>d. Tergantung runtime type</strong> - Salah. Static method di-resolve saat compile-time,
+                        bukan runtime.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Best Practice:</strong></p>
+                    <ul>
+                        <li>Jangan panggil static method melalui instance reference</li>
+                        <li>Gunakan class name: <code>Parent.display()</code> atau <code>Child.display()</code></li>
+                        <li>Static method tidak bisa di-override, hanya bisa di-hide</li>
+                    </ul>
+                    <p><strong>Comparison Table:</strong></p>
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                        <tr style="background: #5B8DBE; color: white;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Aspect</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Instance Method</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Static Method</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd;"><strong>Resolution</strong></td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Runtime (polymorphism)</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Compile-time</td>
+                        </tr>
+                        <tr style="background: #F8F9FA;">
+                            <td style="padding: 12px; border: 1px solid #ddd;"><strong>Based on</strong></td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Object type</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Reference type</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd;"><strong>Terminology</strong></td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Overriding</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Hiding</td>
+                        </tr>
+                        <tr style="background: #F8F9FA;">
+                            <td style="padding: 12px; border: 1px solid #ddd;"><strong>@Override</strong></td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Can use @Override</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Cannot use @Override</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="page-navigation">
+            <a href="11-20.html" class="nav-btn">Soal 11-20</a>
+            <a href="solution.html" class="nav-btn">Pembahasan Lengkap</a>
+            <a href="index.html" class="nav-btn">Kembali ke Beranda</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Pembelajaran OOP Java. Dibuat dengan ❤️ untuk pembelajaran interaktif.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/solution.js"></script>
+</body>
+
+</html>

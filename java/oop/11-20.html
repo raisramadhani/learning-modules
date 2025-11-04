@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembahasan Soal 11-20 - OOP Java</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/solution.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="java-icon">{ }</span>
+                <span>OOP Java</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="week1.html">Week 1</a></li>
+                <li><a href="week2.html">Week 2</a></li>
+                <li><a href="week3.html">Week 3</a></li>
+                <li><a href="week4.html">Week 4</a></li>
+                <li><a href="week6.html">Week 6</a></li>
+                <li><a href="week7.html">Week 7</a></li>
+                <li><a href="solution.html">Pembahasan Lengkap</a></li>
+                <li><a href="1-10.html">Soal 1-10</a></li>
+                <li><a href="11-20.html" class="active">Soal 11-20</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="learning-header">
+        <h1>Pembahasan Soal 11-20</h1>
+        <p>Penjelasan lengkap untuk soal nomor 11 sampai 20 dengan analisis mendalam</p>
+    </div>
+
+    <div class="container">
+        <!-- Floating Navigation Widget -->
+        <div class="floating-nav" id="floatingNav">
+            <div class="floating-nav-header">
+                <span>Navigasi Soal</span>
+                <button class="toggle-nav" id="toggleNav">▼</button>
+            </div>
+            <div class="floating-nav-content" id="navContent">
+                <a href="#soal11" class="nav-item" data-soal="11">11</a>
+                <a href="#soal12" class="nav-item" data-soal="12">12</a>
+                <a href="#soal13" class="nav-item" data-soal="13">13</a>
+                <a href="#soal14" class="nav-item" data-soal="14">14</a>
+                <a href="#soal15" class="nav-item" data-soal="15">15</a>
+                <a href="#soal16" class="nav-item" data-soal="16">16</a>
+                <a href="#soal17" class="nav-item" data-soal="17">17</a>
+                <a href="#soal18" class="nav-item" data-soal="18">18</a>
+                <a href="#soal19" class="nav-item" data-soal="19">19</a>
+                <a href="#soal20" class="nav-item" data-soal="20">20</a>
+            </div>
+        </div>
+
+        <!-- Soal 11 -->
+        <section class="content-section" id="soal11">
+            <div class="question-header">
+                <h2>Soal 11: Method Overloading dan Runtime Polymorphism</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Hasil dari program di bawah adalah:</p>
+                <div class="question-image">
+                    <img src="assets/questions/11.png" alt="Soal 11"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class X {
+    void call() { System.out.println("X-call"); }
+}
+class Y extends X {
+    void call() { System.out.println("Y-call"); }
+    void call(String s) { System.out.println("Y-call " + s); }
+}
+public class Demo {
+    public static void main(String[] args) {
+        X obj = new Y();
+        obj.call("Test");
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Error kompilasi</p>
+                    <p>b. "Y-call"</p>
+                    <p>c. Error saat runtime</p>
+                    <p>d. "Y-call Test"</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: a. Error kompilasi</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>compile-time type checking</strong> dan <strong>method
+                        overloading</strong>.</p>
+
+                <h4>Analisis Kode:</h4>
+                <ol>
+                    <li><code>X obj = new Y();</code> - Ini adalah <strong>upcasting</strong>. Referensi bertipe X,
+                        tetapi objek aktualnya adalah Y.</li>
+                    <li><code>obj.call("Test");</code> - Memanggil method call dengan parameter String.</li>
+                    <li><strong>Compiler melihat tipe referensi (X), bukan tipe objek (Y)</strong>.</li>
+                    <li>Class X tidak punya method <code>call(String)</code>, hanya punya <code>call()</code>.</li>
+                    <li>Ini akan menyebabkan <strong>compile error</strong> karena method call(String) tidak ada di
+                        class X.</li>
+                </ol>
+
+                <h4>Mengapa Compile Error?</h4>
+                <p><strong>Method overloading</strong> di-resolve saat <strong>compile-time</strong> berdasarkan
+                    <strong>tipe referensi</strong>, bukan tipe objek:
+                </p>
+                <ul>
+                    <li>Tipe referensi adalah <code>X</code></li>
+                    <li>Class X hanya punya method <code>call()</code> tanpa parameter</li>
+                    <li>Class X tidak punya method <code>call(String s)</code></li>
+                    <li>Compiler tidak bisa menemukan method yang cocok → <strong>Error kompilasi</strong></li>
+                </ul>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>b. "Y-call"</strong> - Salah. Kode tidak akan compile, jadi tidak akan ada output.</li>
+                    <li><strong>c. Error saat runtime</strong> - Salah. Error terjadi saat kompilasi, bukan runtime.
+                    </li>
+                    <li><strong>d. "Y-call Test"</strong> - Salah. Meskipun objek aktualnya adalah Y (yang punya method
+                        call(String)), compiler hanya melihat tipe referensi X.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Perbedaan Overloading vs Overriding:</strong></p>
+                    <ul>
+                        <li><strong>Overloading</strong> - Di-resolve saat <strong>compile-time</strong> berdasarkan
+                            tipe referensi</li>
+                        <li><strong>Overriding</strong> - Di-resolve saat <strong>runtime</strong> berdasarkan tipe
+                            objek aktual</li>
+                    </ul>
+                    <p><strong>Contoh yang benar:</strong></p>
+                    <div class="code-box">
+                        <pre><code>X obj = new Y();
+obj.call();  // Output: "Y-call" (overriding, works!)
+
+Y obj2 = new Y();
+obj2.call("Test");  // Output: "Y-call Test" (tipe referensi Y punya method ini)</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 12 -->
+        <section class="content-section" id="soal12">
+            <div class="question-header">
+                <h2>Soal 12: Package dan Import</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa fungsi dari statement import di Java?</p>
+                <div class="code-box">
+                    <pre><code>import java.util.ArrayList;
+
+public class Test {
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Mengkompilasi class dari package lain</p>
+                    <p>b. Membuat class dapat diakses tanpa fully qualified name</p>
+                    <p>c. Meng-copy class ke project saat ini</p>
+                    <p>d. Menginstall library eksternal</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Membuat class dapat diakses tanpa fully qualified name</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Statement <strong>import</strong> memungkinkan kita menggunakan class dari package lain tanpa harus
+                    menuliskan fully qualified name (nama lengkap dengan package).</p>
+
+                <h4>Tanpa Import:</h4>
+                <div class="code-box">
+                    <pre><code>public class Test {
+    public static void main(String[] args) {
+        java.util.ArrayList<String> list = new java.util.ArrayList<>();
+        // Harus menulis nama lengkap dengan package
+    }
+}</code></pre>
+                </div>
+
+                <h4>Dengan Import:</h4>
+                <div class="code-box">
+                    <pre><code>import java.util.ArrayList;
+
+public class Test {
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+        // Cukup tulis nama class saja
+    }
+}</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Mengkompilasi class dari package lain</strong> - Salah. Import tidak melakukan
+                        kompilasi, hanya memberitahu compiler lokasi class.</li>
+                    <li><strong>c. Meng-copy class ke project</strong> - Salah. Import tidak meng-copy file, hanya
+                        membuat reference.</li>
+                    <li><strong>d. Menginstall library eksternal</strong> - Salah. Import hanya untuk class yang sudah
+                        ada di classpath, tidak menginstall apapun.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Jenis Import:</strong></p>
+                    <ul>
+                        <li><strong>Single class import:</strong> <code>import java.util.ArrayList;</code></li>
+                        <li><strong>Wildcard import:</strong> <code>import java.util.*;</code> - import semua class di
+                            package</li>
+                        <li><strong>Static import:</strong> <code>import static java.lang.Math.PI;</code> - import
+                            static member</li>
+                    </ul>
+                    <p><strong>Package java.lang:</strong> Tidak perlu di-import karena secara otomatis di-import oleh
+                        Java (String, System, Integer, dll).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 13 -->
+        <section class="content-section" id="soal13">
+            <div class="question-header">
+                <h2>Soal 13: Access Modifier Protected</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Class mana yang bisa mengakses method protected?</p>
+                <div class="code-box">
+                    <pre><code>package com.example;
+
+public class Parent {
+    protected void show() {
+        System.out.println("Protected method");
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Hanya class Parent</p>
+                    <p>b. Class di package yang sama dan subclass di package berbeda</p>
+                    <p>c. Semua class di semua package</p>
+                    <p>d. Hanya subclass di package yang sama</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Class di package yang sama dan subclass di package berbeda</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Access modifier <strong>protected</strong> memberikan akses kepada:</p>
+
+                <h4>Yang Bisa Mengakses Protected Member:</h4>
+                <ol>
+                    <li><strong>Class itu sendiri</strong></li>
+                    <li><strong>Class lain di package yang sama</strong></li>
+                    <li><strong>Subclass (child class) di package berbeda</strong></li>
+                </ol>
+
+                <h4>Contoh Akses Protected:</h4>
+                <div class="code-box">
+                    <pre><code>// File: com/example/Parent.java
+package com.example;
+public class Parent {
+    protected void show() { }
+}
+
+// File: com/example/SamePackage.java
+package com.example;
+public class SamePackage {
+    void test() {
+        Parent p = new Parent();
+        p.show();  // OK - same package
+    }
+}
+
+// File: com/other/Child.java
+package com.other;
+import com.example.Parent;
+public class Child extends Parent {
+    void test() {
+        show();  // OK - subclass
+    }
+}</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Hanya class Parent</strong> - Salah. Protected lebih luas dari private, bisa diakses
+                        dari class lain.</li>
+                    <li><strong>c. Semua class di semua package</strong> - Salah. Itu adalah public, bukan protected.
+                    </li>
+                    <li><strong>d. Hanya subclass di package sama</strong> - Salah. Protected juga bisa diakses oleh
+                        non-subclass di package yang sama, dan subclass di package berbeda.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Tabel Access Modifier:</strong></p>
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                        <tr style="background: #5B8DBE; color: white;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Modifier</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Class</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Package</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Subclass</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">World</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd;"><strong>public</strong></td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                        </tr>
+                        <tr style="background: #F8F9FA;">
+                            <td style="padding: 12px; border: 1px solid #ddd;"><strong>protected</strong></td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✗</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd;"><strong>default</strong></td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✗</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✗</td>
+                        </tr>
+                        <tr style="background: #F8F9FA;">
+                            <td style="padding: 12px; border: 1px solid #ddd;"><strong>private</strong></td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✗</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✗</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">✗</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 14 -->
+        <section class="content-section" id="soal14">
+            <div class="question-header">
+                <h2>Soal 14: Constructor Chaining dengan this()</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Perhatikan kode berikut:</p>
+                <div class="question-image">
+                    <img src="assets/questions/14.png" alt="Soal 14"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                <div class="code-box">
+                    <pre><code>class Mahasiswa {
+    String nama;
+    int umur;
+    Mahasiswa() {
+        this("Tidak diketahui", 0);
+    }
+    Mahasiswa(String n, int u) {
+    }
+}</code></pre>
+                </div>
+                <p>Ketika dijalankan new Mahasiswa(), nilai atribut nama dan umur adalah ...</p>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. "" dan -1</p>
+                    <p>b. "null" dan 0</p>
+                    <p>c. null dan 0</p>
+                    <p>d. "Tidak diketahui" dan 0</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: c. null dan 0</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>constructor chaining</strong> menggunakan keyword
+                    <code>this()</code> dan <strong>nilai default</strong> dari variabel instance.
+                </p>
+
+                <h4>Trace Eksekusi Lengkap:</h4>
+                <ol>
+                    <li><code>new Mahasiswa()</code> dipanggil</li>
+                    <li>Constructor <code>Mahasiswa()</code> dieksekusi</li>
+                    <li>Baris <code>this("Tidak diketahui", 0);</code> memanggil constructor kedua</li>
+                    <li>Constructor <code>Mahasiswa(String n, int u)</code> dieksekusi dengan:
+                        <ul>
+                            <li>Parameter n = "Tidak diketahui"</li>
+                            <li>Parameter u = 0</li>
+                        </ul>
+                    </li>
+                    <li><strong>Badan constructor kedua kosong!</strong> Tidak ada kode yang dijalankan.</li>
+                    <li>Variabel <code>nama</code> dan <code>umur</code> <strong>tidak pernah diberi nilai</strong></li>
+                    <li>Constructor selesai</li>
+                </ol>
+
+                <h4>Nilai Default Java:</h4>
+                <p>Karena variabel <code>nama</code> dan <code>umur</code> tidak pernah diinisialisasi, mereka akan
+                    memiliki nilai default (bawaan) dari Java:</p>
+                <ul>
+                    <li><strong>String nama</strong> = <code>null</code> (nilai default untuk semua tipe Object)</li>
+                    <li><strong>int umur</strong> = <code>0</code> (nilai default untuk tipe primitif int)</li>
+                </ul>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. "" dan -1</strong> - Salah. Nilai default String adalah <code>null</code>, bukan
+                        empty string "". Nilai default int adalah <code>0</code>, bukan -1.</li>
+                    <li><strong>b. "null" dan 0</strong> - Salah. Ini adalah String literal "null" (dengan tanda petik),
+                        bukan nilai <code>null</code> yang sebenarnya.</li>
+                    <li><strong>d. "Tidak diketahui" dan 0</strong> - Salah. Meskipun parameter dikirim dengan nilai
+                        ini, tidak ada assignment ke atribut. Parameter constructor adalah variabel lokal yang berbeda
+                        dari atribut class.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Parameter constructor bukan atribut.</strong> Memanggil constructor dengan parameter
+                        tidak otomatis mengisi atribut. Anda harus eksplisit melakukan assignment:</p>
+                    <div class="code-box">
+                        <pre><code>Mahasiswa(String n, int u) {
+    this.nama = n;    // Assignment harus dilakukan eksplisit
+    this.umur = u;    // Tanpa ini, atribut tetap nilai default
+}</code></pre>
+                    </div>
+                    <p><strong>Nilai default variabel instance:</strong></p>
+                    <ul>
+                        <li>Tipe Object (String, Integer, dll) → <code>null</code></li>
+                        <li>int, short, byte, long → <code>0</code></li>
+                        <li>float, double → <code>0.0</code></li>
+                        <li>boolean → <code>false</code></li>
+                        <li>char → <code>'\u0000'</code> (karakter null)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 15 -->
+        <section class="content-section" id="soal15">
+            <div class="question-header">
+                <h2>Soal 15: Exception Handling</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="code-box">
+                    <pre><code>public class Test {
+    public static void main(String[] args) {
+        try {
+            int result = 10 / 0;
+            System.out.println("Result: " + result);
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero");
+        } finally {
+            System.out.println("Finally block");
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Result: Infinity<br>Finally block</p>
+                    <p>b. Cannot divide by zero<br>Finally block</p>
+                    <p>c. Error kompilasi</p>
+                    <p>d. Hanya "Finally block"</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Cannot divide by zero<br>Finally block</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>exception handling</strong> dengan try-catch-finally.</p>
+
+                <h4>Trace Eksekusi:</h4>
+                <ol>
+                    <li><code>int result = 10 / 0;</code> - Pembagian dengan nol menghasilkan
+                        <strong>ArithmeticException</strong>
+                    </li>
+                    <li>Exception tertangkap, eksekusi loncat ke blok catch</li>
+                    <li>Baris <code>System.out.println("Result: " + result);</code> tidak dijalankan</li>
+                    <li><code>catch (ArithmeticException e)</code> - Menangkap exception</li>
+                    <li>Output: "Cannot divide by zero"</li>
+                    <li><code>finally</code> block selalu dieksekusi terlepas ada exception atau tidak</li>
+                    <li>Output: "Finally block"</li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Result: Infinity</strong> - Salah. Pembagian integer dengan nol menghasilkan
+                        exception, bukan Infinity (Infinity hanya untuk floating point).</li>
+                    <li><strong>c. Error kompilasi</strong> - Salah. Kode ini valid dan akan compile.</li>
+                    <li><strong>d. Hanya "Finally block"</strong> - Salah. Catch block juga dieksekusi karena ada
+                        exception.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Try-Catch-Finally:</strong></p>
+                    <ul>
+                        <li><strong>try</strong> - Blok kode yang mungkin menghasilkan exception</li>
+                        <li><strong>catch</strong> - Menangkap dan menangani exception</li>
+                        <li><strong>finally</strong> - Selalu dieksekusi, digunakan untuk cleanup (menutup file,
+                            koneksi, dll)</li>
+                    </ul>
+                    <p><strong>Jenis Exception:</strong></p>
+                    <ul>
+                        <li><strong>Checked Exception</strong> - Harus di-handle atau di-declare (IOException,
+                            SQLException)</li>
+                        <li><strong>Unchecked Exception</strong> - Tidak wajib di-handle (RuntimeException,
+                            NullPointerException, ArithmeticException)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 16 -->
+        <section class="content-section" id="soal16">
+            <div class="question-header">
+                <h2>Soal 16: Array Initialization</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Cara mana yang valid untuk menginisialisasi array di Java?</p>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. int[] arr = new int[5];</p>
+                    <p>b. int[] arr = {1, 2, 3, 4, 5};</p>
+                    <p>c. int[] arr = new int[]{1, 2, 3, 4, 5};</p>
+                    <p>d. Semua benar</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: d. Semua benar</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Semua cara di atas adalah cara yang valid untuk menginisialisasi array di Java.</p>
+
+                <h4>Analisis Setiap Cara:</h4>
+                <ol>
+                    <li><strong>int[] arr = new int[5];</strong>
+                        <ul>
+                            <li>Membuat array dengan ukuran 5</li>
+                            <li>Semua elemen diinisialisasi dengan nilai default (0 untuk int)</li>
+                            <li>arr = [0, 0, 0, 0, 0]</li>
+                        </ul>
+                    </li>
+                    <li><strong>int[] arr = {1, 2, 3, 4, 5};</strong>
+                        <ul>
+                            <li>Array initializer (shorthand)</li>
+                            <li>Hanya bisa digunakan saat deklarasi</li>
+                            <li>Ukuran array otomatis sesuai jumlah elemen</li>
+                        </ul>
+                    </li>
+                    <li><strong>int[] arr = new int[]{1, 2, 3, 4, 5};</strong>
+                        <ul>
+                            <li>Anonymous array creation</li>
+                            <li>Bisa digunakan saat deklarasi atau assignment</li>
+                            <li>Lebih fleksibel daripada cara b</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>Perbedaan Penggunaan:</h4>
+                <div class="code-box">
+                    <pre><code>// Saat deklarasi - semua cara bisa digunakan
+int[] arr1 = new int[5];
+int[] arr2 = {1, 2, 3};
+int[] arr3 = new int[]{1, 2, 3};
+
+// Assignment kemudian
+int[] arr4;
+arr4 = new int[5];              // OK
+arr4 = new int[]{1, 2, 3};      // OK
+arr4 = {1, 2, 3};                // ERROR - tidak bisa
+
+// Passing ke method
+printArray(new int[]{1, 2, 3}); // OK
+printArray({1, 2, 3});           // ERROR</code></pre>
+                </div>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Nilai Default Array:</strong></p>
+                    <ul>
+                        <li>int, byte, short, long → 0</li>
+                        <li>float, double → 0.0</li>
+                        <li>boolean → false</li>
+                        <li>char → '\u0000'</li>
+                        <li>Reference type (Object) → null</li>
+                    </ul>
+                    <p><strong>Array properties:</strong></p>
+                    <ul>
+                        <li><code>arr.length</code> - ukuran array (read-only)</li>
+                        <li>Array index dimulai dari 0</li>
+                        <li>Array di Java adalah object</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 17 -->
+        <section class="content-section" id="soal17">
+            <div class="question-header">
+                <h2>Soal 17: Aturan Penamaan Variabel</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Manakah dari berikut ini nama variabel yang valid dalam Java?</p>
+                <div class="question-image">
+                    <img src="assets/questions/17.png" alt="Soal 17"
+                        style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. _total</p>
+                    <p>b. 2ndValue</p>
+                    <p>c. class</p>
+                    <p>d. my-variable</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: a. _total</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Soal ini menguji pemahaman tentang <strong>aturan penamaan variabel</strong> (identifier rules) di
+                    Java.</p>
+
+                <h4>Aturan Penamaan Variabel di Java:</h4>
+                <ol>
+                    <li>Harus dimulai dengan <strong>huruf (a-z, A-Z)</strong>, <strong>underscore (_)</strong>, atau
+                        <strong>dollar sign ($)</strong>
+                    </li>
+                    <li>Karakter selanjutnya bisa huruf, digit (0-9), underscore, atau dollar sign</li>
+                    <li>Tidak boleh menggunakan <strong>reserved keyword</strong> Java (class, int, public, dll)</li>
+                    <li>Case-sensitive (myVar berbeda dengan MyVar)</li>
+                    <li>Tidak ada batas panjang</li>
+                    <li>Tidak boleh mengandung spasi atau karakter special lain (-, +, *, /, dll)</li>
+                </ol>
+
+                <h4>Analisis Setiap Pilihan:</h4>
+                <ul>
+                    <li><strong>a. _total</strong> - ✅ VALID. Dimulai dengan underscore, diikuti huruf.</li>
+                    <li><strong>b. 2ndValue</strong> - ❌ INVALID. Dimulai dengan angka (tidak diperbolehkan).</li>
+                    <li><strong>c. class</strong> - ❌ INVALID. "class" adalah reserved keyword di Java.</li>
+                    <li><strong>d. my-variable</strong> - ❌ INVALID. Mengandung hyphen/dash (-) yang tidak
+                        diperbolehkan.</li>
+                </ul>
+
+                <h4>Contoh Valid dan Invalid:</h4>
+                <div class="code-box">
+                    <pre><code>// Valid
+int total;
+int _count;
+int $price;
+int myVariable;
+int camelCase123;
+
+// Invalid
+int 123abc;        // dimulai dengan angka
+int my-var;        // ada dash
+int for;           // reserved keyword
+int my variable;   // ada spasi</code></pre>
+                </div>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Naming Convention Java:</strong></p>
+                    <ul>
+                        <li><strong>Variable & Method:</strong> camelCase (myVariable, calculateTotal)</li>
+                        <li><strong>Class & Interface:</strong> PascalCase (MyClass, Comparable)</li>
+                        <li><strong>Constant:</strong> UPPER_SNAKE_CASE (MAX_VALUE, PI)</li>
+                        <li><strong>Package:</strong> lowercase (com.example.myapp)</li>
+                    </ul>
+                    <p><strong>Reserved Keywords:</strong> class, int, for, while, if, else, return, public, private,
+                        static, final, dll.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 18 -->
+        <section class="content-section" id="soal18">
+            <div class="question-header">
+                <h2>Soal 18: String Immutability</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa output dari program berikut?</p>
+                <div class="code-box">
+                    <pre><code>public class Test {
+    public static void main(String[] args) {
+        String str = "Hello";
+        str.concat(" World");
+        System.out.println(str);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. "Hello World"</p>
+                    <p>b. "Hello"</p>
+                    <p>c. Error kompilasi</p>
+                    <p>d. null</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. "Hello"</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>String di Java adalah <strong>immutable</strong> (tidak dapat diubah). Method yang memodifikasi
+                    String tidak mengubah String asli, tetapi mengembalikan String baru.</p>
+
+                <h4>Analisis:</h4>
+                <ul>
+                    <li><code>String str = "Hello";</code> - str menunjuk ke String "Hello"</li>
+                    <li><code>str.concat(" World");</code> - Method concat() membuat String baru "Hello World"</li>
+                    <li><strong>String baru tidak di-assign ke variabel apapun</strong></li>
+                    <li>Variabel str masih menunjuk ke String asli "Hello"</li>
+                    <li>Output: "Hello"</li>
+                    </ol>
+
+                    <h4>Cara yang Benar:</h4>
+                    <div class="code-box">
+                        <pre><code>String str = "Hello";
+str = str.concat(" World");  // Assign hasil ke variabel
+System.out.println(str);      // Output: "Hello World"
+
+// Atau gunakan operator +
+str = str + " World";         // Output: "Hello World"</code></pre>
+                    </div>
+
+                    <h4>Mengapa pilihan lain salah:</h4>
+                    <ul>
+                        <li><strong>a. "Hello World"</strong> - Salah. Hasil concat tidak di-assign kembali ke str.</li>
+                        <li><strong>c. Error kompilasi</strong> - Salah. Kode ini valid, hanya hasilnya tidak sesuai
+                            ekspektasi.</li>
+                        <li><strong>d. null</strong> - Salah. str memiliki nilai "Hello".</li>
+                    </ul>
+
+                    <div class="key-concept">
+                        <h4>💡 Konsep Penting:</h4>
+                        <p><strong>String Immutability:</strong></p>
+                        <ul>
+                            <li>String objects tidak bisa diubah setelah dibuat</li>
+                            <li>Method seperti concat(), replace(), toUpperCase() membuat String baru</li>
+                            <li>Untuk efisiensi saat banyak modifikasi, gunakan StringBuilder atau StringBuffer</li>
+                        </ul>
+                        <p><strong>String Pool:</strong> String literal disimpan di string pool untuk memory efficiency.
+                        </p>
+                        <div class="code-box">
+                            <pre><code>String s1 = "Hello";
+String s2 = "Hello";
+System.out.println(s1 == s2);  // true - same object in pool
+
+String s3 = new String("Hello");
+System.out.println(s1 == s3);  // false - different objects</code></pre>
+                        </div>
+                    </div>
+            </div>
+        </section>
+
+        <!-- Soal 19 -->
+        <section class="content-section" id="soal19">
+            <div class="question-header">
+                <h2>Soal 19: Method Return Type</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa yang terjadi jika method dengan return type non-void tidak mengembalikan nilai?</p>
+                <div class="code-box">
+                    <pre><code>public int calculate() {
+    int x = 10;
+    int y = 20;
+    // Tidak ada return statement
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. Return 0 secara otomatis</p>
+                    <p>b. Error kompilasi</p>
+                    <p>c. Return null</p>
+                    <p>d. Error runtime</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: b. Error kompilasi</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Method dengan return type non-void <strong>wajib</strong> mengembalikan nilai dengan tipe yang
+                    sesuai. Jika tidak ada return statement, compiler akan menghasilkan error.</p>
+
+                <h4>Analisis:</h4>
+                <ul>
+                    <li>Method dideklarasikan dengan return type <code>int</code></li>
+                    <li>Tidak ada return statement di dalam method</li>
+                    <li>Compiler mendeteksi ini dan menghasilkan error: "missing return statement"</li>
+                    <li>Kode tidak akan compile</li>
+                </ul>
+
+                <h4>Cara yang Benar:</h4>
+                <div class="code-box">
+                    <pre><code>public int calculate() {
+    int x = 10;
+    int y = 20;
+    return x + y;  // Harus ada return statement
+}
+
+// Atau jika tidak perlu return value
+public void calculate() {
+    int x = 10;
+    int y = 20;
+    // Tidak perlu return (void method)
+}</code></pre>
+                </div>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. Return 0 secara otomatis</strong> - Salah. Java tidak mengembalikan nilai default
+                        untuk method.</li>
+                    <li><strong>c. Return null</strong> - Salah. Tipe int adalah primitif, tidak bisa null. Dan tidak
+                        ada auto-return.</li>
+                    <li><strong>d. Error runtime</strong> - Salah. Error terjadi saat kompilasi, bukan runtime.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>Return Statement Rules:</strong></p>
+                    <ul>
+                        <li><strong>Non-void method:</strong> Harus ada return statement di semua execution path</li>
+                        <li><strong>Void method:</strong> Tidak perlu return, atau bisa return tanpa nilai
+                            (<code>return;</code>)</li>
+                        <li><strong>Unreachable code:</strong> Kode setelah return tidak akan dieksekusi (compile error)
+                        </li>
+                    </ul>
+                    <p><strong>Multiple return paths:</strong></p>
+                    <div class="code-box">
+                        <pre><code>public int checkValue(int x) {
+    if (x > 0) {
+        return 1;
+    } else if (x < 0) {
+        return -1;
+    } else {
+        return 0;
+    }
+    // Semua path harus ada return
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soal 20 -->
+        <section class="content-section" id="soal20">
+            <div class="question-header">
+                <h2>Soal 20: instanceof Operator</h2>
+            </div>
+
+            <div class="question-box">
+                <h3>Pertanyaan:</h3>
+                <p>Apa hasil dari program berikut?</p>
+                <div class="code-box">
+                    <pre><code>class Animal { }
+class Dog extends Animal { }
+
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Dog();
+        System.out.println(a instanceof Dog);
+        System.out.println(a instanceof Animal);
+    }
+}</code></pre>
+                </div>
+
+                <div class="options-display">
+                    <p><strong>Pilihan:</strong></p>
+                    <p>a. false<br>false</p>
+                    <p>b. true<br>false</p>
+                    <p>c. false<br>true</p>
+                    <p>d. true<br>true</p>
+                </div>
+            </div>
+
+            <div class="answer-box correct-answer">
+                <h3>✅ Jawaban: d. true<br>true</h3>
+            </div>
+
+            <div class="explanation-box">
+                <h3>Penjelasan:</h3>
+                <p>Operator <strong>instanceof</strong> digunakan untuk mengecek apakah objek adalah instance dari class
+                    tertentu atau subclass-nya.</p>
+
+                <h4>Analisis:</h4>
+                <ol>
+                    <li><code>Animal a = new Dog();</code>
+                        <ul>
+                            <li>Referensi bertipe Animal</li>
+                            <li>Objek aktual adalah Dog</li>
+                        </ul>
+                    </li>
+                    <li><code>a instanceof Dog</code>
+                        <ul>
+                            <li>Mengecek apakah objek a adalah instance Dog</li>
+                            <li>Objek aktualnya memang Dog → <strong>true</strong></li>
+                        </ul>
+                    </li>
+                    <li><code>a instanceof Animal</code>
+                        <ul>
+                            <li>Mengecek apakah objek a adalah instance Animal</li>
+                            <li>Dog adalah subclass dari Animal, jadi Dog IS-A Animal → <strong>true</strong></li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>Mengapa pilihan lain salah:</h4>
+                <ul>
+                    <li><strong>a. false, false</strong> - Salah. Objek adalah Dog dan Dog extends Animal.</li>
+                    <li><strong>b. true, false</strong> - Salah. Dog juga adalah Animal (inheritance).</li>
+                    <li><strong>c. false, true</strong> - Salah. Objek aktualnya adalah Dog, bukan hanya Animal.</li>
+                </ul>
+
+                <div class="key-concept">
+                    <h4>💡 Konsep Penting:</h4>
+                    <p><strong>instanceof Operator:</strong></p>
+                    <ul>
+                        <li>Mengecek tipe objek saat runtime (bukan tipe referensi)</li>
+                        <li>Return true jika objek adalah instance dari class tersebut atau subclass-nya</li>
+                        <li>Return false jika objek adalah null</li>
+                        <li>Digunakan sebelum downcasting untuk menghindari ClassCastException</li>
+                    </ul>
+                    <p><strong>Contoh Penggunaan:</strong></p>
+                    <div class="code-box">
+                        <pre><code>Animal a = new Dog();
+
+if (a instanceof Dog) {
+    Dog d = (Dog) a;  // Safe downcasting
+    d.bark();
+}
+
+// instanceof dengan null
+Animal nullAnimal = null;
+System.out.println(nullAnimal instanceof Animal);  // false</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="page-navigation">
+            <a href="1-10.html" class="nav-btn">Soal 1-10</a>
+            <a href="solution.html" class="nav-btn">Pembahasan Lengkap</a>
+            <a href="index.html" class="nav-btn">Kembali ke Beranda</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Pembelajaran OOP Java. Dibuat dengan ❤️ untuk pembelajaran interaktif.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/solution.js"></script>
+</body>
+
+</html>
