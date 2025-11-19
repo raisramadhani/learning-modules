@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 10: Generics dan Collections - OOP Java</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="java-icon">{ }</span>
+                <span>OOP Java</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="week1.html">Week 1</a></li>
+                <li><a href="week2.html">Week 2</a></li>
+                <li><a href="week3.html">Week 3</a></li>
+                <li><a href="week4.html">Week 4</a></li>
+                <li><a href="week6.html">Week 6</a></li>
+                <li><a href="week7.html">Week 7</a></li>
+                <li><a href="week9.html">Week 9</a></li>
+                <li><a href="week10.html" class="active">Week 10</a></li>
+                <li><a href="week11.html">Week 11</a></li>
+                <li><a href="week12.html">Week 12</a></li>
+                <li><a href="week13.html">Week 13</a></li>
+                <li><a href="week14.html">Week 14</a></li>
+                <li><a href="solution.html">Pembahasan Soal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="learning-header">
+        <h1>Week 10: Generics dan Collections</h1>
+        <p>Memahami Collections Framework dan Generics untuk mengelola kumpulan data dengan type-safe</p>
+    </div>
+
+    <div class="container">
+        <section class="content-section">
+            <h2>Apa itu Generics?</h2>
+            <p><strong>Generics</strong> adalah fitur yang diperkenalkan pada JDK 5.0 untuk memberikan keamanan tipe
+                data (type safety) dan mengurangi bug pada saat kompilasi, bukan runtime.</p>
+
+            <p
+                style="background: #E3F2FD; padding: 20px; border-radius: 10px; border-left: 4px solid #5B8DBE; margin: 20px 0;">
+                <strong>Tujuan Generics:</strong> Memungkinkan kelas, interface, atau method beroperasi pada tipe data
+                yang ditentukan saat deklarasi, sehingga menghindari casting manual dan error saat runtime.
+            </p>
+
+            <h3>Tanpa Generics vs Dengan Generics:</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <div>
+                    <h4 style="color: #E76E50; margin-bottom: 15px;">Tanpa Generics</h4>
+                    <div class="code-box">
+                        <pre><code>ArrayList list = new ArrayList();
+list.add("Hello");
+list.add(123);
+
+String str = (String) list.get(0);
+String num = (String) list.get(1);
+// Runtime error!</code></pre>
+                    </div>
+                    <p style="color: #E76E50; font-size: 14px; margin-top: 10px;">Error terjadi saat runtime, casting
+                        manual diperlukan</p>
+                </div>
+
+                <div>
+                    <h4 style="color: #2ECC71; margin-bottom: 15px;">Dengan Generics</h4>
+                    <div class="code-box">
+                        <pre><code>ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();
+list.add("Hello");
+list.add(123);
+// Compile error!
+
+String str = list.get(0);
+// Tidak perlu casting</code></pre>
+                    </div>
+                    <p style="color: #2ECC71; font-size: 14px; margin-top: 10px;">Error terdeteksi saat kompilasi, type
+                        safety terjamin</p>
+                </div>
+            </div>
+
+            <h3>Diamond Operator (Java 7+):</h3>
+            <div class="code-box">
+                <pre><code>// Sebelum Java 7
+ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();
+
+// Java 7+ dengan Diamond Operator
+ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();
+// Compiler otomatis mendeteksi tipe data</code></pre>
+            </div>
+        </section>
+
+        <div class="visualization-box">
+            <h3>Visualisasi: Type Safety dengan Generics</h3>
+            <div class="interactive-demo">
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div class="demo-controls" style="margin-bottom: 20px;">
+                        <button class="btn-demo" onclick="demonstrateGenerics('withoutGenerics')">Tanpa
+                            Generics</button>
+                        <button class="btn-demo" onclick="demonstrateGenerics('withGenerics')">Dengan Generics</button>
+                        <button class="btn-demo" onclick="demonstrateGenerics('custom')">Custom Generic Class</button>
+                    </div>
+
+                    <div id="genericsDemo"
+                        style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); min-height: 300px;">
+                        <div style="text-align: center; color: #6C757D;">Klik tombol untuk melihat demonstrasi...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <h2>Java Collections Framework</h2>
+            <p><strong>Java Collections Framework</strong> adalah arsitektur terpadu untuk menyimpan dan memanipulasi
+                kelompok objek. Framework ini menyediakan interface dan implementasi untuk berbagai struktur data.</p>
+
+            <h3>Hirarki Collections:</h3>
+            <div class="code-box">
+                <pre><code>Collection (Interface)
+├── List (Interface)
+│   ├── ArrayList
+│   ├── LinkedList
+│   └── Vector
+├── Set (Interface)
+│   ├── HashSet
+│   └── TreeSet
+└── Queue (Interface)
+    ├── LinkedList
+    └── PriorityQueue
+
+Map (Interface) - Terpisah dari Collection
+├── HashMap
+├── TreeMap
+└── LinkedHashMap</code></pre>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>List Interface</h2>
+            <p><strong>List</strong> adalah koleksi terurut yang mengizinkan elemen duplikat. Elemen dapat diakses
+                menggunakan index.</p>
+
+            <div
+                style="background: #E8F5E9; padding: 25px; border-radius: 12px; border-left: 4px solid #2ECC71; margin: 20px 0;">
+                <h3 style="color: #2ECC71; margin-bottom: 15px;">ArrayList</h3>
+                <ul>
+                    <li><strong>Struktur Data</strong>: Array dinamis</li>
+                    <li><strong>Akses Elemen</strong>: Cepat (O(1))</li>
+                    <li><strong>Penyisipan/Penghapusan</strong>: Lambat di tengah (O(n))</li>
+                    <li><strong>Use Case</strong>: Akses random yang sering, jarang insert/delete di tengah</li>
+                </ul>
+                <div class="code-box" style="margin-top: 15px;">
+                    <pre><code>ArrayList&lt;String&gt; fruits = new ArrayList&lt;&gt;();
+fruits.add("Apple");
+fruits.add("Banana");
+fruits.add("Cherry");
+fruits.add(1, "Mango");
+
+String first = fruits.get(0);
+fruits.remove("Banana");
+int size = fruits.size();
+
+for (String fruit : fruits) {
+    System.out.println(fruit);
+}</code></pre>
+                </div>
+            </div>
+
+            <div
+                style="background: #E3F2FD; padding: 25px; border-radius: 12px; border-left: 4px solid #5B8DBE; margin: 20px 0;">
+                <h3 style="color: #5B8DBE; margin-bottom: 15px;">LinkedList</h3>
+                <ul>
+                    <li><strong>Struktur Data</strong>: Doubly-linked list</li>
+                    <li><strong>Akses Elemen</strong>: Lambat (O(n))</li>
+                    <li><strong>Penyisipan/Penghapusan</strong>: Cepat di awal/akhir (O(1))</li>
+                    <li><strong>Use Case</strong>: Sering insert/delete, jarang akses random</li>
+                </ul>
+                <div class="code-box" style="margin-top: 15px;">
+                    <pre><code>LinkedList&lt;Integer&gt; numbers = new LinkedList&lt;&gt;();
+numbers.add(10);
+numbers.addFirst(5);
+numbers.addLast(15);
+
+int first = numbers.getFirst();
+int last = numbers.getLast();
+numbers.removeFirst();</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <div class="visualization-box">
+            <h3>Demo Interaktif: ArrayList vs LinkedList</h3>
+            <div class="interactive-demo">
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                        <div
+                            style="background: linear-gradient(135deg, #2ECC71, #27AE60); color: white; padding: 25px; border-radius: 15px;">
+                            <h4 style="text-align: center; margin-bottom: 20px; font-size: 20px;">ArrayList</h4>
+                            <div id="arrayListDisplay" style="min-height: 200px; font-family: monospace;">
+                                <div style="text-align: center; opacity: 0.8;">Daftar akan muncul di sini</div>
+                            </div>
+                        </div>
+
+                        <div
+                            style="background: linear-gradient(135deg, #5B8DBE, #4A7BA7); color: white; padding: 25px; border-radius: 15px;">
+                            <h4 style="text-align: center; margin-bottom: 20px; font-size: 20px;">LinkedList</h4>
+                            <div id="linkedListDisplay" style="min-height: 200px; font-family: monospace;">
+                                <div style="text-align: center; opacity: 0.8;">Daftar akan muncul di sini</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-controls">
+                        <button class="btn-demo" onclick="listOperation('add')">Add Element</button>
+                        <button class="btn-demo" onclick="listOperation('addFirst')">Add First</button>
+                        <button class="btn-demo" onclick="listOperation('remove')">Remove Element</button>
+                        <button class="btn-demo" onclick="listOperation('get')">Get Element</button>
+                        <button class="btn-demo" onclick="listOperation('clear')">Clear All</button>
+                    </div>
+
+                    <div id="listOperationResult"
+                        style="margin-top: 20px; padding: 15px; background: white; border-radius: 10px; text-align: center; min-height: 50px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <h2>Set Interface</h2>
+            <p><strong>Set</strong> adalah koleksi yang tidak mengizinkan elemen duplikat. Set tidak menjaga urutan
+                elemen (kecuali TreeSet).</p>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 20px 0;">
+                <div
+                    style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 4px solid #E76E50;">
+                    <h4 style="font-size: 20px; margin-bottom: 20px; text-align: center; color: #E76E50;">HashSet</h4>
+                    <div style="font-size: 14px; line-height: 1.8; color: #2C3E50;">
+                        <p><strong>Urutan:</strong> Tidak terurut</p>
+                        <p><strong>Performance:</strong> O(1) untuk add, remove, contains</p>
+                        <p><strong>Null:</strong> Mengizinkan 1 null</p>
+                        <p><strong>Use Case:</strong> Cek keunikan data cepat</p>
+                    </div>
+                </div>
+
+                <div
+                    style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 4px solid #2ECC71;">
+                    <h4 style="font-size: 20px; margin-bottom: 20px; text-align: center; color: #2ECC71;">TreeSet</h4>
+                    <div style="font-size: 14px; line-height: 1.8; color: #2C3E50;">
+                        <p><strong>Urutan:</strong> Terurut (sorted)</p>
+                        <p><strong>Performance:</strong> O(log n) untuk operasi</p>
+                        <p><strong>Null:</strong> Tidak mengizinkan null</p>
+                        <p><strong>Use Case:</strong> Data unik dan terurut</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-box">
+                <pre><code>// HashSet
+HashSet&lt;String&gt; set = new HashSet&lt;&gt;();
+set.add("Java");
+set.add("Python");
+set.add("Java");
+System.out.println(set.size());
+
+boolean hasJava = set.contains("Java");
+set.remove("Python");
+
+// TreeSet
+TreeSet&lt;Integer&gt; numbers = new TreeSet&lt;&gt;();
+numbers.add(5);
+numbers.add(2);
+numbers.add(8);
+numbers.add(1);
+System.out.println(numbers);</code></pre>
+            </div>
+        </section>
+
+        <div class="visualization-box">
+            <h3>Demo Interaktif: HashSet Uniqueness</h3>
+            <div class="interactive-demo">
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 10px; font-weight: bold; color: #5B8DBE;">Tambah
+                            Element ke HashSet:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="setInput" placeholder="Masukkan nilai"
+                                style="flex: 1; padding: 12px; border: 2px solid #E9ECEF; border-radius: 8px; font-size: 16px;">
+                            <button class="btn-demo" onclick="addToSet()">Add</button>
+                        </div>
+                    </div>
+
+                    <div id="setDisplay"
+                        style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); min-height: 200px;">
+                        <div style="font-weight: bold; margin-bottom: 15px; color: #5B8DBE;">HashSet Contents:</div>
+                        <div id="setElements" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                            <div style="color: #6C757D; font-style: italic;">Set kosong</div>
+                        </div>
+                        <div style="padding-top: 15px; border-top: 2px solid #E9ECEF;">
+                            <div style="font-size: 14px; color: #6C757D;">Size: <strong id="setSize"
+                                    style="color: #5B8DBE;">0</strong></div>
+                        </div>
+                    </div>
+
+                    <div id="setMessage"
+                        style="margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; min-height: 20px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <h2>Queue Interface</h2>
+            <p><strong>Queue</strong> adalah koleksi yang mengikuti prinsip FIFO (First-In-First-Out) atau prioritas.
+                Digunakan untuk mengelola antrean proses.</p>
+
+            <div class="code-box">
+                <pre><code>// LinkedList sebagai Queue
+Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+queue.offer("First");
+queue.offer("Second");
+queue.offer("Third");
+
+String head = queue.peek();
+String removed = queue.poll();
+
+// PriorityQueue
+PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;();
+pq.offer(5);
+pq.offer(1);
+pq.offer(3);
+System.out.println(pq.poll());</code></pre>
+            </div>
+
+            <div
+                style="background: #FFF3CD; padding: 20px; border-radius: 10px; border-left: 4px solid #F89820; margin: 20px 0;">
+                <strong>Method Queue:</strong>
+                <ul style="margin-top: 10px;">
+                    <li><code>offer()</code> - Menambah elemen ke queue</li>
+                    <li><code>poll()</code> - Mengambil dan menghapus head</li>
+                    <li><code>peek()</code> - Melihat head tanpa menghapus</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="visualization-box">
+            <h3>Demo: Queue FIFO</h3>
+            <div class="interactive-demo">
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <div id="queueVisualization"
+                        style="background: linear-gradient(135deg, #5B8DBE, #4A7BA7); padding: 30px; border-radius: 15px; color: white; margin-bottom: 20px;">
+                        <div style="font-size: 18px; font-weight: bold; margin-bottom: 20px; text-align: center;">Queue
+                            State</div>
+                        <div id="queueElements"
+                            style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; min-height: 80px; align-items: center;">
+                            <div style="opacity: 0.7;">Queue kosong</div>
+                        </div>
+                    </div>
+
+                    <div class="demo-controls">
+                        <button class="btn-demo" onclick="queueOperation('offer')">Offer (Tambah)</button>
+                        <button class="btn-demo" onclick="queueOperation('poll')">Poll (Ambil)</button>
+                        <button class="btn-demo" onclick="queueOperation('peek')">Peek (Lihat)</button>
+                        <button class="btn-demo" onclick="queueOperation('clear')">Clear</button>
+                    </div>
+
+                    <div id="queueResult"
+                        style="margin-top: 20px; padding: 15px; background: white; border-radius: 10px; text-align: center; min-height: 50px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <h2>Map Interface</h2>
+            <p><strong>Map</strong> adalah koleksi pasangan kunci-nilai (key-value), di mana setiap kunci harus unik.
+                Map tidak termasuk dalam Collection interface.</p>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 20px 0;">
+                <div
+                    style="background: linear-gradient(135deg, #E76E50, #C55A3C); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                    <h4 style="font-size: 20px; margin-bottom: 20px; text-align: center;">HashMap</h4>
+                    <div style="font-size: 14px; line-height: 1.8;">
+                        <p>Tidak terurut</p>
+                        <p>Performance: O(1)</p>
+                        <p>Null key: 1 null key</p>
+                        <p>Thread-safe: Tidak</p>
+                    </div>
+                </div>
+
+                <div
+                    style="background: linear-gradient(135deg, #2ECC71, #27AE60); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                    <h4 style="font-size: 20px; margin-bottom: 20px; text-align: center;">TreeMap</h4>
+                    <div style="font-size: 14px; line-height: 1.8;">
+                        <p>Terurut by key</p>
+                        <p>Performance: O(log n)</p>
+                        <p>Null key: Tidak</p>
+                        <p>Thread-safe: Tidak</p>
+                    </div>
+                </div>
+
+                <div
+                    style="background: linear-gradient(135deg, #5B8DBE, #4A7BA7); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                    <h4 style="font-size: 20px; margin-bottom: 20px; text-align: center;">LinkedHashMap</h4>
+                    <div style="font-size: 14px; line-height: 1.8;">
+                        <p>Terurut by insertion</p>
+                        <p>Performance: O(1)</p>
+                        <p>Null key: 1 null key</p>
+                        <p>Thread-safe: Tidak</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-box">
+                <pre><code>// HashMap
+HashMap&lt;String, Integer&gt; scores = new HashMap&lt;&gt;();
+scores.put("Alice", 90);
+scores.put("Bob", 85);
+scores.put("Charlie", 95);
+
+int aliceScore = scores.get("Alice");
+boolean hasBob = scores.containsKey("Bob");
+scores.remove("Charlie");
+
+// Iterasi Map
+for (Map.Entry&lt;String, Integer&gt; entry : scores.entrySet()) {
+    System.out.println(entry.getKey() + ": " + entry.getValue());
+}
+
+// Get keys and values
+Set&lt;String&gt; keys = scores.keySet();
+Collection&lt;Integer&gt; values = scores.values();</code></pre>
+            </div>
+        </section>
+
+        <div class="visualization-box">
+            <h3>Demo: HashMap Key-Value</h3>
+            <div class="interactive-demo">
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                        <input type="text" id="mapKey" placeholder="Key (contoh: nama)"
+                            style="padding: 12px; border: 2px solid #E9ECEF; border-radius: 8px; font-size: 16px;">
+                        <input type="text" id="mapValue" placeholder="Value (contoh: 90)"
+                            style="padding: 12px; border: 2px solid #E9ECEF; border-radius: 8px; font-size: 16px;">
+                    </div>
+
+                    <div class="demo-controls" style="margin-bottom: 30px;">
+                        <button class="btn-demo" onclick="mapOperation('put')">Put</button>
+                        <button class="btn-demo" onclick="mapOperation('get')">Get</button>
+                        <button class="btn-demo" onclick="mapOperation('remove')">Remove</button>
+                        <button class="btn-demo" onclick="mapOperation('clear')">Clear All</button>
+                    </div>
+
+                    <div id="mapDisplay"
+                        style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); min-height: 200px;">
+                        <div style="font-weight: bold; margin-bottom: 15px; color: #5B8DBE;">HashMap Contents:</div>
+                        <div id="mapEntries">
+                            <div style="color: #6C757D; font-style: italic;">Map kosong</div>
+                        </div>
+                    </div>
+
+                    <div id="mapResult"
+                        style="margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; min-height: 20px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <h2>Collections Utility Class</h2>
+            <p>Kelas <strong>Collections</strong> menyediakan method statis untuk operasi umum pada koleksi seperti
+                pengurutan, pencarian, dan manipulasi.</p>
+
+            <h3>Method Umum Collections:</h3>
+            <div class="code-box">
+                <pre><code>List&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();
+numbers.add(5);
+numbers.add(2);
+numbers.add(8);
+numbers.add(1);
+numbers.add(9);
+
+// Sort
+Collections.sort(numbers);
+System.out.println(numbers);
+
+// Reverse
+Collections.reverse(numbers);
+
+// Shuffle
+Collections.shuffle(numbers);
+
+// Max dan Min
+int max = Collections.max(numbers);
+int min = Collections.min(numbers);
+
+// Binary Search
+int index = Collections.binarySearch(numbers, 5);
+
+// Frequency
+int count = Collections.frequency(numbers, 5);
+
+// Fill
+Collections.fill(numbers, 0);
+
+// Copy
+List&lt;Integer&gt; copy = new ArrayList&lt;&gt;(numbers.size());
+Collections.copy(copy, numbers);</code></pre>
+            </div>
+        </section>
+
+        <div class="visualization-box">
+            <h3>Demo: Collections Utility Methods</h3>
+            <div class="interactive-demo">
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <div id="collectionsList"
+                        style="background: linear-gradient(135deg, #5B8DBE, #4A7BA7); padding: 25px; border-radius: 15px; color: white; margin-bottom: 20px;">
+                        <div style="font-weight: bold; margin-bottom: 15px; text-align: center;">Current List:</div>
+                        <div id="currentList"
+                            style="font-family: monospace; font-size: 18px; text-align: center; min-height: 40px;">
+                            [5, 2, 8, 1, 9, 3]
+                        </div>
+                    </div>
+
+                    <div class="demo-controls">
+                        <button class="btn-demo" onclick="collectionsMethod('sort')">Sort</button>
+                        <button class="btn-demo" onclick="collectionsMethod('reverse')">Reverse</button>
+                        <button class="btn-demo" onclick="collectionsMethod('shuffle')">Shuffle</button>
+                        <button class="btn-demo" onclick="collectionsMethod('max')">Find Max</button>
+                        <button class="btn-demo" onclick="collectionsMethod('min')">Find Min</button>
+                        <button class="btn-demo" onclick="collectionsMethod('reset')">Reset</button>
+                    </div>
+
+                    <div id="collectionsResult"
+                        style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px; min-height: 80px;">
+                        <div style="text-align: center; color: #6C757D;">Klik method untuk melihat hasil...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-box">
+            <h3>Kuis: Uji Pemahaman Anda</h3>
+            <div class="quiz-question">
+                <p><strong>Pertanyaan 1:</strong> Apa keuntungan utama menggunakan Generics?</p>
+                <div class="quiz-options" id="quiz1">
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                        A. Membuat program lebih cepat
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz1')">
+                        B. Type safety dan mendeteksi error saat kompilasi
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                        C. Mengurangi ukuran file
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">
+                        D. Tidak ada keuntungan
+                    </div>
+                </div>
+                <div id="quiz1Result"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p><strong>Pertanyaan 2:</strong> Kapan sebaiknya menggunakan ArrayList?</p>
+                <div class="quiz-options" id="quiz2">
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">
+                        A. Saat sering insert/delete di tengah list
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz2')">
+                        B. Saat sering akses elemen by index
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">
+                        C. Saat perlu elemen unik
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">
+                        D. Saat perlu FIFO
+                    </div>
+                </div>
+                <div id="quiz2Result"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p><strong>Pertanyaan 3:</strong> Perbedaan utama HashSet dan TreeSet?</p>
+                <div class="quiz-options" id="quiz3">
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">
+                        A. HashSet mengizinkan duplikat
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz3')">
+                        B. TreeSet terurut, HashSet tidak terurut
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">
+                        C. HashSet lebih lambat
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">
+                        D. Tidak ada perbedaan
+                    </div>
+                </div>
+                <div id="quiz3Result"></div>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <h2>Ringkasan Week 10</h2>
+            <ul>
+                <li><strong>Generics</strong>: Type safety, mengurangi casting, error saat kompilasi</li>
+                <li><strong>Diamond Operator</strong>: Menyederhanakan penulisan kode generics (Java 7+)</li>
+                <li><strong>List</strong>: ArrayList (akses cepat), LinkedList (insert/delete cepat)</li>
+                <li><strong>Set</strong>: HashSet (tidak terurut), TreeSet (terurut)</li>
+                <li><strong>Queue</strong>: FIFO, LinkedList dan PriorityQueue</li>
+                <li><strong>Map</strong>: Key-value pairs, HashMap, TreeMap, LinkedHashMap</li>
+                <li><strong>Collections Utility</strong>: sort(), reverse(), shuffle(), max(), min()</li>
+            </ul>
+        </section>
+
+        <div class="page-navigation">
+            <a href="week9.html" class="nav-btn prev">Week 9: Operasi String</a>
+            <a href="index.html" class="nav-btn">Kembali ke Beranda</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Pembelajaran OOP Java. Dibuat dengan untuk pembelajaran interaktif.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/week10.js"></script>
+</body>
+
+</html>
