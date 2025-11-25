@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo UI: Salah vs Benar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .control-panel {
+            margin-bottom: 30px;
+        }
+
+        #toggleBtn {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        #toggleBtn:hover {
+            background-color: #555;
+        }
+
+        .login-card {
+            background: white;
+            width: 320px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #aaa;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid transparent;
+        }
+
+        .icon-box {
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+
+        .wrong-theme .btn-submit {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .wrong-theme .btn-cancel {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .wrong-theme .alert-error {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        .wrong-theme .icon-box {
+            color: #28a745;
+        }
+
+        .correct-theme .btn-submit {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .correct-theme .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .correct-theme .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .correct-theme .icon-box {
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="control-panel">
+        <button id="toggleBtn" onclick="toggleView()">Tampilkan Desain Benar</button>
+    </div>
+
+    <div id="wrongForm" class="login-card wrong-theme">
+        <h2>Login Akun</h2>
+
+        <div class="alert alert-error">
+            <div class="icon-box">X</div>
+            <span>Password salah. Silakan coba lagi.</span>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" value="12345678">
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" value="user@contoh.com">
+        </div>
+
+
+
+        <div class="button-group">
+            <button class="action-btn btn-cancel">Batalkan</button>
+            <button class="action-btn btn-submit">Kirim</button>
+        </div>
+    </div>
+
+    <div id="correctForm" class="login-card correct-theme hidden">
+        <h2>Login Akun</h2>
+
+        <div class="alert alert-error">
+            <div class="icon-box">!</div>
+            <span>Password salah. Silakan coba lagi.</span>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" value="user@contoh.com">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" value="12345678">
+        </div>
+
+        <div class="button-group">
+            <button class="action-btn btn-cancel">Batal</button>
+            <button class="action-btn btn-submit">Masuk</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleView() {
+            const wrongForm = document.getElementById('wrongForm');
+            const correctForm = document.getElementById('correctForm');
+            const btn = document.getElementById('toggleBtn');
+
+            if (correctForm.classList.contains('hidden')) {
+                wrongForm.classList.add('hidden');
+                correctForm.classList.remove('hidden');
+                btn.textContent = "Kembali ke Desain Salah";
+            } else {
+                correctForm.classList.add('hidden');
+                wrongForm.classList.remove('hidden');
+                btn.textContent = "Tampilkan Desain Benar";
+            }
+        }
+    </script>
+</body>
+
+</html>
