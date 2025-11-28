@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logika Pemrograman MIT App Inventor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .active-slide {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-block-control {
+            background-color: #d9a300;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            box-shadow: 2px 2px 0px #b08d00;
+            font-family: monospace;
+            font-weight: bold;
+            display: inline-block;
+            margin: 2px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .ai-block-logic {
+            background-color: #5cb85c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .ai-block-text {
+            background-color: #d63384;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .sim-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid #3b82f6;
+            padding: 10px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            border-radius: 0 6px 6px 0;
+            text-align: left;
+        }
+
+        .input-tag {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .output-tag {
+            background-color: #dcfce7;
+            color: #15803d;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .quiz-btn {
+            transition: all 0.2s;
+        }
+
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .correct {
+            background-color: #10b981 !important;
+            border-color: #10b981 !important;
+            color: white !important;
+        }
+
+        .wrong {
+            background-color: #ef4444 !important;
+            border-color: #ef4444 !important;
+            color: white !important;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="fixed top-0 left-0 w-full h-2 bg-slate-200 z-50">
+        <div id="progress-bar" class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
+    </div>
+
+    <div id="slide-container">
+
+        <!-- SLIDE 1: MATERI PERCABANGAN -->
+        <div class="slide active-slide">
+            <div class="max-w-5xl w-full text-center space-y-4">
+                <div class="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">Materi
+                    1</div>
+                <h1 class="text-3xl font-bold text-slate-900">Percabangan: Input & Kondisi</h1>
+                <p class="text-lg text-slate-600">Komputer mengecek <b>Input</b> apakah sesuai <b>Kondisi</b>, lalu
+                    memberikan <b>Output</b>.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mt-4">
+                    <!-- IF THEN -->
+                    <div class="bg-white p-5 rounded-xl shadow border border-slate-200">
+                        <h3 class="font-bold text-md mb-2 text-yellow-600 uppercase">1. If ... Then</h3>
+                        <div class="ai-block-control w-full">
+                            if <span class="ai-block-logic">Skor > 70</span><br>
+                            &nbsp;&nbsp;then set Label.Text to <span class="ai-block-text">"Lulus"</span>
+                        </div>
+
+                        <div class="sim-box">
+                            <p class="font-bold mb-1 text-slate-700">Contoh Simulasi:</p>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="input-tag">Input</span>
+                                <span>Nilai Skor = <b>80</b></span>
+                            </div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-slate-500 text-xs">LOGIKA</span>
+                                <span>Apakah 80 > 70? <b>YA (Benar)</b></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="output-tag">Output</span>
+                                <span>Teks berubah jadi "Lulus"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IF THEN ELSE -->
+                    <div class="bg-white p-5 rounded-xl shadow border border-slate-200">
+                        <h3 class="font-bold text-md mb-2 text-yellow-600 uppercase">2. If ... Then ... Else</h3>
+                        <div class="ai-block-control w-full">
+                            if <span class="ai-block-logic">Lampu == Merah</span><br>
+                            &nbsp;&nbsp;then <span class="ai-block-text">Berhenti</span><br>
+                            else <span class="ai-block-text">Jalan</span>
+                        </div>
+
+                        <div class="sim-box">
+                            <p class="font-bold mb-1 text-slate-700">Contoh Simulasi:</p>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="input-tag">Input</span>
+                                <span>Warna Lampu = <b>Hijau</b></span>
+                            </div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-slate-500 text-xs">LOGIKA</span>
+                                <span>Apakah Hijau == Merah? <b>TIDAK (Salah)</b></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="output-tag">Output</span>
+                                <span>Masuk ke Else: "Jalan"</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: KUIS 1 PERCABANGAN -->
+        <div class="slide">
+            <div class="max-w-2xl w-full space-y-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-400">Latihan 1/3 - Percabangan</span>
+                </div>
+                <div class="bg-slate-100 p-4 rounded-lg border border-slate-300">
+                    <p class="font-mono text-sm mb-2"><b>Kode Program:</b></p>
+                    <div class="ai-block-control">
+                        if <span class="ai-block-logic">Uang >= 5000</span><br>
+                        &nbsp;&nbsp;then <span class="ai-block-text">"Beli Es Krim"</span><br>
+                        else <span class="ai-block-text">"Uang Kurang"</span>
+                    </div>
+                </div>
+                <h2 class="text-xl font-bold">Jika INPUT Uang adalah 3000, apa OUTPUT yang muncul?</h2>
+                <div class="space-y-3" id="q1-options">
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 1)">Beli Es Krim</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, true, 1)">Uang Kurang</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 1)">Tidak muncul apa-apa</button>
+                </div>
+                <div id="feedback-1" class="hidden p-3 rounded-lg text-center font-bold"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: KUIS 2 PERCABANGAN -->
+        <div class="slide">
+            <div class="max-w-2xl w-full space-y-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-400">Latihan 2/3 - Percabangan</span>
+                </div>
+                <h2 class="text-2xl font-bold">Perhatikan logika berikut:</h2>
+                <div class="ai-block-control my-4">
+                    if <span class="ai-block-logic">Baterai < 20%</span><br>
+                            &nbsp;&nbsp;then <span class="ai-block-text">Nyalakan Hemat Daya</span>
+                </div>
+                <p>Apa yang terjadi jika INPUT Baterai = 50%?</p>
+                <div class="space-y-3">
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 2)">Hemat Daya menyala</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 2)">Aplikasi error</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, true, 2)">Tidak terjadi apa-apa (Logika Salah)</button>
+                </div>
+                <div id="feedback-2" class="hidden p-3 rounded-lg text-center font-bold"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: KUIS 3 PERCABANGAN -->
+        <div class="slide">
+            <div class="max-w-2xl w-full space-y-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-400">Latihan 3/3 - Percabangan</span>
+                </div>
+                <h2 class="text-2xl font-bold">Kita ingin logika: Jika Nilai A, B, atau C. Blok apa yang dipakai?</h2>
+                <div class="space-y-3">
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 3)">If Then</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 3)">If Then Else</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, true, 3)">Else If (Klik ikon gear biru pada blok If)</button>
+                </div>
+                <div id="feedback-3" class="hidden p-3 rounded-lg text-center font-bold"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: MATERI AND OR -->
+        <div class="slide">
+            <div class="max-w-5xl w-full text-center space-y-4">
+                <div class="inline-block px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
+                    Materi 2</div>
+                <h1 class="text-3xl font-bold text-slate-900">Logika Operator (AND / OR)</h1>
+                <p class="text-lg text-slate-600">Menggabungkan dua input atau lebih menjadi satu keputusan.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mt-4">
+                    <!-- AND -->
+                    <div class="bg-white p-5 rounded-xl shadow-lg border border-slate-200">
+                        <h3 class="font-bold text-md mb-2 text-green-600">AND (Dan) - Wajib Semua Benar</h3>
+                        <div class="ai-block-control text-xs w-full mb-3">
+                            if <span class="ai-block-logic">User == "Admin" AND Pass == "123"</span><br>
+                            then <span class="ai-block-text">Login Sukses</span>
+                        </div>
+                        <div class="sim-box">
+                            <div class="flex flex-col gap-1">
+                                <div class="flex justify-between border-b pb-1">
+                                    <span class="input-tag">Input 1: User "Admin"</span>
+                                    <span class="text-green-600 font-bold">✔</span>
+                                </div>
+                                <div class="flex justify-between border-b pb-1">
+                                    <span class="input-tag">Input 2: Pass "123"</span>
+                                    <span class="text-green-600 font-bold">✔</span>
+                                </div>
+                                <div class="flex justify-between pt-1 font-bold">
+                                    <span class="text-xs text-slate-500">HASIL</span>
+                                    <span class="output-tag">TRUE (Sukses)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OR -->
+                    <div class="bg-white p-5 rounded-xl shadow-lg border border-slate-200">
+                        <h3 class="font-bold text-md mb-2 text-green-600">OR (Atau) - Salah Satu Benar Cukup</h3>
+                        <div class="ai-block-control text-xs w-full mb-3">
+                            if <span class="ai-block-logic">Hari == "Minggu" OR Tanggal == "Merah"</span><br>
+                            then <span class="ai-block-text">Libur</span>
+                        </div>
+                        <div class="sim-box">
+                            <div class="flex flex-col gap-1">
+                                <div class="flex justify-between border-b pb-1">
+                                    <span class="input-tag">Input 1: Hari "Senin"</span>
+                                    <span class="text-red-500 font-bold">✘</span>
+                                </div>
+                                <div class="flex justify-between border-b pb-1">
+                                    <span class="input-tag">Input 2: Tgl "Merah"</span>
+                                    <span class="text-green-600 font-bold">✔</span>
+                                </div>
+                                <div class="flex justify-between pt-1 font-bold">
+                                    <span class="text-xs text-slate-500">HASIL</span>
+                                    <span class="output-tag">TRUE (Libur)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: KUIS 1 AND OR -->
+        <div class="slide">
+            <div class="max-w-2xl w-full space-y-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-400">Latihan 1/3 - Logic</span>
+                </div>
+                <h2 class="text-2xl font-bold">Dalam logika AND, jika Input A Salah dan Input B Benar, bagaimana
+                    hasilnya?</h2>
+                <div class="space-y-3">
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 4)">True (Benar)</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, true, 4)">False (Salah)</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 4)">Error</button>
+                </div>
+                <div id="feedback-4" class="hidden p-3 rounded-lg text-center font-bold"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: KUIS 2 AND OR -->
+        <div class="slide">
+            <div class="max-w-2xl w-full space-y-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-400">Latihan 2/3 - Logic</span>
+                </div>
+                <h2 class="text-2xl font-bold">Kita ingin game over jika "Nyawa Habis" ATAU "Waktu Habis". Blok apa yang
+                    dipakai?</h2>
+                <div class="space-y-3">
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 5)">AND</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, true, 5)">OR</button>
+                    <button
+                        class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                        onclick="checkAnswer(this, false, 5)">NOT</button>
+                </div>
+                <div id="feedback-5" class="hidden p-3 rounded-lg text-center font-bold"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: KUIS 3 AND OR -->
+        <div class="slide">
+            <div class="max-w-2xl w-full space-y-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-400">Latihan 3/3 - Logic</span>
+                </div>
+                <h2 class="text-2xl font-bold">Evaluasi logika berikut:</h2>
+                <div class="ai-block-logic p-4 text-center w-full">
+                    (5 > 3) AND (10 < 2) </div>
+                        <p class="text-sm text-slate-500">Hint: Cek satu per satu. Apakah 5 lebih besar dari 3? Apakah
+                            10 lebih kecil dari 2?</p>
+                        <div class="space-y-3 mt-4">
+                            <button
+                                class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                                onclick="checkAnswer(this, false, 6)">True (Benar)</button>
+                            <button
+                                class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                                onclick="checkAnswer(this, true, 6)">False (Salah)</button>
+                            <button
+                                class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                                onclick="checkAnswer(this, false, 6)">Mungkin</button>
+                        </div>
+                        <div id="feedback-6" class="hidden p-3 rounded-lg text-center font-bold"></div>
+                </div>
+            </div>
+
+            <!-- SLIDE 9: MATERI NESTED CONDITION -->
+            <div class="slide">
+                <div class="max-w-4xl w-full text-center space-y-6">
+                    <div
+                        class="inline-block px-4 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-4">
+                        Materi 3</div>
+                    <h1 class="text-3xl font-bold text-slate-900">Nested Condition (Bersarang)</h1>
+
+                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                        <h3 class="text-xl font-bold text-purple-800 mb-1">🎢 Studi Kasus: Verifikasi Naik Roller
+                            Coaster</h3>
+                        <p class="text-slate-600">Logika ini digunakan petugas wahana: Cek <b>Umur</b> dulu. Jika lolos,
+                            baru cek <b>Tinggi Badan</b>.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center text-left">
+                        <div class="ai-block-control text-sm shadow-md">
+                            if <span class="ai-block-logic">Umur > 12</span><br>
+                            &nbsp;&nbsp;then <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<div
+                                class="ai-block-control ml-4 border-l-4 border-white/30 pl-2 my-1">
+                                if <span class="ai-block-logic">Tinggi > 150</span><br>
+                                &nbsp;&nbsp;then <span class="ai-block-text">"Silakan Masuk"</span><br>
+                                &nbsp;&nbsp;else <span class="ai-block-text">"Maaf, Kurang Tinggi"</span>
+                            </div><br>
+                            &nbsp;&nbsp;else <span class="ai-block-text">"Maaf, Belum Cukup Umur"</span>
+                        </div>
+
+                        <div class="sim-box h-full flex flex-col justify-center shadow-md bg-white">
+                            <p class="font-bold mb-2 text-purple-700 border-b pb-2">Simulasi Penumpang:</p>
+                            <div class="mb-3 bg-slate-50 p-2 rounded border border-slate-200">
+                                <span class="input-tag block w-fit mb-1">Input Data Penumpang</span>
+                                Umur: <b>14 Tahun</b><br>
+                                Tinggi: <b>140 cm</b>
+                            </div>
+
+                            <ul class="list-none space-y-2 text-sm">
+                                <li class="flex items-center gap-2">
+                                    <span class="bg-slate-200 px-2 py-1 rounded text-xs font-bold">1</span>
+                                    <span>Cek Umur (14 > 12)? <b class="text-green-600">YA ✔</b></span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="bg-slate-200 px-2 py-1 rounded text-xs font-bold">2</span>
+                                    <span>Cek Tinggi (140 > 150)? <b class="text-red-500">TIDAK ✘</b></span>
+                                </li>
+                            </ul>
+                            <div
+                                class="mt-3 font-bold bg-red-50 text-red-700 p-3 rounded border border-red-200 text-center">
+                                Output: "Maaf, Kurang Tinggi"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 10: KUIS 1 NESTED -->
+            <div class="slide">
+                <div class="max-w-2xl w-full space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-400">Latihan 1/3 - Nested</span>
+                    </div>
+                    <h2 class="text-2xl font-bold">Kapan pengecekan kondisi "Dalam" (Inner If) dilakukan pada Nested
+                        Condition?</h2>
+                    <div class="space-y-3">
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, true, 7)">Hanya jika kondisi "Luar" (Outer If) Benar</button>
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, false, 7)">Selalu dilakukan setiap saat</button>
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, false, 7)">Hanya jika kondisi "Luar" Salah</button>
+                    </div>
+                    <div id="feedback-7" class="hidden p-3 rounded-lg text-center font-bold"></div>
+                </div>
+            </div>
+
+            <!-- SLIDE 11: KUIS 2 NESTED -->
+            <div class="slide">
+                <div class="max-w-2xl w-full space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-400">Latihan 2/3 - Nested</span>
+                    </div>
+                    <h2 class="text-2xl font-bold">Berdasarkan contoh Roller Coaster sebelumnya:</h2>
+                    <p>Jika Input Umur = 10 dan Tinggi = 160. Apa outputnya?</p>
+                    <div class="bg-slate-100 p-2 rounded text-sm text-slate-500">Hint: Cek kondisi paling luar dulu.
+                        Apakah 10 > 12?</div>
+                    <div class="space-y-3">
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, true, 8)">Belum Umur (Else Luar)</button>
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, false, 8)">Boleh Naik</button>
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, false, 8)">Pendek (Else Dalam)</button>
+                    </div>
+                    <div id="feedback-8" class="hidden p-3 rounded-lg text-center font-bold"></div>
+                </div>
+            </div>
+
+            <!-- SLIDE 12: KUIS 3 NESTED -->
+            <div class="slide">
+                <div class="max-w-2xl w-full space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-400">Latihan 3/3 - Nested</span>
+                    </div>
+                    <h2 class="text-2xl font-bold">Mana yang benar tentang aliran data pada Nested If?</h2>
+                    <div class="space-y-3">
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, true, 9)">Seperti saringan bertingkat</button>
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, false, 9)">Semua input dijalankan bersamaan</button>
+                        <button
+                            class="w-full text-left p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 bg-white font-medium quiz-btn"
+                            onclick="checkAnswer(this, false, 9)">Input diabaikan</button>
+                    </div>
+                    <div id="feedback-9" class="hidden p-3 rounded-lg text-center font-bold"></div>
+                </div>
+            </div>
+
+            <!-- SLIDE SELESAI -->
+            <div class="slide">
+                <div class="max-w-2xl w-full text-center space-y-6">
+                    <div class="text-6xl mb-4">🎉</div>
+                    <h1 class="text-4xl font-bold text-slate-900">Materi Selesai!</h1>
+                    <p class="text-xl text-slate-600">Kamu telah mempelajari dasar logika pemrograman.</p>
+                    <div class="p-6 bg-white rounded-xl shadow border border-slate-200 text-left space-y-2">
+                        <p>✅ <b>Input:</b> Data yang masuk (Contoh: Skor 80).</p>
+                        <p>✅ <b>Proses:</b> Pengecekan Kondisi (Contoh: Skor > 70?).</p>
+                        <p>✅ <b>Output:</b> Hasil Akhir (Contoh: "Lulus").</p>
+                    </div>
+                    <button onclick="location.reload()"
+                        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors">
+                        Ulangi Materi
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- NAVIGATION CONTROLS -->
+        <div class="fixed bottom-8 right-8 flex gap-4">
+            <button id="btn-prev" onclick="prevSlide()"
+                class="px-6 py-3 bg-white text-slate-700 font-bold rounded-lg shadow hover:bg-slate-50 disabled:opacity-50 border border-slate-200">
+                Kembali
+            </button>
+            <button id="btn-next" onclick="nextSlide()"
+                class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg shadow hover:bg-blue-700 transition-all">
+                Lanjut
+            </button>
+        </div>
+
+        <script>
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            const progressBar = document.getElementById('progress-bar');
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            const totalSlides = slides.length;
+
+            function updateUI() {
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('active-slide');
+                    if (index === currentSlide) {
+                        slide.classList.add('active-slide');
+                    }
+                });
+
+                const progress = ((currentSlide + 1) / totalSlides) * 100;
+                progressBar.style.width = `${progress}%`;
+
+                btnPrev.disabled = currentSlide === 0;
+
+                // Logic for 'Finish' or 'Next' text
+                if (currentSlide === totalSlides - 1) {
+                    btnNext.style.display = 'none';
+                } else {
+                    btnNext.style.display = 'block';
+                    btnNext.textContent = 'Lanjut';
+                }
+            }
+
+            function nextSlide() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateUI();
+                }
+            }
+
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateUI();
+                }
+            }
+
+            function checkAnswer(btn, isCorrect, feedbackId) {
+                const feedbackEl = document.getElementById(`feedback-${feedbackId}`);
+
+                // Disable siblings
+                const parent = btn.parentElement;
+                const siblings = parent.getElementsByTagName('button');
+                for (let sb of siblings) {
+                    sb.disabled = true;
+                    sb.classList.add('opacity-50');
+                }
+                btn.classList.remove('opacity-50');
+
+                if (isCorrect) {
+                    btn.classList.add('correct');
+                    feedbackEl.textContent = "Jawaban Benar! 👍";
+                    feedbackEl.classList.remove('hidden');
+                    feedbackEl.classList.add('bg-green-100', 'text-green-700');
+                } else {
+                    btn.classList.add('wrong');
+                    feedbackEl.textContent = "Jawaban Salah, coba lagi nanti. 😅";
+                    feedbackEl.classList.remove('hidden');
+                    feedbackEl.classList.add('bg-red-100', 'text-red-700');
+                }
+
+                // Allow navigation to next slide immediately
+                // But user can also click manual "Lanjut"
+                setTimeout(() => {
+                    if (currentSlide < totalSlides - 1) {
+                        // Optional auto advance: nextSlide();
+                    }
+                }, 1000);
+            }
+
+            // Initialize
+            updateUI();
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            });
+        </script>
+</body>
+
+</html>
