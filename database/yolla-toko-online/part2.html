@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Praktikum: Desain ERD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { 'primaryColor': '#eff6ff', 'edgeLabelBackground': '#ffffff', 'tertiaryColor': '#f1f5f9' } });
+    </script>
+
+    <style>
+        pre {
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .no-copy {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: not-allowed;
+        }
+
+        .drawio-step {
+            border-left: 3px solid #2563EB;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+            background-color: #EFF6FF;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        .erd-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+    <nav class="bg-slate-900 text-white sticky top-0 z-50 shadow-lg border-b border-slate-700">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-sitemap text-blue-400 text-xl"></i>
+                    <span class="font-bold text-lg tracking-wide">Praktikum Desain Database</span>
+                </div>
+                <div class="hidden md:flex gap-2">
+                    <a href="index.html"
+                        class="text-xs font-mono text-slate-400 hover:text-white transition px-2 py-1">Part 1: SQL</a>
+                    <div class="text-xs font-mono text-white bg-blue-600 px-2 py-1 rounded shadow">
+                        <span>Part 2: ERD (Draw.io)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white shadow-sm border-b border-slate-200 py-10">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Entity Relationship Diagram (ERD)</h1>
+            <p class="text-slate-500">Membuat cetak biru database Toko Online yang valid dan terstandar.</p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-10 space-y-12">
+
+        <section class="relative pl-8 border-l-4 border-slate-300">
+            <div
+                class="absolute -left-3.5 top-0 w-7 h-7 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                1</div>
+            <h2 class="text-xl font-bold text-slate-800 mb-4">Persiapan Draw.io</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 space-y-4">
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-4">
+                    <h3 class="font-bold text-blue-800 text-sm uppercase mb-1">Materi: Standar ERD</h3>
+                    <p class="text-blue-800 text-sm">ERD menggambarkan struktur tabel dan hubungannya. Kita menggunakan
+                        notasi standar (Crow's Foot).</p>
+                </div>
+                <p class="text-slate-700 text-sm font-bold">Langkah Persiapan:</p>
+                <ol class="list-decimal list-outside ml-5 space-y-2 text-slate-700 text-sm">
+                    <li>Buka <strong><a href="https://app.diagrams.net/" target="_blank"
+                                class="text-blue-600 underline">draw.io</a></strong>.</li>
+                    <li>Buat <strong>Blank Diagram</strong>.</li>
+                    <li>Aktifkan menu <strong>Entity Relation</strong> di panel kiri.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="relative pl-8 border-l-4 border-slate-300">
+            <div
+                class="absolute -left-3.5 top-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                2</div>
+            <h2 class="text-xl font-bold text-slate-800 mb-4">Entitas Master</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 space-y-4">
+                <p class="text-slate-700 text-sm mb-2">Buat entitas berikut menggunakan shape "Table":</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="drawio-step text-xs text-slate-600">Tabel: <strong>Pengguna</strong></div>
+                        <div class="bg-slate-800 rounded-md overflow-hidden relative">
+                            <pre class="p-4 text-sm text-green-300 overflow-x-auto no-copy-target"><code>PK  id_pengguna
+    nama_lengkap
+    email
+    password
+    role
+    no_hp</code></pre>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="drawio-step text-xs text-slate-600">Tabel: <strong>Kategori</strong></div>
+                        <div class="bg-slate-800 rounded-md overflow-hidden relative">
+                            <pre class="p-4 text-sm text-green-300 overflow-x-auto no-copy-target"><code>PK  id_kategori
+    nama_kategori
+    slug</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="drawio-step text-xs text-slate-600">Tabel: <strong>Produk</strong></div>
+                    <div class="bg-slate-800 rounded-md overflow-hidden relative">
+                        <pre class="p-4 text-sm text-green-300 overflow-x-auto no-copy-target"><code>PK  id_produk
+FK  id_kategori
+    nama_produk
+    deskripsi
+    foto_utama</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="relative pl-8 border-l-4 border-slate-300">
+            <div
+                class="absolute -left-3.5 top-0 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                3</div>
+            <h2 class="text-xl font-bold text-slate-800 mb-4">Sistem Varian & Stok</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 space-y-4">
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                    <h3 class="font-bold text-yellow-800 text-sm uppercase mb-1">Materi: Normalisasi</h3>
+                    <p class="text-yellow-900 text-sm">Pisahkan Varian dan Stok agar 1 produk bisa memiliki banyak
+                        rasa/ukuran.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="drawio-step text-xs text-slate-600">Tabel: <strong>Varian_Produk</strong></div>
+                        <div class="bg-slate-800 rounded-md overflow-hidden relative">
+                            <pre class="p-4 text-sm text-purple-300 overflow-x-auto no-copy-target"><code>PK  id_varian
+FK  id_produk
+    nama_varian
+    harga
+    berat_gram
+    tgl_kadaluwarsa</code></pre>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="drawio-step text-xs text-slate-600">Tabel: <strong>Stok</strong></div>
+                        <div class="bg-slate-800 rounded-md overflow-hidden relative">
+                            <pre class="p-4 text-sm text-purple-300 overflow-x-auto no-copy-target"><code>PK  id_stok
+FK  id_varian
+    jumlah_stok
+    updated_at</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="relative pl-8 border-l-4 border-slate-300">
+            <div
+                class="absolute -left-3.5 top-0 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                4</div>
+            <h2 class="text-xl font-bold text-slate-800 mb-4">Transaksi & Logistik</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 space-y-4">
+                <p class="text-slate-700 text-sm">Buat tabel transaksi (Keranjang, Pesanan, Detail) dan pelengkap
+                    (Pembayaran, Pengiriman) sesuai kolom di Part 1.</p>
+                <div class="bg-slate-800 rounded-md p-4 text-sm text-slate-400 font-mono">
+                    Tips: Pastikan menghubungkan FK (Foreign Key) ke PK (Primary Key) induknya.
+                </div>
+            </div>
+        </section>
+
+        <section
+            class="bg-slate-900 text-white p-8 rounded-xl shadow-2xl border-2 border-blue-500 relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-blue-600 text-xs font-bold px-3 py-1 rounded-bl-lg">LIVE RENDER</div>
+
+            <h2 class="text-2xl font-bold mb-2 flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i> Kunci Jawaban (Lengkap)
+            </h2>
+            <p class="mb-4 opacity-80 text-sm">
+                Berikut adalah struktur ERD yang benar. Perhatikan label <strong>1..M</strong> pada garis relasi.
+            </p>
+
+            <div class="erd-container text-slate-800">
+                <div class="mermaid">
+                    %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#eff6ff', 'lineColor': '#333'}}}%%
+                    classDiagram
+                    direction BT
+
+                    %% DEFINISI TABEL
+                    class PENGGUNA {
+                    PK id_pengguna
+                    varchar nama
+                    varchar email
+                    }
+                    class KATEGORI {
+                    PK id_kategori
+                    varchar nama_kategori
+                    }
+                    class PRODUK {
+                    PK id_produk
+                    FK id_kategori
+                    varchar nama_produk
+                    }
+                    class VARIAN_PRODUK {
+                    PK id_varian
+                    FK id_produk
+                    varchar nama_varian
+                    int harga
+                    }
+                    class STOK {
+                    PK id_stok
+                    FK id_varian
+                    int jumlah
+                    }
+                    class KERANJANG {
+                    PK id_keranjang
+                    FK id_pengguna
+                    FK id_varian
+                    }
+                    class PESANAN {
+                    PK id_pesanan
+                    FK id_pengguna
+                    date tanggal
+                    }
+                    class DETAIL_PESANAN {
+                    PK id_detail
+                    FK id_pesanan
+                    FK id_varian
+                    }
+                    class PEMBAYARAN {
+                    PK id_pembayaran
+                    FK id_pesanan
+                    varchar status
+                    }
+                    class PENGIRIMAN {
+                    PK id_pengiriman
+                    FK id_pesanan
+                    varchar resi
+                    }
+
+                    %% DEFINISI RELASI DENGAN 1 DAN M
+                    %% Syntax: ClassA "sisiA" -- "sisiB" ClassB : Label
+
+                    KATEGORI "1" -- "M" PRODUK : memiliki
+                    PRODUK "1" -- "M" VARIAN_PRODUK : memiliki
+                    VARIAN_PRODUK "1" -- "1" STOK : disimpan di
+
+                    PENGGUNA "1" -- "M" KERANJANG : punya
+                    VARIAN_PRODUK "1" -- "M" KERANJANG : masuk ke
+
+                    PENGGUNA "1" -- "M" PESANAN : membuat
+
+                    PESANAN "1" -- "M" DETAIL_PESANAN : berisi
+                    VARIAN_PRODUK "1" -- "M" DETAIL_PESANAN : terjual
+
+                    PESANAN "1" -- "1" PEMBAYARAN : tagihan
+                    PESANAN "1" -- "1" PENGIRIMAN : kirim
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-500 py-6 text-center text-xs">
+        &copy; 2025 Modul Praktikum ERD
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const codeBlocks = document.querySelectorAll('.no-copy-target');
+            codeBlocks.forEach(block => {
+                block.addEventListener('copy', (e) => { e.preventDefault(); alert('Ketik manual ya!'); });
+                block.addEventListener('contextmenu', (e) => { e.preventDefault(); });
+                block.classList.add('no-copy');
+            });
+        });
+    </script>
+</body>
+
+</html>
