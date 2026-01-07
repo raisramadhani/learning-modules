@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studi Kasus Flowchart: Register System</title>
+    <title>Studi Kasus Flowchart: E-Commerce Checkout</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -12,12 +12,10 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* --- SHAPES --- */
         .shape-oval {
             border-radius: 999px;
         }
 
-        /* Jajar Genjang (Output/Input) */
         .shape-parallelogram {
             transform: skewX(-20deg);
         }
@@ -34,7 +32,6 @@
             height: 100%;
         }
 
-        /* Belah Ketupat (Decision Component) */
         .shape-diamond {
             transform: rotate(45deg);
             display: flex;
@@ -52,17 +49,15 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             line-height: 1.1;
             font-style: normal;
         }
 
-        /* Persegi Panjang (Process) */
         .shape-rectangle {
             border-radius: 4px;
         }
 
-        /* --- DRAG & DROP ITEMS --- */
         .draggable-item {
             cursor: grab;
             transition: transform 0.1s, box-shadow 0.2s;
@@ -80,7 +75,6 @@
             z-index: 50;
         }
 
-        /* --- DROP ZONES (Grid Putus-putus) --- */
         .drop-zone {
             background-color: #f8fafc;
             border: 2px dashed #cbd5e1;
@@ -102,12 +96,10 @@
             background-color: transparent;
         }
 
-        /* Class khusus untuk slot Decision agar border berbentuk belah ketupat */
         .drop-zone-diamond {
             transform: rotate(45deg);
         }
 
-        /* Placeholder Text */
         .drop-zone .placeholder-text {
             position: absolute;
             top: 50%;
@@ -121,7 +113,6 @@
             text-align: center;
         }
 
-        /* Counter-rotate untuk teks di dalam slot belah ketupat */
         .drop-zone-diamond .placeholder-text {
             transform: translate(-50%, -50%) rotate(-45deg);
             width: 150%;
@@ -131,7 +122,6 @@
             opacity: 0;
         }
 
-        /* --- GRID --- */
         .grid-bg {
             background-color: #ffffff;
             background-image: linear-gradient(#f1f5f9 1px, transparent 1px), linear-gradient(90deg, #f1f5f9 1px, transparent 1px);
@@ -146,22 +136,21 @@
         <div class="max-w-[1200px] mx-auto flex justify-between items-center">
             <div>
                 <h1 class="text-lg font-bold text-slate-800 tracking-tight">Flowchart Builder</h1>
-                <p class="text-xs text-slate-500">Studi Kasus: <span class="text-purple-600 font-semibold">Register
-                        System
-                        Logic</span></p>
+                <p class="text-xs text-slate-500">Studi Kasus: <span class="text-emerald-600 font-semibold">E-Commerce
+                        Checkout Process</span></p>
             </div>
             <div class="flex gap-3 items-center">
                 <div class="mr-2 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded text-xs">
                     <span class="text-amber-700 font-semibold">Kesempatan:</span>
                     <span id="attempt-display" class="text-amber-900 font-bold ml-1">3/3</span>
                 </div>
-                <a href="index.html"
-                    class="px-4 py-2 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded shadow-sm transition active:scale-95">←
-                    Kembali ke Login</a>
+                <a href="register.html"
+                    class="px-4 py-2 text-xs font-semibold text-purple-600 bg-purple-50 hover:bg-purple-100 rounded shadow-sm transition active:scale-95">←
+                    Kembali ke Register</a>
                 <button onclick="resetGame()"
                     class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded shadow-sm transition active:scale-95">Reset</button>
                 <button onclick="checkAnswers()" id="check-btn"
-                    class="px-5 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded shadow-md transition transform active:scale-95 disabled:bg-slate-300 disabled:cursor-not-allowed">Cek
+                    class="px-5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded shadow-md transition transform active:scale-95 disabled:bg-slate-300 disabled:cursor-not-allowed">Cek
                     Jawaban</button>
             </div>
         </div>
@@ -169,105 +158,181 @@
 
     <main class="flex-1 flex overflow-hidden">
         <div class="flex-1 overflow-auto bg-slate-100 relative flex justify-center p-8">
-            <div class="relative w-[900px] h-[1100px] bg-white shadow-xl rounded-xl border border-slate-200 grid-bg shrink-0 overflow-hidden"
-                id="canvas-area">
+            <div
+                class="relative w-[1000px] h-[1700px] bg-white shadow-xl rounded-xl border border-slate-200 grid-bg shrink-0 overflow-hidden">
                 <svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
                     <defs>
                         <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
                             <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
                         </marker>
                     </defs>
-                    <!-- START to INPUT -->
-                    <line x1="400" y1="80" x2="400" y2="120" stroke="#64748b" stroke-width="2"
+                    <!-- START to INPUT1 -->
+                    <line x1="450" y1="80" x2="450" y2="120" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
-                    <!-- INPUT to DEC_EMAIL -->
-                    <line x1="400" y1="180" x2="400" y2="230" stroke="#64748b" stroke-width="2"
+                    <!-- INPUT1 to DEC_STOCK -->
+                    <line x1="450" y1="180" x2="450" y2="230" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
-                    <!-- DEC_EMAIL to OUT_EXIST (TIDAK) -->
-                    <path d="M 450 280 L 640 280" fill="none" stroke="#64748b" stroke-width="2"
+                    <!-- DEC_STOCK to OUT_NOSTOCK (TIDAK) -->
+                    <path d="M 500 280 L 690 280" fill="none" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
-                    <text x="470" y="275" font-size="10" fill="#22c55e" font-weight="bold"
-                        font-family="monospace">TIDAK</text>
-                    <!-- DEC_EMAIL to DEC_PASS (YA) -->
-                    <line x1="400" y1="330" x2="400" y2="390" stroke="#64748b" stroke-width="2"
+                    <text x="520" y="275" font-size="10" fill="#ef4444" font-weight="bold">TIDAK</text>
+                    <!-- DEC_STOCK to DEC_AREA (YA) -->
+                    <line x1="450" y1="330" x2="450" y2="390" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
-                    <text x="405" y="360" font-size="10" fill="#ef4444" font-weight="bold"
-                        font-family="monospace">YA</text>
-                    <!-- DEC_PASS to OUT_SHORT (TIDAK) -->
-                    <path d="M 450 440 L 640 440" fill="none" stroke="#64748b" stroke-width="2"
+                    <text x="455" y="360" font-size="10" fill="#22c55e" font-weight="bold">YA</text>
+                    <!-- DEC_AREA to OUT_FARAREA (TIDAK) -->
+                    <path d="M 500 440 L 690 440" fill="none" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
-                    <text x="470" y="435" font-size="10" fill="#ef4444" font-weight="bold"
-                        font-family="monospace">TIDAK</text>
-                    <!-- DEC_PASS to PROCESS (YA) -->
-                    <line x1="400" y1="490" x2="400" y2="550" stroke="#64748b" stroke-width="2"
+                    <text x="520" y="435" font-size="10" fill="#ef4444" font-weight="bold">TIDAK</text>
+                    <!-- DEC_AREA to DEC_VOUCHER (YA) -->
+                    <line x1="450" y1="490" x2="450" y2="550" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
-                    <text x="405" y="520" font-size="10" fill="#22c55e" font-weight="bold"
-                        font-family="monospace">YA</text>
-                    <!-- PROCESS to OUT_SUCCESS -->
-                    <line x1="400" y1="610" x2="400" y2="670" stroke="#64748b" stroke-width="2"
+                    <text x="455" y="520" font-size="10" fill="#22c55e" font-weight="bold">YA</text>
+                    <!-- DEC_VOUCHER to PROC_DISC (YA) -->
+                    <path d="M 400 600 L 210 600" fill="none" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="250" y="595" font-size="10" fill="#22c55e" font-weight="bold">YA</text>
+                    <!-- PROC_DISC to PROC_TOTAL -->
+                    <line x1="210" y1="660" x2="210" y2="710" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <polyline points="210 770 210 820 450 820" fill="none" stroke="#64748b" stroke-width="2" />
+                    <!-- DEC_VOUCHER to PROC_TOTAL (TIDAK) -->
+                    <line x1="450" y1="650" x2="450" y2="760" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="455" y="700" font-size="10" fill="#ef4444" font-weight="bold">TIDAK</text>
+                    <line x1="450" y1="820" x2="450" y2="870" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <!-- PROC_TOTAL to INPUT2 -->
+                    <line x1="450" y1="930" x2="450" y2="990" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <!-- INPUT2 to DEC_BALANCE -->
+                    <line x1="450" y1="1050" x2="450" y2="1100" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <!-- DEC_BALANCE to OUT_LOWBAL (TIDAK) -->
+                    <path d="M 500 1150 L 690 1150" fill="none" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="520" y="1145" font-size="10" fill="#ef4444" font-weight="bold">TIDAK</text>
+                    <!-- DEC_BALANCE to PROC_CUTSTOCK (YA) -->
+                    <line x1="450" y1="1200" x2="450" y2="1260" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="455" y="1230" font-size="10" fill="#22c55e" font-weight="bold">YA</text>
+                    <!-- PROC_CUTSTOCK to PROC_PAYMENT -->
+                    <line x1="450" y1="1320" x2="450" y2="1380" stroke="#64748b" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <!-- PROC_PAYMENT to OUT_SUCCESS -->
+                    <line x1="450" y1="1440" x2="450" y2="1500" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
                     <!-- OUT_SUCCESS to STOP -->
-                    <line x1="400" y1="730" x2="400" y2="870" stroke="#64748b" stroke-width="2"
+                    <line x1="450" y1="1560" x2="450" y2="1620" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
-                    <!-- OUT_EXIST to STOP -->
-                    <polyline points="720 310 720 340 830 340 830 900 450 900" fill="none" stroke="#64748b"
+                    <!-- Error paths to STOP -->
+                    <polyline points="770 310 770 340 880 340 880 1650 500 1650" fill="none" stroke="#64748b"
                         stroke-width="2" />
-                    <!-- OUT_SHORT to STOP -->
-                    <polyline points="720 470 720 500 830 500 830 900" fill="none" stroke="#64748b" stroke-width="2" />
-                    <line x1="450" y1="900" x2="400" y2="900" stroke="#64748b" stroke-width="2"
+                    <polyline points="770 470 770 500 880 500 880 1650" fill="none" stroke="#64748b" stroke-width="2" />
+                    <polyline points="770 1180 770 1210 880 1210 880 1650" fill="none" stroke="#64748b"
+                        stroke-width="2" />
+                    <line x1="500" y1="1650" x2="450" y2="1650" stroke="#64748b" stroke-width="2"
                         marker-end="url(#arrow)" />
                 </svg>
 
                 <!-- START -->
-                <div class="absolute top-[30px] left-[336px]">
+                <div class="absolute top-[30px] left-[386px]">
                     <div class="drop-zone shape-oval w-32 h-12" data-target="start">
                         <span class="placeholder-text text-[10px] font-mono text-slate-400">START</span>
                     </div>
                 </div>
-                <!-- INPUT -->
-                <div class="absolute top-[120px] left-[320px]">
-                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="input">
-                        <span class="placeholder-text text-[10px] font-mono text-slate-400">Input/Output</span>
+                <!-- INPUT1 -->
+                <div class="absolute top-[120px] left-[370px]">
+                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="input1">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Input/Output</span>
                     </div>
                 </div>
-                <!-- DEC_EMAIL -->
-                <div class="absolute top-[230px] left-[350px]">
-                    <div class="drop-zone drop-zone-diamond w-[100px] h-[100px]" data-target="dec_email">
-                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Decision</span>
+                <!-- DEC_STOCK -->
+                <div class="absolute top-[230px] left-[400px]">
+                    <div class="drop-zone drop-zone-diamond w-[100px] h-[100px]" data-target="dec_stock">
+                        <span class="placeholder-text text-[8px] font-mono text-slate-400">Decision</span>
                     </div>
                 </div>
-                <!-- OUT_EXIST (kanan atas) -->
-                <div class="absolute top-[250px] left-[640px]">
-                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="out_exist">
-                        <span class="placeholder-text text-[10px] font-mono text-slate-400">Input/Output</span>
+                <!-- OUT_NOSTOCK -->
+                <div class="absolute top-[250px] left-[690px]">
+                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="out_nostock">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Output</span>
                     </div>
                 </div>
-                <!-- DEC_PASS -->
-                <div class="absolute top-[390px] left-[350px]">
-                    <div class="drop-zone drop-zone-diamond w-[100px] h-[100px]" data-target="dec_pass">
-                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Decision</span>
+                <!-- DEC_AREA -->
+                <div class="absolute top-[390px] left-[400px]">
+                    <div class="drop-zone drop-zone-diamond w-[100px] h-[100px]" data-target="dec_area">
+                        <span class="placeholder-text text-[8px] font-mono text-slate-400">Decision</span>
                     </div>
                 </div>
-                <!-- OUT_SHORT (kanan tengah) -->
-                <div class="absolute top-[410px] left-[640px]">
-                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="out_short">
-                        <span class="placeholder-text text-[10px] font-mono text-slate-400">Input/Output</span>
+                <!-- OUT_FARAREA -->
+                <div class="absolute top-[410px] left-[690px]">
+                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="out_fararea">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Output</span>
                     </div>
                 </div>
-                <!-- PROCESS -->
-                <div class="absolute top-[550px] left-[320px]">
-                    <div class="drop-zone shape-rectangle w-40 h-14" data-target="process">
-                        <span class="placeholder-text text-[10px] font-mono text-slate-400">Process</span>
+                <!-- DEC_VOUCHER -->
+                <div class="absolute top-[550px] left-[400px]">
+                    <div class="drop-zone drop-zone-diamond w-[100px] h-[100px]" data-target="dec_voucher">
+                        <span class="placeholder-text text-[8px] font-mono text-slate-400">Decision</span>
+                    </div>
+                </div>
+                <!-- PROC_DISC -->
+                <div class="absolute top-[570px] left-[130px]">
+                    <div class="drop-zone shape-rectangle w-40 h-14" data-target="proc_disc">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Process</span>
+                    </div>
+                </div>
+                <!-- PROC_TOTAL -->
+                <div class="absolute top-[760px] left-[370px]">
+                    <div class="drop-zone shape-rectangle w-40 h-14" data-target="proc_total">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Process</span>
+                    </div>
+                </div>
+                <!-- INPUT2 -->
+                <div class="absolute top-[870px] left-[370px]">
+                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="input2">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Input/Output</span>
+                    </div>
+                </div>
+                <!-- DEC_BALANCE -->
+                <div class="absolute top-[990px] left-[370px]">
+                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="input3">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Input/Output</span>
+                    </div>
+                </div>
+                <!-- INPUT3 (Fix positioning) -->
+                <div class="absolute top-[1100px] left-[400px]">
+                    <div class="drop-zone drop-zone-diamond w-[100px] h-[100px]" data-target="dec_balance">
+                        <span class="placeholder-text text-[8px] font-mono text-slate-400">Decision</span>
+                    </div>
+                </div>
+                <!-- OUT_LOWBAL -->
+                <div class="absolute top-[1120px] left-[690px]">
+                    <div class="drop-zone shape-parallelogram w-40 h-14" data-target="out_lowbal">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Output</span>
+                    </div>
+                </div>
+                <!-- PROC_CUTSTOCK -->
+                <div class="absolute top-[1260px] left-[370px]">
+                    <div class="drop-zone shape-rectangle w-40 h-14" data-target="proc_cutstock">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Process</span>
+                    </div>
+                </div>
+                <!-- PROC_PAYMENT -->
+                <div class="absolute top-[1380px] left-[370px]">
+                    <div class="drop-zone shape-rectangle w-40 h-14" data-target="proc_payment">
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Process</span>
                     </div>
                 </div>
                 <!-- OUT_SUCCESS -->
-                <div class="absolute top-[670px] left-[320px]">
+                <div class="absolute top-[1500px] left-[370px]">
                     <div class="drop-zone shape-parallelogram w-40 h-14" data-target="out_success">
-                        <span class="placeholder-text text-[10px] font-mono text-slate-400">Input/Output</span>
+                        <span class="placeholder-text text-[9px] font-mono text-slate-400">Output</span>
                     </div>
                 </div>
                 <!-- STOP -->
-                <div class="absolute top-[870px] left-[336px]">
+                <div class="absolute top-[1620px] left-[386px]">
                     <div class="drop-zone shape-oval w-32 h-12" data-target="stop">
                         <span class="placeholder-text text-[10px] font-mono text-slate-400">STOP</span>
                     </div>
@@ -277,8 +342,12 @@
 
         <div class="w-80 bg-white border-l border-slate-200 shadow-2xl flex flex-col z-40">
             <div class="p-5 bg-slate-50 border-b border-slate-200">
+                <!-- <div class="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-xs text-red-700 font-semibold mb-1">⚠️ Level: ADVANCED</p>
+                    <p class="text-[10px] text-red-600">16 komponen • 4 keputusan • Alur kompleks</p>
+                </div> -->
                 <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-1">Komponen</h2>
-                <p class="text-xs text-slate-500">Drag & Drop ke slot yang sesuai.</p>
+                <p class="text-xs text-slate-500">Susun flowchart proses checkout e-commerce.</p>
             </div>
             <div class="flex-1 overflow-y-auto p-6 bg-slate-50/50" id="toolbox"></div>
         </div>
@@ -288,13 +357,14 @@
         class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 transition-opacity">
         <div class="bg-white rounded-2xl p-8 max-w-sm text-center shadow-2xl border border-slate-100">
             <div
-                class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
-            <h3 class="text-2xl font-bold text-slate-800">Sempurna!</h3>
-            <p class="text-slate-600 mt-2 mb-6">Logika alur registrasi berhasil disusun dengan benar.</p>
+            <h3 class="text-2xl font-bold text-slate-800">Luar Biasa!</h3>
+            <p class="text-slate-600 mt-2 mb-2">Kamu berhasil menyelesaikan Flowchart</p>
+            <p class="text-xs text-slate-500 mb-6">🏆 Logika checkout e-commerce tersusun sempurna.</p>
             <button onclick="document.getElementById('success-modal').classList.add('hidden')"
                 class="w-full py-3 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-900 transition shadow-lg">Tutup</button>
         </div>
@@ -314,7 +384,6 @@
         </div>
     </div>
 
-    <!-- Attempt Notification Modal -->
     <div id="attempt-notification"
         class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center z-[60] transition-all duration-300">
         <div class="bg-white rounded-2xl p-8 shadow-2xl border-4 max-w-md mx-4 transform transition-all">
@@ -339,13 +408,21 @@
         const items = [
             { id: 'start', text: 'START', shapeClass: 'shape-oval', bg: 'bg-slate-800', textCol: 'text-white' },
             { id: 'stop', text: 'STOP', shapeClass: 'shape-oval', bg: 'bg-slate-800', textCol: 'text-white' },
-            { id: 'input', text: 'Input nama, email & password', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
-            { id: 'dec_email', text: 'Apakah email sudah terdaftar?', shapeClass: 'shape-diamond', bg: 'bg-amber-100', textCol: 'text-amber-900', border: 'border-amber-300' },
-            { id: 'out_exist', text: 'TAMPILKAN "Email sudah digunakan"', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
-            { id: 'dec_pass', text: 'Apakah password minimal 8 karakter?', shapeClass: 'shape-diamond', bg: 'bg-amber-100', textCol: 'text-amber-900', border: 'border-amber-300' },
-            { id: 'out_short', text: 'TAMPILKAN "Password terlalu pendek"', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
-            { id: 'process', text: 'Simpan data ke database', shapeClass: 'shape-rectangle', bg: 'bg-green-100', textCol: 'text-green-900', border: 'border-green-300' },
-            { id: 'out_success', text: 'TAMPILKAN "Registrasi Berhasil"', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' }
+            { id: 'input1', text: 'Input produk, qty, alamat', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
+            { id: 'dec_stock', text: 'Apakah stok tersedia?', shapeClass: 'shape-diamond', bg: 'bg-amber-100', textCol: 'text-amber-900', border: 'border-amber-300' },
+            { id: 'out_nostock', text: 'TAMPILKAN "Stok habis"', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
+            { id: 'dec_area', text: 'Apakah alamat dalam jangkauan?', shapeClass: 'shape-diamond', bg: 'bg-amber-100', textCol: 'text-amber-900', border: 'border-amber-300' },
+            { id: 'out_fararea', text: 'TAMPILKAN "Alamat di luar jangkauan"', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
+            { id: 'dec_voucher', text: 'Apakah ada voucher diskon?', shapeClass: 'shape-diamond', bg: 'bg-amber-100', textCol: 'text-amber-900', border: 'border-amber-300' },
+            { id: 'proc_disc', text: 'Hitung potongan diskon', shapeClass: 'shape-rectangle', bg: 'bg-green-100', textCol: 'text-green-900', border: 'border-green-300' },
+            { id: 'proc_total', text: 'Hitung total harga', shapeClass: 'shape-rectangle', bg: 'bg-green-100', textCol: 'text-green-900', border: 'border-green-300' },
+            { id: 'input2', text: 'TAMPILKAN total harga', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
+            { id: 'input3', text: 'Input metode pembayaran', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
+            { id: 'dec_balance', text: 'Apakah saldo mencukupi?', shapeClass: 'shape-diamond', bg: 'bg-amber-100', textCol: 'text-amber-900', border: 'border-amber-300' },
+            { id: 'out_lowbal', text: 'TAMPILKAN "Saldo tidak cukup"', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' },
+            { id: 'proc_cutstock', text: 'Kurangi stok produk', shapeClass: 'shape-rectangle', bg: 'bg-green-100', textCol: 'text-green-900', border: 'border-green-300' },
+            { id: 'proc_payment', text: 'Proses pembayaran', shapeClass: 'shape-rectangle', bg: 'bg-green-100', textCol: 'text-green-900', border: 'border-green-300' },
+            { id: 'out_success', text: 'TAMPILKAN "Pesanan berhasil!"', shapeClass: 'shape-parallelogram', bg: 'bg-blue-100', textCol: 'text-blue-900', border: 'border-blue-300' }
         ];
 
         let draggedItem = null;
@@ -438,13 +515,9 @@
                         const existing = zone.querySelector('.draggable-item');
                         if (existing) restoreToToolbox(existing);
                         zone.appendChild(draggedItem);
-
                         draggedItem.style.marginBottom = '0';
                         draggedItem.classList.remove('mb-3', 'mb-4', 'mx-auto', 'w-20', 'h-20', 'w-28', 'h-10', 'max-w-[200px]');
-
-                        // LOGIKA KHUSUS BELAH KETUPAT
                         if (draggedItem.classList.contains('shape-diamond')) {
-                            // Cegah rotasi ganda jika wadahnya juga diputar
                             if (zone.classList.contains('drop-zone-diamond')) {
                                 draggedItem.style.transform = 'rotate(0deg)';
                             }
@@ -454,7 +527,6 @@
                             draggedItem.classList.add('w-full', 'h-full');
                             draggedItem.style.width = ''; draggedItem.style.height = '';
                         }
-
                         updateZoneState(zone);
                         if (sourceZone && sourceZone.classList.contains('drop-zone')) updateZoneState(sourceZone);
                     }
@@ -473,8 +545,7 @@
         function restoreToToolbox(item) {
             const toolbox = document.getElementById('toolbox'); const parent = item.parentNode;
             item.classList.remove('w-full', 'h-full'); item.style.marginBottom = '';
-            item.style.width = ''; item.style.height = ''; item.style.transform = ''; // Reset transform
-
+            item.style.width = ''; item.style.height = ''; item.style.transform = '';
             if (item.classList.contains('shape-diamond')) {
                 item.classList.add('w-20', 'h-20', 'mx-auto', 'mb-4');
             } else if (item.classList.contains('shape-parallelogram') || item.classList.contains('shape-rectangle')) {
@@ -491,53 +562,42 @@
             const icon = document.getElementById('notif-icon');
             const title = document.getElementById('notif-title');
             const message = document.getElementById('notif-message');
-
-            // Reset classes
             notif.classList.remove('border-amber-300', 'border-orange-300', 'border-red-300', 'border-green-300');
             icon.classList.remove('bg-amber-100', 'text-amber-600', 'bg-orange-100', 'text-orange-600', 'bg-red-100', 'text-red-600', 'bg-green-100', 'text-green-600');
-
             if (isCorrect) {
                 notif.classList.add('border-green-300');
                 icon.classList.add('bg-green-100', 'text-green-600');
                 title.textContent = '✓ Jawaban Benar!';
-                message.textContent = 'Selamat! Semua komponen telah tersusun dengan sempurna.';
+                message.textContent = 'Selamat! Flowchart berhasil diselesaikan!';
             } else if (remaining <= 0) {
                 notif.classList.add('border-red-300');
                 icon.classList.add('bg-red-100', 'text-red-600');
-                title.textContent = 'Kesempatan Habis!';
+                title.textContent = '⚠️ Kesempatan Habis!';
                 message.textContent = 'Kamu sudah menggunakan 3 kesempatan.';
             } else if (remaining === 1) {
                 notif.classList.add('border-red-300');
                 icon.classList.add('bg-red-100', 'text-red-600');
-                title.textContent = 'Kesempatan Terakhir!';
+                title.textContent = '⚠️ Kesempatan Terakhir!';
                 message.textContent = `Hanya tersisa ${remaining} kesempatan lagi. Periksa dengan teliti!`;
             } else if (remaining === 2) {
                 notif.classList.add('border-orange-300');
                 icon.classList.add('bg-orange-100', 'text-orange-600');
                 title.textContent = '⚡ Perhatian!';
-                message.textContent = `Masih ada ${remaining} kesempatan lagi. Coba periksa kembali.`;
+                message.textContent = `Masih ada ${remaining} kesempatan lagi. Gunakan dengan bijak!`;
             } else {
                 notif.classList.add('border-amber-300');
                 icon.classList.add('bg-amber-100', 'text-amber-600');
-                title.textContent = 'Info Kesempatan';
-                message.textContent = `Kamu memiliki ${remaining} kesempatan untuk mencoba.`;
+                title.textContent = 'ℹ️ Info Kesempatan';
+                message.textContent = `Kamu memiliki ${remaining} kesempatan untuk mencoba level ini.`;
             }
-
-            // Show notification
             notif.classList.remove('hidden');
-
-            // Auto hide after 3 seconds
-            setTimeout(() => {
-                notif.classList.add('hidden');
-            }, 3000);
+            setTimeout(() => { notif.classList.add('hidden'); }, 3500);
         }
 
         function checkAnswers() {
-            // Increment attempt
             currentAttempt++;
             const remaining = maxAttempts - currentAttempt;
             updateAttemptDisplay();
-
             const zones = document.querySelectorAll('.drop-zone');
             let correctCount = 0; let totalZones = items.length;
             zones.forEach(zone => {
@@ -551,22 +611,14 @@
                     if (item) item.classList.add('ring-2', 'ring-red-500');
                 }
             });
-
             if (correctCount === totalZones) {
-                // Berhasil!
                 showAttemptNotification(remaining, true);
-                setTimeout(() => {
-                    document.getElementById('success-modal').classList.remove('hidden');
-                }, 500);
+                setTimeout(() => { document.getElementById('success-modal').classList.remove('hidden'); }, 500);
             } else if (currentAttempt >= maxAttempts) {
-                // Game Over - Kesempatan habis
                 showAttemptNotification(0);
                 document.getElementById('check-btn').disabled = true;
-                setTimeout(() => {
-                    document.getElementById('game-over-modal').classList.remove('hidden');
-                }, 1000);
+                setTimeout(() => { document.getElementById('game-over-modal').classList.remove('hidden'); }, 1000);
             } else {
-                // Masih ada kesempatan
                 showAttemptNotification(remaining);
             }
         }
@@ -578,15 +630,9 @@
                 if (item) item.remove();
                 updateZoneState(zone);
             });
-
-            // Reset attempt counter
             currentAttempt = 0;
             updateAttemptDisplay();
-
-            // Reset button state
             document.getElementById('check-btn').disabled = false;
-
-            // Reset display colors
             const display = document.getElementById('attempt-display');
             display.parentElement.classList.remove('bg-red-50', 'border-red-200', 'bg-orange-50', 'border-orange-200');
             display.parentElement.classList.add('bg-amber-50', 'border-amber-200');
@@ -594,7 +640,6 @@
             display.previousElementSibling.classList.add('text-amber-700');
             display.classList.remove('text-red-900', 'text-orange-900');
             display.classList.add('text-amber-900');
-
             renderToolbox();
             document.getElementById('success-modal').classList.add('hidden');
             document.getElementById('game-over-modal').classList.add('hidden');
