@@ -1,0 +1,5 @@
+Next pengembangan:
+1. Sheet ada level soal, prioritas soal
+2. fitur download result pdf dalam bentuk tabel
+3. custom icon per tim
+4. custom jumlah tim, nama tim
