@@ -1,0 +1,1262 @@
+
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Balap Cerdas (Versi Robot)</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* --- CSS (Styling) --- */
+        /* --- PENYESUAIAN KHUSUS UNTUK LAYAR SENTUH (Anti-Geser/Zoom) --- */
+        body {
+            /* Mencegah default action browser seperti zoom/pinch */
+            touch-action: manipulation; 
+            /* Mencegah teks terpilih (seleksi) */
+            user-select: none; 
+            -webkit-user-select: none; 
+            -moz-user-select: none; 
+            -ms-user-select: none; 
+
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: hidden; 
+            overflow-x: hidden; 
+        }
+
+        .hidden {
+            display: none !important;
+        }
+ :root {
+
+            --player1-color: #007bff; /* Biru */
+
+            --player2-color: #dc3545; /* Merah */
+
+            --player3-color: #ffc107; /* Kuning */
+
+            --player4-color: #28a745; /* Hijau */
+
+            --bg-color: #e6f7ff; 
+
+            --track-color: #a0d8ff; 
+
+            --win-line-color: #5cb85c;
+
+            --start-line-color: #f0ad4e;
+        }
+        body {
+
+            font-family: 'Arial', sans-serif;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 100vh;
+
+            background-color: var(--bg-color);
+
+            margin: 0;
+
+            padding: 10px;
+
+            position: relative;
+
+        }
+        h1 {
+
+            color: #004a99;
+
+            font-size: 2em;
+
+            margin-bottom: 15px;
+
+        }
+        #fullscreen-btn {
+
+            position: absolute;
+
+            top: 10px;
+
+            right: 10px;
+
+            z-index: 1000; 
+
+            background: #007bff;
+
+            color: white;
+
+            border: none;
+
+            padding: 8px 12px;
+
+            font-size: 1em;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+            transition: background-color 0.2s;
+
+        }
+        #fullscreen-btn:hover {
+
+            background-color: #0056b3;
+
+        }
+        /* --- LOBBY SCREEN --- */
+
+        #lobby-screen {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+            text-align: center;
+
+            max-width: 600px;
+
+        }
+        #lobby-screen h2 {
+
+            color: #004a99;
+
+            font-size: 2.2em; 
+
+            margin-bottom: 25px;
+
+        }
+        /* Countdown Overlay: Z-index dan Posisi Dibuat Agresif */
+
+        #countdown-overlay {
+
+            position: fixed !important;
+
+            top: 0 !important;
+
+            left: 0 !important;
+
+            width: 100% !important;
+
+            height: 100% !important;
+
+            background-color: rgba(0, 0, 0, 0.99) !important; 
+
+            z-index: 99999 !important; 
+
+            display: none; 
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: white;
+
+            font-size: 20em; 
+
+            font-weight: bold;
+
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+
+            animation: pulse 1s infinite alternate; 
+
+        }
+
+
+        @keyframes pulse {
+
+            from { transform: scale(0.95); opacity: 0.9; }
+
+            to { transform: scale(1.05); opacity: 1; }
+
+        }
+
+
+
+        #start-button {
+
+            padding: 15px 30px;
+
+            font-size: 1.5em;
+
+            font-weight: bold;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            background: #28a745;
+
+            color: white;
+
+            transition: background 0.2s, transform 0.1s;
+
+        }
+
+        #start-button:hover { background: #1e7e34; }
+
+        #start-button:disabled { 
+
+            background: #aaa; 
+
+            cursor: not-allowed;
+
+        }
+
+
+
+
+
+        /* --- GAME CONTAINER (Tampilan utama) --- */
+
+        #game-container {
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            display: flex;
+
+            flex-direction: column; 
+
+            align-items: center;
+
+            gap: 15px;
+
+            z-index: 1000;
+
+            position: relative;
+
+        }
+
+
+
+        /* --- ARENA BALAP & ROBOT ICON --- */
+
+        #race-arena {
+
+            width: 98%; 
+
+            height: 300px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            position: relative;
+
+            background-color: var(--track-color);
+
+            padding: 5px;
+
+            border-radius: 8px;
+
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.15);
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+
+
+        .track { width: 100%; height: 70px; border-bottom: 1px dashed rgba(0, 0, 0, 0.2); position: relative; display: flex; align-items: flex-end; }
+
+        .track:last-of-type { border-bottom: none; }
+
+
+
+        #finish-line, #start-line { position: absolute; width: 100%; height: 20px; line-height: 20px; font-weight: bold; color: white; z-index: 10; text-align: center; text-transform: uppercase; font-size: 0.8em; border-radius: 5px; }
+
+        #finish-line { top: 0; background: var(--win-line-color); border-top-left-radius: 8px; border-top-right-radius: 8px; }
+
+        #start-line { bottom: 0; background: var(--start-line-color); border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
+
+
+
+        /* --- STYLING ROBOT BARU --- */
+
+        .player-icon { 
+
+            width: 40px; 
+
+            height: 40px; 
+
+            position: absolute; 
+
+            bottom: 5px; 
+
+            left: 5px; 
+
+            transition: left 0.5s ease-out; 
+
+            z-index: 5; 
+
+            display: flex; 
+
+            justify-content: center; 
+
+            align-items: center; 
+
+            /* Hapus border-radius: 50% */
+
+            border-radius: 6px;
+
+            border: 2px solid rgba(0,0,0,0.1); 
+
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+
+        }
+
+
+
+        .robot-body {
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 5px;
+
+            position: relative;
+
+        }
+
+
+
+        .robot-head {
+
+            position: absolute;
+
+            top: -10px;
+
+            width: 25px;
+
+            height: 10px;
+
+            background: inherit; /* Warisi warna tubuh */
+
+            border-radius: 3px;
+
+            border: 1px solid rgba(0,0,0,0.2);
+
+
+
+        /* --- BARIS BARU UNTUK IKAT KEPALA MERAH-PUTIH --- */
+
+    /* Syntax: [offset-x] [offset-y] [blur] [spread] [color] */
+
+    box-shadow: 
+
+        0 -5px 0 0px rgb(5, 5, 5),   /* Lapisan Merah (di atas kepala) */
+
+        0 -1px 0 0px white; /* Lapisan Putih (di atas lapisan merah) */
+
+    }
+
+        .robot-eye {
+
+            position: absolute;
+
+            width: 4px;
+
+            height: 4px;
+
+            background: white;
+
+            border-radius: 50%;
+
+            top: 3px;
+
+            border: 1px solid black;
+
+        }
+
+        .robot-eye.left { left: 5px; }
+
+        .robot-eye.right { right: 5px; }
+
+
+
+     /* --- STYLING TAMBAHAN UNTUK TANGAN ROBOT (WARNA HITAM) --- */
+
+    .robot-hand {
+
+        position: absolute;
+
+        width: 10px; 
+
+        height: 15px; 
+
+        background: black; 
+
+        border-radius: 3px;
+
+        border: 1px solid black; 
+
+        top: 15px; 
+
+        z-index: 10; /* <--- PENTING: Pindahkan tangan ke lapisan depan */
+
+    }
+
+    .robot-hand.left {
+
+        left: -12px; /* <--- Geser sedikit lebih jauh ke kiri */
+
+        transform: rotate(20deg); 
+
+    }
+
+    .robot-hand.right {
+
+        right: -12px; /* <--- Geser sedikit lebih jauh ke kanan */
+
+        transform: rotate(-20deg); 
+
+    }
+
+    /* --- STYLING TAMBAHAN UNTUK KOTAK PERUT ROBOT --- */
+
+    .robot-body::before {
+
+        content: ''; /* Wajib untuk pseudo-element */
+
+        position: absolute;
+
+        width: 25px;  /* Lebar Kotak */
+
+        height: 25px; /* Tinggi Kotak */
+
+        top: 50%; /* Posisikan vertikal di tengah */
+
+        left: 50%; /* Posisikan horizontal di tengah */
+
+        transform: translate(-50%, -50%); /* Geser agar benar-benar di tengah */
+
+        background-color: rgb(251, 247, 247); /* Warna kotak (hitam) */
+
+        border-radius: 2px; /* Sedikit melengkung */
+
+        border: 1px solid rgba(255, 255, 255, 0.8); /* Border putih tipis untuk highlight */
+
+        z-index: 1;
+
+    }
+
+        /* Pewarnaan Robot */
+
+        #player-icon-p1 .robot-body { background-color: var(--player1-color); }
+
+        #player-icon-p2 .robot-body { background-color: var(--player2-color); }
+
+        #player-icon-p3 .robot-body { background-color: var(--player3-color); }
+
+        #player-icon-p4 .robot-body { background-color: var(--player4-color); }
+
+
+
+
+
+        /* --- AREA KEYPAD & WARNA KEYPAD BARU --- */
+
+        .keypad-area-bottom { width: 98%; display: flex; justify-content: space-around; gap: 10px; padding: 5px 0; }
+
+
+
+        /* Styling Panel dengan Warna Latar Belakang */
+
+        .player-panel { 
+
+            width: 180px; 
+
+            min-width: 160px; 
+
+            padding: 8px; 
+
+            background: white; 
+
+            border-radius: 6px; 
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+
+            overflow: hidden; 
+
+            position: relative; 
+
+            border: 3px solid transparent; /* Border default */
+
+        }
+
+
+
+        /* Mewarnai border panel sesuai pemain */
+
+        #panel-p1 { border-color: var(--player1-color); }
+
+        #panel-p2 { border-color: var(--player2-color); }
+
+        #panel-p3 { border-color: var(--player3-color); }
+
+        #panel-p4 { border-color: var(--player4-color); }
+
+
+
+        .player-panel h3 { margin: 3px 0 8px 0; font-size: 1.1em; color: #333; }
+
+
+
+        /* Warna untuk Judul Keypad */
+
+        #panel-p1 h3 { color: var(--player1-color); }
+
+        #panel-p2 h3 { color: var(--player2-color); }
+
+        #panel-p3 h3 { color: var(--player3-color); }
+
+        #panel-p4 h3 { color: var(--player4-color); }
+
+
+
+        .question-display { font-size: 1.2em; font-weight: bold; min-height: 1.4em; margin-bottom: 8px; color: #333; word-wrap: break-word; }
+
+        .keypad { display: grid; grid-template-columns: repeat(1, 1fr); gap: 5px; margin-top: 10px; }
+
+        .keypad button { padding: 12px 5px; font-size: 1.1em; font-weight: bold; border: none; border-radius: 4px; background: #3498db; color: white; cursor: pointer; transition: background-color 0.1s; text-align: left; padding-left: 15px; word-wrap: break-word; white-space: normal; }
+
+        .keypad button:hover:not(:disabled) { background-color: #2980b9; }
+
+        .keypad button:disabled { background-color: #f0f0f0; color: #aaa; cursor: not-allowed; opacity: 0.7; }
+
+        .hidden { display: none !important; }
+
+
+
+        /* --- FOOTER (Kreator Info) --- */
+
+        #creator-info-footer {
+
+            margin-top: 20px;
+
+            font-size: 0.9em;
+
+            color: #555;
+
+            text-align: center;
+
+            line-height: 1.5;
+
+            z-index: 10000; 
+
+            position: relative; 
+
+            background-color: var(--bg-color); 
+
+            padding: 10px 0;
+
+            width: 100%;
+
+        }
+
+        #creator-info-footer p { 
+
+            margin: 5px 0; 
+
+            font-size: 1.1em;
+
+            font-weight: bold;
+
+        }
+
+        .social-icons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 20px;
+
+            margin-top: 10px;
+
+        }
+
+        .social-icons div {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            color: #333;
+
+        }
+
+        .social-icons i {
+
+            font-size: 1.5em;
+
+        }
+
+        .social-icons .fa-instagram { color: #E1306C; }
+
+        .social-icons .fa-tiktok { color: #000000; }
+
+        .social-icons .fa-facebook { color: #1877F2; }
+
+
+
+        @media (max-width: 768px) {
+
+            .keypad-area-bottom { flex-wrap: wrap; justify-content: center; }
+
+            .player-panel { width: 48%; margin-bottom: 10px; }
+
+            #countdown-overlay { font-size: 10em; } 
+
+        }
+
+    </style>
+
+</head>
+
+<body onload="loadQuestions()">
+
+
+
+    <button id="fullscreen-btn" onclick="toggleFullscreen()">
+
+        <i class="fas fa-expand"></i> Fullscreen
+
+    </button>
+
+
+
+    <div id="countdown-overlay" class="hidden"></div>
+
+
+
+    <div id="lobby-screen">
+
+        <h2>Balap Kuis Pengetahuan</h2>
+
+
+
+        <p id="question-count-display"></p>
+
+
+
+        <button id="start-button" onclick="startGame()">
+
+            <i class="fas fa-play"></i> Mulai Balapan
+
+        </button>
+
+
+
+        <p id="loading-status" style="margin-top: 15px; color: #f0ad4e; font-weight: bold;"></p>
+
+
+
+        <div style="margin-top: 20px; font-size: 0.9em; color: #333;">
+
+            <p style="font-weight: bold;">Cara Ganti Soal:</p>
+
+            <p>1. Atur Google Sheet Anda agar dapat diakses "Siapa saja yang memiliki link".</p>
+
+            <p>2. Salin ID Sheet Anda dari link (antara <code style="background: #f0f0f0; padding: 2px 4px;">/d/</code> dan <code style="background: #f0f0f0; padding: 2px 4px;">/edit</code>).</p>
+
+            <p>3. Tempelkan ID tersebut ke URL game ini setelah <code style="background: #f0f0f0; padding: 2px 4px;">?id=</code> (Contoh: <code style="background: #f0f0f0; padding: 2px 4px;">linkgame.com/?id=ID_SHEET_ANDA</code>)</p>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="game-container" class="hidden"> 
+
+        <h1>Balap Kuis</h1>
+
+        <div id="race-arena">
+
+            <div id="finish-line">FINISH</div>
+
+
+
+            <div class="track" id="track-p1">
+
+                <div class="player-icon" id="player-icon-p1" data-player="1">
+
+                    <div class="robot-body"> 
+
+                        <div class="robot-head">
+
+                            <div class="robot-eye left"></div>
+
+                            <div class="robot-eye right"></div>
+
+                            <div class="robot-hand left"></div>
+
+                            <div class="robot-hand right"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="track" id="track-p2">
+
+                <div class="player-icon" id="player-icon-p2" data-player="2">
+
+                    <div class="robot-body">
+
+                        <div class="robot-head">
+
+                            <div class="robot-eye left"></div>
+
+                            <div class="robot-eye right"></div>
+
+                             <div class="robot-hand left"></div>
+
+                            <div class="robot-hand right"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="track" id="track-p3">
+
+                <div class="player-icon" id="player-icon-p3" data-player="3">
+
+                    <div class="robot-body">
+
+                        <div class="robot-head">
+
+                            <div class="robot-eye left"></div>
+
+                            <div class="robot-eye right"></div>
+
+                             <div class="robot-hand left"></div>
+
+                            <div class="robot-hand right"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="track" id="track-p4">
+
+                <div class="player-icon" id="player-icon-p4" data-player="4">
+
+                    <div class="robot-body">
+
+                        <div class="robot-head">
+
+                            <div class="robot-eye left"></div>
+
+                            <div class="robot-eye right"></div>
+
+                             <div class="robot-hand left"></div>
+
+                            <div class="robot-hand right"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="start-line">START</div>
+
+        </div>
+
+
+
+        <div class="keypad-area-bottom">
+
+            <div id="panel-p1" class="player-panel player1" data-player="1"><h3>Player 1 (Biru)</h3><div class="question-display" id="q-p1">Soal...</div><div class="keypad" data-keypad="1"><button data-key="A"></button><button data-key="B"></button><button data-key="C"></button></div></div>
+
+            <div id="panel-p2" class="player-panel player2" data-player="2"><h3>Player 2 (Merah)</h3><div class="question-display" id="q-p2">Soal...</div><div class="keypad" data-keypad="2"><button data-key="A"></button><button data-key="B"></button><button data-key="C"></button></div></div>
+
+            <div id="panel-p3" class="player-panel player3" data-player="3"><h3>Player 3 (Kuning)</h3><div class="question-display" id="q-p3">Soal...</div><div class="keypad" data-keypad="3"><button data-key="A"></button><button data-key="B"></button><button data-key="C"></button></div></div>
+
+            <div id="panel-p4" class="player-panel player4" data-player="4"><h3>Player 4 (Hijau)</h3><div class="question-display" id="q-p4">Soal...</div><div class="keypad" data-keypad="4"><button data-key="A"></button><button data-key="B"></button><button data-key="C"></button></div></div>
+
+        </div>
+
+
+
+        <div id="message-area">
+
+            <h2 id="message-display">Siap Balapan!</h2>
+
+            <button id="restart-btn" class="hidden">Kembali ke Lobi</button>
+
+        </div>
+
+    </div> 
+
+
+
+    <div id="creator-info-footer">
+
+        <p>Dibuat oleh: Ayu Elma Sari</p>
+
+        <div class="social-icons">
+
+            <div><i class="fab fa-instagram"></i> aes_435</div>
+
+            <div><i class="fab fa-tiktok"></i> aes435_</div>
+
+            <div><i class="fab fa-facebook"></i> Ayu Elma Sari</div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+// --- JAVASCRIPT (Logika Game) ---
+
+// ⚠️ PENTING: ID Spreadsheet BAWAAN Anda.
+const DEFAULT_SHEET_ID = '1oHa5gGKi-rqnPcjt9p-Iz2iDjTc3GEciKfgHFYuepYk'; 
+
+// --- SOAL SEMENTARA BAWAAN (FALLBACK) ---
+const FALLBACK_QUESTIONS = [
+    ["Panjang Tangan", "Suka Mencuri", "Suka Memukul", "Suka Berbohong"],
+    ["Ringan Tangan", "Suka Menolong", "Malas", "Rajin"],
+    ["Naik Daun", "Sedang Terkenal", "Sedang di gunung", "Sedang Jalan-jalan"],
+    ["Buah Tangan", "OLeh-oleh", "Uang", "Buah"],
+    ["Gulung Tikar", "Bangkrut", "Untung", "Capek"],
+    ["Anak Emas", "Anak Kesayangan", "Anak Durhaka", "Anak Manja"],
+    ["Buah Bibir", "Topik Pembicaraan", "Bibir Besar", "Kegemaran"],
+    ["Gigit Jari", "Tidak Beruntung", "Takut", "Pasrah"],
+    ["Buah Hati", "Anak", "Kesayangan", "Cinta"],
+    ["Besar Kepala", "Sombong", "Jujur", "Bijaksana"],
+    ["Berat Hati", "Tidak Ikhlas", "Sakit-sakitan", "Takut"],
+    ["Langkah Seribu", "Lari Cepat", "Jalan", "Buru-buru"],
+    ["Meja Hijau", "Pengadilan", "Meja warna hijau", "Meja Belajar"],
+    ["Murah Senyum", "Ramah", "Angkuh", "Sopan"],
+    ["Jago Merah", "Api", "Berani", "Terang Benderang"]
+];
+
+const playerKeys = [1, 2, 3, 4];
+const players = playerKeys.map(p => ({
+    id: p,
+    element: document.getElementById(`player-icon-p${p}`),
+    position: 0,
+    correctAnswer: '', 
+    questionText: 'Siap!',
+    questionDisplay: document.getElementById(`q-p${p}`),
+    keypad: document.querySelector(`[data-keypad="${p}"]`),
+    options: [],
+    isLocked: false, // <-- [TAMBAHAN 1] Properti Kunci Input
+}));
+
+const finishSteps = 10; 
+let gameActive = false;
+let availableQuestions = []; 
+let currentSheetID = DEFAULT_SHEET_ID; 
+
+const startButton = document.getElementById('start-button');
+const loadingStatus = document.getElementById('loading-status');
+const questionCountDisplay = document.getElementById('question-count-display');
+const messageDisplay = document.getElementById('message-display');
+const restartBtn = document.getElementById('restart-btn');
+const countdownOverlay = document.getElementById('countdown-overlay'); 
+const gameContainer = document.getElementById('game-container'); 
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function getSheetIDFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    return id || DEFAULT_SHEET_ID;
+}
+
+async function loadQuestionsFromSheetID() {
+    currentSheetID = getSheetIDFromURL();
+    loadingStatus.textContent = 'Memuat soal dari Google Sheet...';
+    startButton.disabled = true;
+
+    const API_URL = `https://docs.google.com/spreadsheets/d/${currentSheetID}/gviz/tq?tqx=out:csv&gid=0`; 
+
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+            throw new Error(`Gagal memuat: ${response.status} ${response.statusText}.`);
+        }
+        const csvText = await response.text();
+
+        const rows = csvText.trim().split('\n');
+        let loadedQuestions = [];
+
+        rows.forEach(row => {
+            const cells = row.match(/(".*?"|[^,]+)/g) || []; 
+            const cleanCells = cells.map(cell => cell.trim().replace(/^"|"$/g, ''));
+
+            if (cleanCells.length >= 4 && cleanCells[0].trim() !== 'Pertanyaan' && cleanCells[0].trim() !== '') {
+                loadedQuestions.push([
+                    cleanCells[0], 
+                    cleanCells[1], 
+                    cleanCells[2], 
+                    cleanCells[3]  
+                ]);
+            }
+        });
+
+        if (loadedQuestions.length === 0) {
+            throw new Error('Tidak ada soal yang valid ditemukan di Sheet. Cek format (4 Kolom, tanpa header).');
+        }
+
+        availableQuestions = loadedQuestions;
+        shuffleArray(availableQuestions); 
+
+        loadingStatus.textContent = 'Soal berhasil dimuat dari Google Sheet!';
+        questionCountDisplay.textContent = `Total Soal: ${availableQuestions.length} soal (ID: ${currentSheetID.substring(0, 5)}...)`;
+        startButton.disabled = false;
+        return true;
+
+    } catch (error) {
+        console.error('Error memuat data dari Sheet:', error);
+        loadingStatus.textContent = `Gagal memuat soal dari Sheet: ${error.message}. Menggunakan soal bawaan.`;
+        return false; 
+    }
+}
+
+async function loadQuestions() {
+    const sheetLoaded = await loadQuestionsFromSheetID();
+    if (!sheetLoaded) {
+        availableQuestions = [...FALLBACK_QUESTIONS]; 
+        availableQuestions = [...FALLBACK_QUESTIONS];
+        let questionsHistory = []; 
+        const MAX_HISTORY = 5; 
+        shuffleArray(availableQuestions);
+        loadingStatus.textContent += ' Soal bawaan digunakan.';
+        questionCountDisplay.textContent = `Total Soal: ${availableQuestions.length} soal (Bawaan)`;
+        startButton.disabled = false;
+    }
+}
+
+// --- LOGIKA GAME ---
+
+
+// --- KODE BARU (Mengambil Soal Acak Tanpa Menghapus) ---
+
+function getNextQuestion() {
+    // Memastikan ada soal
+    if (availableQuestions.length === 0) {
+        // Jika soal habis, kita bisa mengulang lagi dari Fallback/Sheet
+        // Namun, jika kita ingin soal terus berputar, ini tidak perlu terjadi.
+        // Biarkan game berakhir hanya dari kondisi 'FINISH'
+        return ["Soal Habis! Kembali ke Lobi", "Error", "Error", "Error"]; 
+    }
+
+    // Ganti .pop() dengan pemilihan indeks acak
+    const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+    
+    // TIDAK menggunakan .pop() lagi. Cukup ambil data soalnya.
+    return availableQuestions[randomIndex]; 
+
+    // Catatan: Jika Anda ingin soal yang sudah keluar tidak muncul lagi
+    // *sampai* semua soal keluar, logika akan lebih rumit.
+    // Tetapi untuk kebutuhan 'putar acak tanpa akhir', kode di atas adalah solusinya.
+}
+
+function generateRandomQuestion(player) {
+    const questionData = getNextQuestion(); 
+
+    if (questionData[0] === "Soal Habis! Kembali ke Lobi") {
+        player.questionText = "Soal Habis!";
+        player.options = [];
+        deactivateKeypad(player.keypad);
+        endGame(null, "Soal Habis! Tidak ada pemenang.");
+        return;
+    }
+
+    const questionText = questionData[0];
+    const correctAnswer = questionData[1];
+    const distractor1 = questionData[2];
+    const distractor2 = questionData[3];
+
+    player.correctAnswer = correctAnswer;
+    player.questionText = questionText;
+
+    let options = [correctAnswer, distractor1, distractor2];
+    shuffleArray(options);
+    player.options = options; 
+
+    updateOptionsDisplay(player); 
+}
+
+function updateOptionsDisplay(player) {
+    const labels = ['A', 'B', 'C'];
+    const keypadButtons = player.keypad.querySelectorAll('button');
+    player.questionDisplay.textContent = player.questionText;
+    keypadButtons.forEach((btn, index) => {
+        if (player.options[index] !== undefined) {
+            const opt = player.options[index];
+            btn.textContent = `${labels[index]}. ${opt}`; 
+            btn.dataset.value = opt;
+            btn.classList.remove('hidden'); 
+        } else {
+            btn.textContent = ''; 
+            btn.dataset.value = '';
+            btn.classList.add('hidden'); 
+        }
+    });
+}
+
+// FUNGSI UTAMA: Langsung memulai countdown dari lobi
+window.startGame = async function() {
+    if (availableQuestions.length === 0) {
+        await loadQuestions(); 
+        if (availableQuestions.length === 0) {
+            loadingStatus.textContent = "Tidak ada soal untuk dimainkan.";
+            return; 
+        }
+    }
+    // 1. Sembunyikan Lobi
+    document.getElementById('lobby-screen').classList.add('hidden');
+    initializeRace();
+}
+
+function initializeRace() {
+    gameActive = false;
+
+    players.forEach(p => { 
+        p.position = 0;
+        p.element.style.left = '5px'; 
+        p.questionDisplay.textContent = 'Siap!';
+        updateOptionsDisplay(p); 
+        deactivateKeypad(p.keypad);
+    });
+    startCountdown(); 
+}
+
+// FUNGSI COUNTDOWN BARU: Menampilkan layar overlay penuh
+function startCountdown() {
+    let count = 3;
+
+    // 1. Tampilkan Overlay HITAM PENUH (Mengatasi masalah A)
+    countdownOverlay.textContent = count;
+    countdownOverlay.classList.remove('hidden'); 
+    countdownOverlay.style.display = 'flex'; // Paksa display: flex agar muncul
+
+    const countdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+            countdownOverlay.textContent = count;
+        } else {
+            // 2. Selesai Countdown: Sembunyikan Overlay dan Tampilkan Game
+            clearInterval(countdownInterval);
+            countdownOverlay.classList.add('hidden'); 
+            countdownOverlay.style.display = 'none'; // Paksa disembunyikan
+
+            // Baris kunci: Tampilkan Game Container HANYA setelah countdown selesai
+            gameContainer.classList.remove('hidden'); 
+
+            messageDisplay.textContent = 'Siap Balapan!';
+            restartBtn.classList.remove('hidden'); 
+            startRace();
+        }
+    }, 1000); 
+}
+
+function startRace() {
+    gameActive = true;
+    players.forEach(p => { 
+        generateRandomQuestion(p);
+        activateKeypad(p.keypad);
+    });
+}
+
+function updatePlayerIconPosition(player) { 
+    const raceArena = document.getElementById('race-arena');
+    const maxTravelWidth = raceArena.offsetWidth - player.element.offsetWidth - 10; 
+    const newLeftPx = (player.position / finishSteps) * maxTravelWidth;
+    player.element.style.left = `${Math.min(newLeftPx, maxTravelWidth)}px`; 
+
+    if (player.position >= finishSteps) {
+        endGame(player.id, `Pemain ${player.id} MENANG!`);
+    }
+}
+
+// [MODIFIKASI UTAMA 2] checkAnswer menjadi fungsi ASYNC
+async function checkAnswer(playerNum, selectedAnswerValue) { 
+    if (!gameActive) return;
+
+    const player = players.find(p => p.id === playerNum); 
+    
+    // Memeriksa jika pemain sedang dalam masa hukuman (terkunci)
+    if (player.isLocked) return;
+
+    const isCorrect = selectedAnswerValue === player.correctAnswer;
+
+    if (isCorrect) {
+        player.position++;
+        updatePlayerIconPosition(player); 
+        if (player.position >= finishSteps) return;
+        generateRandomQuestion(player); // Soal baru muncul segera
+    } else {
+        // --- LOGIKA JEDA 1 DETIK SAAT JAWABAN SALAH ---
+        
+        // 1. Kunci input & tombol keypad
+        player.isLocked = true; 
+        deactivateKeypad(player.keypad); 
+
+        // 2. Tunggu selama 1000 milidetik (1 detik)
+        await new Promise(resolve => setTimeout(resolve, 2000)); 
+
+        // 3. Buka kunci input & aktifkan tombol keypad
+        player.isLocked = false;
+        activateKeypad(player.keypad); 
+
+        // 4. Ganti soal (muncul segera setelah jeda 1 detik selesai)
+        generateRandomQuestion(player);
+    }
+
+    if (availableQuestions.length === 0 && !players.some(p => p.position >= finishSteps)) {
+        endGame(null, "Soal Habis! Tidak ada pemenang.");
+    }
+}
+
+function endGame(winningPlayerNum, message) {
+    gameActive = false;
+    messageDisplay.textContent = message;
+    restartBtn.classList.remove('hidden');
+
+    players.forEach(p => deactivateKeypad(p.keypad));
+
+    if (winningPlayerNum !== null) {
+        runConfetti();
+    }
+}
+
+function handleKeypadInput(key, playerNum) {
+    if (!gameActive) return;
+
+    const player = players.find(p => p.id === playerNum); 
+    
+    // [MODIFIKASI UTAMA 3] Cek status kunci sebelum memproses jawaban
+    if (player.isLocked) return; 
+
+    const selectedButton = player.keypad.querySelector(`button[data-key="${key}"]`);
+    if (selectedButton && selectedButton.dataset.value !== undefined) {
+        const selectedAnswerValue = selectedButton.dataset.value; 
+        checkAnswer(playerNum, selectedAnswerValue); 
+    }
+}
+
+function activateKeypad(keypad) {
+    keypad.querySelectorAll('button').forEach(btn => btn.disabled = false);
+}
+
+function deactivateKeypad(keypad) {
+    keypad.querySelectorAll('button').forEach(btn => btn.disabled = true);
+}
+
+document.querySelectorAll('.keypad').forEach(keypad => {
+    keypad.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const playerNum = parseInt(keypad.dataset.keypad);
+            handleKeypadInput(e.target.dataset.key, playerNum);
+        }
+    });
+});
+
+restartBtn.addEventListener('click', () => {
+    gameContainer.classList.add('hidden');
+    document.getElementById('lobby-screen').classList.remove('hidden');
+    messageDisplay.textContent = '';
+    availableQuestions = []; 
+    questionCountDisplay.textContent = '';
+    loadingStatus.textContent = '';
+    startButton.disabled = false;
+
+    loadQuestions(); 
+});
+
+window.toggleFullscreen = function() {
+    const doc = document.documentElement;
+    const isFullscreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+    if (!isFullscreen) {
+        if (doc.requestFullscreen) doc.requestFullscreen();
+        else if (doc.mozRequestFullScreen) doc.mozRequestFullScreen();
+        else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+        else if (doc.msRequestFullscreen) document.msRequestFullscreen();
+        fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i> Exit Fullscreen';
+    } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
+    }
+}
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        document.getElementById('fullscreen-btn').innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
+    }
+});
+
+function runConfetti() {
+    confetti({ particleCount: 150, spread: 120, origin: { y: 0.6 } });
+}
+
+</script>
+
+</body>
+
+</html>

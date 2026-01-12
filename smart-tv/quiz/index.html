@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzor - Interactive Quiz Race</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            overflow: hidden;
+            user-select: none;
+        }
+
+        @keyframes moveForward {
+            0% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(10px) scale(1.1);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .avatar-move {
+            transition: all 0.7s ease-out;
+        }
+
+        .correct-flash {
+            animation: moveForward 0.5s ease-out;
+        }
+
+        .wrong-shake {
+            animation: shake 0.5s ease-out;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        .track-line {
+            background: repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 20px,
+                    rgba(0, 0, 0, 0.1) 20px,
+                    rgba(0, 0, 0, 0.1) 40px);
+        }
+
+        .finish-line {
+            background: repeating-linear-gradient(45deg,
+                    #000,
+                    #000 10px,
+                    #fff 10px,
+                    #fff 20px);
+        }
+
+        .control-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .control-btn.muted {
+            background: rgba(200, 200, 200, 0.9);
+        }
+
+        @keyframes countdown-pulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        .countdown-number {
+            font-size: 25vh;
+            font-weight: bold;
+            animation: countdown-pulse 1s ease-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-purple-600 to-blue-600 min-h-screen">
+
+    <!-- Control Buttons -->
+    <div class="control-buttons">
+        <button id="musicToggle" class="control-btn" title="Toggle Music">
+            <i class="fas fa-volume-up"></i>
+        </button>
+        <button id="fullscreenToggle" class="control-btn" title="Toggle Fullscreen">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="quizMusic" loop>
+        <source src="quiz.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="winnerMusic">
+        <source src="winner.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Lobby Screen -->
+    <div id="lobby" class="flex flex-col items-center justify-center min-h-screen p-8">
+        <h1 class="text-6xl font-bold text-white mb-8 animate-pulse">
+            <i class="fas fa-trophy mr-4"></i>
+            Quizzor
+        </h1>
+
+        <div class="bg-white rounded-3xl shadow-2xl p-12 max-w-2xl w-full">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+                Pengaturan Permainan
+            </h2>
+
+            <div class="mb-6">
+                <label class="block text-xl font-semibold text-gray-700 mb-3">
+                    Target Skor untuk Menang:
+                </label>
+                <input type="number" id="targetScore" value="10" min="3" max="20"
+                    class="w-full text-3xl font-bold text-center px-6 py-4 border-4 border-purple-300 rounded-xl focus:outline-none focus:border-purple-500">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-xl font-semibold text-gray-700 mb-3">
+                    Sumber Soal:
+                </label>
+                <div class="flex gap-6 justify-center mb-4">
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="questionSource" value="default" checked class="w-6 h-6 mr-2">
+                        <span class="text-lg font-semibold">Soal Default</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="questionSource" value="import" class="w-6 h-6 mr-2">
+                        <span class="text-lg font-semibold">Import dari Spreadsheet</span>
+                    </label>
+                </div>
+
+                <div id="importSection" class="hidden mt-4">
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">
+                        URL Google Spreadsheet:
+                    </label>
+                    <input type="text" id="spreadsheetURL" placeholder="https://docs.google.com/spreadsheets/d/..."
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 mb-3">
+                    <button id="loadPreviewBtn"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-all">
+                        <i class="fas fa-download mr-2"></i>Load & Preview Soal
+                    </button>
+                    <div id="importSuccessIndicator"
+                        class="hidden mt-3 bg-green-100 border-l-4 border-green-500 p-3 rounded">
+                        <p class="text-green-700 font-semibold">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span id="importSuccessText">Berhasil! 0 soal siap digunakan.</span>
+                        </p>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/166fT67p5TPCUYD5EBsRWXwyMMrHSlRMDB3e6z0k40po/edit?usp=sharing"
+                        target="_blank" class="block text-center text-sm text-blue-600 hover:underline mt-2">
+                        <i class="fas fa-file-spreadsheet mr-1"></i>Lihat Template Spreadsheet
+                    </a>
+                </div>
+            </div>
+
+            <p class="text-2xl text-center text-gray-600 mb-8 font-semibold">
+                <i class="fas fa-users mr-2"></i>
+                Siapkan 4 Barisan Siswa!
+            </p>
+
+            <button id="startBtn"
+                class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-4xl font-bold py-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 animate-pulse">
+                <i class="fas fa-play mr-3"></i>
+                MULAI PERMAINAN
+            </button>
+        </div>
+
+        <div class="mt-8 grid grid-cols-4 gap-6 w-full max-w-4xl">
+            <div class="bg-red-500 text-white p-4 rounded-xl text-center font-bold text-2xl">
+                <i class="fas fa-rocket text-4xl mb-2"></i>
+                <div>TIM MERAH</div>
+            </div>
+            <div class="bg-blue-500 text-white p-4 rounded-xl text-center font-bold text-2xl">
+                <i class="fas fa-robot text-4xl mb-2"></i>
+                <div>TIM BIRU</div>
+            </div>
+            <div class="bg-green-500 text-white p-4 rounded-xl text-center font-bold text-2xl">
+                <i class="fas fa-car text-4xl mb-2"></i>
+                <div>TIM HIJAU</div>
+            </div>
+            <div class="bg-yellow-400 text-white p-4 rounded-xl text-center font-bold text-2xl">
+                <i class="fas fa-plane text-4xl mb-2"></i>
+                <div>TIM KUNING</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-white text-center">
+            <div class="flex items-center justify-center gap-4">
+                <span class="text-lg font-semibold">@roezrmdhn</span>
+                <a href="https://github.com/raisramadhani" target="_blank" class="hover:scale-110 transition-transform"
+                    title="GitHub">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/roezrmdhn/" target="_blank"
+                    class="hover:scale-110 transition-transform" title="Instagram">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Countdown Screen -->
+    <div id="countdownScreen"
+        class="hidden fixed inset-0 bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center z-50">
+        <div id="countdownNumber" class="countdown-number text-white">3</div>
+    </div>
+
+    <!-- Game Area -->
+    <div id="gameArea" class="hidden min-h-screen flex flex-col">
+        <!-- Score Board -->
+        <div class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
+            <button id="homeBtn"
+                class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-bold text-xl transition-all hover:scale-105"
+                title="Kembali ke Home">
+                <i class="fas fa-home mr-2"></i>Home
+            </button>
+            <div class="text-center">
+                <h2 class="text-3xl font-bold mb-2">
+                    <i class="fas fa-flag-checkered mr-2"></i>
+                    Quiz Race
+                </h2>
+                <div class="text-2xl font-semibold">
+                    Target: <span id="displayTarget" class="text-yellow-300">10</span> Poin
+                </div>
+            </div>
+            <div class="w-32"></div>
+        </div>
+
+        <!-- Race Tracks -->
+        <div class="flex-1 flex flex-col">
+            <!-- Team 1: Red -->
+            <div class="flex-1 bg-red-100 border-b-4 border-red-700 relative track-line">
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-red-500 flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">MERAH</span>
+                </div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 finish-line"></div>
+                <div id="avatar-1" class="avatar-move absolute top-1/2 transform -translate-y-1/2 text-6xl"
+                    style="left: 5%;">
+                    <i class="fas fa-rocket text-red-600 drop-shadow-lg"></i>
+                </div>
+                <div id="score-1" class="absolute top-2 right-24 text-3xl font-bold text-red-700">
+                    0
+                </div>
+            </div>
+
+            <!-- Team 2: Blue -->
+            <div class="flex-1 bg-blue-100 border-b-4 border-blue-700 relative track-line">
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-blue-500 flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">BIRU</span>
+                </div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 finish-line"></div>
+                <div id="avatar-2" class="avatar-move absolute top-1/2 transform -translate-y-1/2 text-6xl"
+                    style="left: 5%;">
+                    <i class="fas fa-robot text-blue-600 drop-shadow-lg"></i>
+                </div>
+                <div id="score-2" class="absolute top-2 right-24 text-3xl font-bold text-blue-700">
+                    0
+                </div>
+            </div>
+
+            <!-- Team 3: Green -->
+            <div class="flex-1 bg-green-100 border-b-4 border-green-700 relative track-line">
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-green-500 flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">HIJAU</span>
+                </div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 finish-line"></div>
+                <div id="avatar-3" class="avatar-move absolute top-1/2 transform -translate-y-1/2 text-6xl"
+                    style="left: 5%;">
+                    <i class="fas fa-car text-green-600 drop-shadow-lg"></i>
+                </div>
+                <div id="score-3" class="absolute top-2 right-24 text-3xl font-bold text-green-700">
+                    0
+                </div>
+            </div>
+
+            <!-- Team 4: Yellow -->
+            <div class="flex-1 bg-yellow-100 border-b-4 border-yellow-600 relative track-line">
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-yellow-400 flex items-center justify-center">
+                    <span class="text-gray-800 font-bold text-xl">KUNING</span>
+                </div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 finish-line"></div>
+                <div id="avatar-4" class="avatar-move absolute top-1/2 transform -translate-y-1/2 text-6xl"
+                    style="left: 5%;">
+                    <i class="fas fa-plane text-yellow-600 drop-shadow-lg"></i>
+                </div>
+                <div id="score-4" class="absolute top-2 right-24 text-3xl font-bold text-yellow-700">
+                    0
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="bg-gray-800 grid grid-cols-4 gap-4 p-4" style="height: 35vh;">
+            <!-- Team 1 Control -->
+            <div id="control-1" class="bg-red-500 rounded-xl p-4 flex flex-col shadow-xl border-4 border-red-700">
+                <div class="text-white font-bold text-lg mb-3 flex-1 overflow-y-auto">
+                    <div id="question-1" class="text-center">Loading...</div>
+                </div>
+                <div class="space-y-2" id="options-1">
+                    <!-- Options will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Team 2 Control -->
+            <div id="control-2" class="bg-blue-500 rounded-xl p-4 flex flex-col shadow-xl border-4 border-blue-700">
+                <div class="text-white font-bold text-lg mb-3 flex-1 overflow-y-auto">
+                    <div id="question-2" class="text-center">Loading...</div>
+                </div>
+                <div class="space-y-2" id="options-2">
+                    <!-- Options will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Team 3 Control -->
+            <div id="control-3" class="bg-green-500 rounded-xl p-4 flex flex-col shadow-xl border-4 border-green-700">
+                <div class="text-white font-bold text-lg mb-3 flex-1 overflow-y-auto">
+                    <div id="question-3" class="text-center">Loading...</div>
+                </div>
+                <div class="space-y-2" id="options-3">
+                    <!-- Options will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Team 4 Control -->
+            <div id="control-4" class="bg-yellow-400 rounded-xl p-4 flex flex-col shadow-xl border-4 border-yellow-600">
+                <div class="text-gray-800 font-bold text-lg mb-3 flex-1 overflow-y-auto">
+                    <div id="question-4" class="text-center">Loading...</div>
+                </div>
+                <div class="space-y-2" id="options-4">
+                    <!-- Options will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl p-8 max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800">
+                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                    Preview Soal Berhasil Di-Load
+                </h2>
+                <button id="closePreviewBtn" class="text-gray-500 hover:text-gray-700 text-3xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
+                <p class="text-lg font-semibold text-blue-800">
+                    Total Soal: <span id="totalQuestions" class="text-2xl">0</span>
+                </p>
+            </div>
+            <div id="questionsList" class="space-y-4">
+                <!-- Questions will be inserted here -->
+            </div>
+            <button id="useImportedBtn"
+                class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white text-2xl font-bold py-4 rounded-xl transition-all">
+                <i class="fas fa-check mr-2"></i>Gunakan Soal Ini
+            </button>
+        </div>
+    </div>
+
+    <!-- Winner Modal -->
+    <div id="winnerModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div id="confettiContainer" class="absolute inset-0 pointer-events-none"></div>
+        <div
+            class="bg-white rounded-3xl p-12 max-w-2xl text-center shadow-2xl transform scale-100 transition-transform">
+            <div class="text-8xl mb-6">
+                <i class="fas fa-trophy text-yellow-500"></i>
+            </div>
+            <h2 class="text-5xl font-bold mb-4" id="winnerText">TIM MERAH MENANG!</h2>
+            <p class="text-3xl text-gray-600 mb-8">Selamat! 🎉</p>
+            <div class="flex gap-4 justify-center">
+                <button id="viewResultsBtn"
+                    class="bg-gradient-to-r from-blue-500 to-cyan-600 text-white text-3xl font-bold px-12 py-4 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all">
+                    <i class="fas fa-chart-bar mr-3"></i>
+                    Lihat Pembahasan
+                </button>
+                <button id="restartBtn"
+                    class="bg-gradient-to-r from-purple-500 to-pink-600 text-white text-3xl font-bold px-12 py-4 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all">
+                    <i class="fas fa-redo mr-3"></i>
+                    Main Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Questions Data
+        const questionsData = [
+            {
+                id: 1,
+                question: "Hasil dari 5 x 5 adalah...",
+                options: ["10", "25", "15", "20"],
+                correctIndex: 1
+            },
+            {
+                id: 2,
+                question: "Hewan yang memakan daging disebut...",
+                options: ["Herbivora", "Omnivora", "Karnivora", "Insektivora"],
+                correctIndex: 2
+            },
+            {
+                id: 3,
+                question: "Warna bendera Indonesia adalah...",
+                options: ["Merah Putih", "Putih Merah", "Merah Biru", "Biru Putih"],
+                correctIndex: 0
+            },
+            {
+                id: 4,
+                question: "Benda langit yang menerangi bumi di siang hari...",
+                options: ["Bulan", "Bintang", "Matahari", "Planet"],
+                correctIndex: 2
+            },
+            {
+                id: 5,
+                question: "Bahasa Inggris dari 'Kucing' adalah...",
+                options: ["Dog", "Cat", "Bird", "Fish"],
+                correctIndex: 1
+            },
+            {
+                id: 6,
+                question: "10 + 7 = ...",
+                options: ["15", "17", "20", "18"],
+                correctIndex: 1
+            },
+            {
+                id: 7,
+                question: "Planet terdekat dengan Matahari adalah...",
+                options: ["Venus", "Merkurius", "Mars", "Bumi"],
+                correctIndex: 1
+            },
+            {
+                id: 8,
+                question: "Air membeku pada suhu...",
+                options: ["0°C", "100°C", "50°C", "25°C"],
+                correctIndex: 0
+            },
+            {
+                id: 9,
+                question: "Ibukota Jepang adalah...",
+                options: ["Tokyo", "Seoul", "Beijing", "Bangkok"],
+                correctIndex: 0
+            },
+            {
+                id: 10,
+                question: "20 - 8 = ...",
+                options: ["10", "12", "14", "15"],
+                correctIndex: 1
+            },
+            {
+                id: 11,
+                question: "Hewan yang bisa terbang adalah...",
+                options: ["Ikan", "Burung", "Kambing", "Sapi"],
+                correctIndex: 1
+            },
+            {
+                id: 12,
+                question: "Jumlah hari dalam 1 minggu adalah...",
+                options: ["5", "6", "7", "8"],
+                correctIndex: 2
+            },
+            {
+                id: 13,
+                question: "Alat untuk mengukur waktu adalah...",
+                options: ["Termometer", "Jam", "Penggaris", "Timbangan"],
+                correctIndex: 1
+            },
+            {
+                id: 14,
+                question: "3 x 4 = ...",
+                options: ["7", "12", "10", "15"],
+                correctIndex: 1
+            },
+            {
+                id: 15,
+                question: "Ibu kota Indonesia adalah...",
+                options: ["Bandung", "Jakarta", "Surabaya", "Medan"],
+                correctIndex: 1
+            },
+            {
+                id: 16,
+                question: "Hewan terbesar di darat adalah...",
+                options: ["Gajah", "Jerapah", "Badak", "Kuda Nil"],
+                correctIndex: 0
+            },
+            {
+                id: 17,
+                question: "15 : 3 = ...",
+                options: ["3", "5", "4", "6"],
+                correctIndex: 1
+            },
+            {
+                id: 18,
+                question: "Warna daun pada umumnya adalah...",
+                options: ["Merah", "Hijau", "Kuning", "Biru"],
+                correctIndex: 1
+            },
+            {
+                id: 19,
+                question: "Alat musik petik adalah...",
+                options: ["Drum", "Gitar", "Terompet", "Seruling"],
+                correctIndex: 1
+            },
+            {
+                id: 20,
+                question: "8 + 9 = ...",
+                options: ["16", "17", "18", "19"],
+                correctIndex: 1
+            }
+        ];
+
+        // Game State
+        let gameState = {
+            status: 'LOBBY', // LOBBY, RACING, FINISHED
+            winningScore: 10,
+            teams: [
+                { id: 1, color: 'red', name: 'MERAH', score: 0, locked: false, currentQuestion: null, answerHistory: [] },
+                { id: 2, color: 'blue', name: 'BIRU', score: 0, locked: false, currentQuestion: null, answerHistory: [] },
+                { id: 3, color: 'green', name: 'HIJAU', score: 0, locked: false, currentQuestion: null, answerHistory: [] },
+                { id: 4, color: 'yellow', name: 'KUNING', score: 0, locked: false, currentQuestion: null, answerHistory: [] }
+            ],
+            questionPool: [...questionsData],
+            usedQuestions: [],
+            questionHistory: [] // Track all questions that appeared in game
+        };
+
+        // DOM Elements
+        const lobby = document.getElementById('lobby');
+        const gameArea = document.getElementById('gameArea');
+        const startBtn = document.getElementById('startBtn');
+        const targetScoreInput = document.getElementById('targetScore');
+        const displayTarget = document.getElementById('displayTarget');
+        const winnerModal = document.getElementById('winnerModal');
+        const winnerText = document.getElementById('winnerText');
+        const restartBtn = document.getElementById('restartBtn');
+        const confettiContainer = document.getElementById('confettiContainer');
+        const countdownScreen = document.getElementById('countdownScreen');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const musicToggle = document.getElementById('musicToggle');
+        const fullscreenToggle = document.getElementById('fullscreenToggle');
+        const homeBtn = document.getElementById('homeBtn');
+        const quizMusic = document.getElementById('quizMusic');
+        const winnerMusic = document.getElementById('winnerMusic');
+
+        // Music state
+        let isMusicEnabled = true;
+
+        // Imported questions
+        let importedQuestions = null;
+        let isUsingImportedQuestions = false;
+
+        // Additional DOM elements
+        const questionSourceRadios = document.querySelectorAll('input[name="questionSource"]');
+        const importSection = document.getElementById('importSection');
+        const spreadsheetURL = document.getElementById('spreadsheetURL');
+        const loadPreviewBtn = document.getElementById('loadPreviewBtn');
+        const previewModal = document.getElementById('previewModal');
+        const closePreviewBtn = document.getElementById('closePreviewBtn');
+        const totalQuestionsEl = document.getElementById('totalQuestions');
+        const questionsList = document.getElementById('questionsList');
+        const useImportedBtn = document.getElementById('useImportedBtn');
+
+        // Initialize
+        function init() {
+            startBtn.addEventListener('click', showCountdown);
+            restartBtn.addEventListener('click', resetGame);
+            document.getElementById('viewResultsBtn').addEventListener('click', viewResults);
+            musicToggle.addEventListener('click', toggleMusic);
+            fullscreenToggle.addEventListener('click', toggleFullscreen);
+            homeBtn.addEventListener('click', goHome);
+
+            questionSourceRadios.forEach(radio => {
+                radio.addEventListener('change', handleSourceChange);
+            });
+            loadPreviewBtn.addEventListener('click', loadAndPreviewQuestions);
+            closePreviewBtn.addEventListener('click', () => previewModal.classList.add('hidden'));
+            useImportedBtn.addEventListener('click', confirmImportedQuestions);
+        }
+
+        // Handle source change
+        function handleSourceChange(e) {
+            if (e.target.value === 'import') {
+                importSection.classList.remove('hidden');
+            } else {
+                importSection.classList.add('hidden');
+                isUsingImportedQuestions = false;
+                document.getElementById('importSuccessIndicator').classList.add('hidden');
+            }
+        }
+
+        // Convert Google Spreadsheet URL to CSV export URL
+        function convertToCSVUrl(url) {
+            try {
+                const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+                const gidMatch = url.match(/[#&]gid=([0-9]+)/);
+
+                if (!match) return null;
+
+                const spreadsheetId = match[1];
+                const gid = gidMatch ? gidMatch[1] : '0';
+
+                return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=${gid}`;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Parse CSV data
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const questions = [];
+
+            // Skip header row
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                // Parse CSV (handle quoted values)
+                const columns = [];
+                let current = '';
+                let inQuotes = false;
+
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        columns.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                columns.push(current.trim());
+
+                if (columns.length >= 7) {
+                    const id = parseInt(columns[0]);
+                    const question = columns[1];
+                    const options = [columns[2], columns[3], columns[4], columns[5]];
+                    const correctLetter = columns[6].toUpperCase();
+
+                    // Convert letter to index (A=0, B=1, C=2, D=3)
+                    const correctIndex = correctLetter.charCodeAt(0) - 65;
+
+                    if (question && options.every(opt => opt) && correctIndex >= 0 && correctIndex <= 3) {
+                        questions.push({
+                            id: id || questions.length + 1,
+                            question,
+                            options,
+                            correctIndex
+                        });
+                    }
+                }
+            }
+
+            return questions;
+        }
+
+        // Load and preview questions from spreadsheet
+        async function loadAndPreviewQuestions() {
+            const url = spreadsheetURL.value.trim();
+
+            if (!url) {
+                alert('❌ Silakan masukkan URL Google Spreadsheet!');
+                return;
+            }
+
+            const csvUrl = convertToCSVUrl(url);
+            if (!csvUrl) {
+                alert('❌ Format URL tidak valid! Pastikan URL dari Google Spreadsheet.');
+                return;
+            }
+
+            loadPreviewBtn.disabled = true;
+            loadPreviewBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
+
+            try {
+                const response = await fetch(csvUrl);
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data. Pastikan spreadsheet sudah dibagikan (Anyone with the link can view).');
+                }
+
+                const csv = await response.text();
+                const questions = parseCSV(csv);
+
+                if (questions.length === 0) {
+                    throw new Error('Tidak ada soal yang valid ditemukan. Periksa format spreadsheet!');
+                }
+
+                // Show preview
+                importedQuestions = questions;
+                showPreview(questions);
+
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            } finally {
+                loadPreviewBtn.disabled = false;
+                loadPreviewBtn.innerHTML = '<i class="fas fa-download mr-2"></i>Load & Preview Soal';
+            }
+        }
+
+        // Show preview modal
+        function showPreview(questions) {
+            totalQuestionsEl.textContent = questions.length;
+            questionsList.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-gray-100 p-4 rounded-lg';
+                div.innerHTML = `
+                    <div class="font-bold text-lg text-gray-800 mb-2">
+                        ${index + 1}. ${q.question}
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm text-gray-600">
+                        <div>A. ${q.options[0]}</div>
+                        <div>B. ${q.options[1]}</div>
+                        <div>C. ${q.options[2]}</div>
+                        <div>D. ${q.options[3]}</div>
+                    </div>
+                `;
+                questionsList.appendChild(div);
+            });
+
+            previewModal.classList.remove('hidden');
+        }
+
+        // Confirm imported questions
+        function confirmImportedQuestions() {
+            isUsingImportedQuestions = true;
+            previewModal.classList.add('hidden');
+
+            // Show success indicator
+            const indicator = document.getElementById('importSuccessIndicator');
+            const successText = document.getElementById('importSuccessText');
+            successText.textContent = `Berhasil! ${importedQuestions.length} soal siap digunakan.`;
+            indicator.classList.remove('hidden');
+
+            // Scroll to indicator
+            indicator.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Go Home
+        function goHome() {
+            if (confirm('Kembali ke halaman awal? Progress permainan akan hilang.')) {
+                resetGame();
+            }
+        }
+
+        // Toggle Music
+        function toggleMusic() {
+            isMusicEnabled = !isMusicEnabled;
+            if (isMusicEnabled) {
+                musicToggle.classList.remove('muted');
+                musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                if (gameState.status === 'RACING') {
+                    quizMusic.play().catch(e => console.log('Music play failed:', e));
+                }
+            } else {
+                musicToggle.classList.add('muted');
+                musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                quizMusic.pause();
+                winnerMusic.pause();
+            }
+        }
+
+        // Toggle Fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(e => {
+                    console.log('Fullscreen failed:', e);
+                });
+                fullscreenToggle.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenToggle.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        }
+
+        // Show Countdown
+        function showCountdown() {
+            lobby.classList.add('hidden');
+            countdownScreen.classList.remove('hidden');
+
+            let count = 3;
+            countdownNumber.textContent = count;
+
+            const countdownInterval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownNumber.textContent = count;
+                    // Trigger animation by removing and re-adding class
+                    countdownNumber.style.animation = 'none';
+                    setTimeout(() => {
+                        countdownNumber.style.animation = '';
+                    }, 10);
+                } else {
+                    countdownNumber.textContent = 'GO!';
+                    countdownNumber.style.animation = 'none';
+                    setTimeout(() => {
+                        countdownNumber.style.animation = '';
+                    }, 10);
+
+                    setTimeout(() => {
+                        clearInterval(countdownInterval);
+                        countdownScreen.classList.add('hidden');
+                        startGame();
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        // Start Game
+        function startGame() {
+            // Check if using imported questions
+            const sourceRadio = document.querySelector('input[name="questionSource"]:checked');
+            if (sourceRadio.value === 'import' && !isUsingImportedQuestions) {
+                alert('⚠️ Silakan load dan preview soal dari spreadsheet terlebih dahulu!');
+                lobby.classList.remove('hidden');
+                countdownScreen.classList.add('hidden');
+                return;
+            }
+
+            gameState.winningScore = parseInt(targetScoreInput.value) || 10;
+            displayTarget.textContent = gameState.winningScore;
+
+            // Reset teams
+            gameState.teams.forEach(team => {
+                team.score = 0;
+                team.locked = false;
+                team.currentQuestion = null;
+                team.answerHistory = [];
+            });
+
+            gameState.usedQuestions = [];
+            gameState.questionHistory = [];
+            // Use imported questions or default
+            const questionsToUse = isUsingImportedQuestions ? importedQuestions : questionsData;
+            gameState.questionPool = [...questionsToUse];
+            gameState.status = 'RACING';
+
+            // Switch UI
+            lobby.classList.add('hidden');
+            gameArea.classList.remove('hidden');
+
+            // Play quiz music
+            if (isMusicEnabled) {
+                quizMusic.play().catch(e => console.log('Music play failed:', e));
+            }
+
+            // Assign initial questions
+            gameState.teams.forEach(team => {
+                assignQuestion(team.id);
+            });
+        }
+
+        // Assign Random Question to Team
+        function assignQuestion(teamId) {
+            const team = gameState.teams[teamId - 1];
+
+            if (gameState.questionPool.length === 0) {
+                // Reset pool if exhausted
+                gameState.questionPool = [...questionsData];
+                gameState.usedQuestions = [];
+            }
+
+            const randomIndex = Math.floor(Math.random() * gameState.questionPool.length);
+            const question = gameState.questionPool[randomIndex];
+
+            team.currentQuestion = question;
+
+            // Remove from pool
+            gameState.questionPool.splice(randomIndex, 1);
+            gameState.usedQuestions.push(question);
+
+            // Display question
+            displayQuestion(teamId, question);
+        }
+
+        // Display Question
+        function displayQuestion(teamId, question) {
+            const questionEl = document.getElementById(`question-${teamId}`);
+            const optionsEl = document.getElementById(`options-${teamId}`);
+
+            questionEl.textContent = question.question;
+            optionsEl.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = option;
+                btn.className = 'w-full py-3 text-lg font-bold rounded-lg shadow-md bg-white hover:brightness-110 active:scale-95 transition-transform';
+                btn.onclick = () => checkAnswer(teamId, index);
+                optionsEl.appendChild(btn);
+            });
+        }
+
+        // Check Answer
+        function checkAnswer(teamId, selectedIndex) {
+            const team = gameState.teams[teamId - 1];
+
+            if (team.locked || gameState.status !== 'RACING') return;
+
+            const question = team.currentQuestion;
+            const controlEl = document.getElementById(`control-${teamId}`);
+            const avatarEl = document.getElementById(`avatar-${teamId}`);
+            const scoreEl = document.getElementById(`score-${teamId}`);
+
+            const isCorrect = selectedIndex === question.correctIndex;
+
+            // Track answer in history
+            team.answerHistory.push({
+                questionId: question.id,
+                answered: selectedIndex,
+                isCorrect: isCorrect
+            });
+
+            // Add to question history if not already there
+            if (!gameState.questionHistory.find(q => q.id === question.id)) {
+                gameState.questionHistory.push({
+                    ...question,
+                    teamAnswers: {}
+                });
+            }
+
+            // Update team answer for this question
+            const qHistory = gameState.questionHistory.find(q => q.id === question.id);
+            if (qHistory) {
+                qHistory.teamAnswers[team.name.toLowerCase()] = {
+                    answered: selectedIndex,
+                    isCorrect: isCorrect
+                };
+            }
+
+            if (isCorrect) {
+                // Correct Answer
+                team.score++;
+                scoreEl.textContent = team.score;
+
+                // Visual feedback
+                controlEl.classList.add('correct-flash');
+                setTimeout(() => controlEl.classList.remove('correct-flash'), 500);
+
+                // Move avatar
+                const progress = Math.min((team.score / gameState.winningScore) * 85, 85);
+                avatarEl.style.left = `${5 + progress}%`;
+
+                // Check for winner
+                if (team.score >= gameState.winningScore) {
+                    declareWinner(team);
+                    return;
+                }
+
+                // Assign new question
+                setTimeout(() => assignQuestion(teamId), 500);
+
+            } else {
+                // Wrong Answer - Lock team for 3 seconds
+                team.locked = true;
+                controlEl.classList.add('wrong-shake', 'opacity-50', 'cursor-not-allowed');
+
+                setTimeout(() => {
+                    team.locked = false;
+                    controlEl.classList.remove('wrong-shake', 'opacity-50', 'cursor-not-allowed');
+                    // Assign new question after penalty
+                    assignQuestion(teamId);
+                }, 3000);
+            }
+        }
+
+        // Declare Winner
+        function declareWinner(team) {
+            gameState.status = 'FINISHED';
+
+            winnerText.textContent = `TIM ${team.name} MENANG!`;
+            winnerText.style.color = team.color === 'yellow' ? '#EAB308' : team.color;
+
+            // Stop quiz music and play winner music
+            quizMusic.pause();
+            quizMusic.currentTime = 0;
+            if (isMusicEnabled) {
+                winnerMusic.play().catch(e => console.log('Music play failed:', e));
+            }
+
+            // Show confetti
+            createConfetti();
+
+            // Show modal
+            winnerModal.classList.remove('hidden');
+        }
+
+        // View Results - Save to localStorage and redirect
+        function viewResults() {
+            const resultsData = {
+                winnerTeam: gameState.teams.reduce((prev, current) =>
+                    (current.score > prev.score) ? current : prev
+                ).name,
+                finalScores: {
+                    merah: gameState.teams[0].score,
+                    biru: gameState.teams[1].score,
+                    hijau: gameState.teams[2].score,
+                    kuning: gameState.teams[3].score
+                },
+                questionHistory: gameState.questionHistory,
+                timestamp: new Date().toISOString()
+            };
+
+            localStorage.setItem('quizzorResults', JSON.stringify(resultsData));
+            window.location.href = 'results.html';
+        }
+
+        // Create Confetti
+        function createConfetti() {
+            confettiContainer.innerHTML = '';
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        // Reset Game
+        function resetGame() {
+            winnerModal.classList.add('hidden');
+            gameArea.classList.add('hidden');
+            lobby.classList.remove('hidden');
+
+            // Stop all music
+            quizMusic.pause();
+            quizMusic.currentTime = 0;
+            winnerMusic.pause();
+            winnerMusic.currentTime = 0;
+
+            // Reset avatars
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`avatar-${i}`).style.left = '5%';
+                document.getElementById(`score-${i}`).textContent = '0';
+            }
+
+            // Reset imported questions state
+            isUsingImportedQuestions = false;
+            document.querySelector('input[name="questionSource"][value="default"]').checked = true;
+            importSection.classList.add('hidden');
+
+            gameState.status = 'LOBBY';
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+
+</html>

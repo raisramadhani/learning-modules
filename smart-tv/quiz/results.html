@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Pembahasan - Quizzor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            user-select: none;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+            }
+        }
+
+        .team-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.125rem;
+        }
+
+        .answer-indicator {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-purple-600 to-blue-600 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-gray-900 text-white py-6 px-8 no-print">
+        <div class="flex justify-between items-center">
+            <h1 class="text-4xl font-bold">
+                <i class="fas fa-chart-line mr-3"></i>
+                Pembahasan Quizzor
+            </h1>
+            <button onclick="window.location.href='index.html'"
+                class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-bold text-xl transition-all">
+                <i class="fas fa-home mr-2"></i>Kembali ke Quiz
+            </button>
+        </div>
+    </header>
+
+    <!-- Statistics Summary -->
+    <div class="container mx-auto px-8 py-6">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 mb-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+                <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                Hasil Akhir
+            </h2>
+
+            <div class="grid grid-cols-4 gap-4 mb-6">
+                <div class="bg-red-100 border-4 border-red-500 rounded-xl p-6 text-center">
+                    <div class="text-6xl mb-2"><i class="fas fa-rocket text-red-600"></i></div>
+                    <div class="text-2xl font-bold text-red-700">TIM MERAH</div>
+                    <div class="text-5xl font-bold text-red-600 mt-2" id="scoreRed">0</div>
+                    <div class="text-lg text-gray-600 mt-2">
+                        <span class="text-green-600 font-bold" id="correctRed">0</span> benar /
+                        <span class="text-red-600 font-bold" id="wrongRed">0</span> salah
+                    </div>
+                </div>
+
+                <div class="bg-blue-100 border-4 border-blue-500 rounded-xl p-6 text-center">
+                    <div class="text-6xl mb-2"><i class="fas fa-robot text-blue-600"></i></div>
+                    <div class="text-2xl font-bold text-blue-700">TIM BIRU</div>
+                    <div class="text-5xl font-bold text-blue-600 mt-2" id="scoreBlue">0</div>
+                    <div class="text-lg text-gray-600 mt-2">
+                        <span class="text-green-600 font-bold" id="correctBlue">0</span> benar /
+                        <span class="text-red-600 font-bold" id="wrongBlue">0</span> salah
+                    </div>
+                </div>
+
+                <div class="bg-green-100 border-4 border-green-500 rounded-xl p-6 text-center">
+                    <div class="text-6xl mb-2"><i class="fas fa-car text-green-600"></i></div>
+                    <div class="text-2xl font-bold text-green-700">TIM HIJAU</div>
+                    <div class="text-5xl font-bold text-green-600 mt-2" id="scoreGreen">0</div>
+                    <div class="text-lg text-gray-600 mt-2">
+                        <span class="text-green-600 font-bold" id="correctGreen">0</span> benar /
+                        <span class="text-red-600 font-bold" id="wrongGreen">0</span> salah
+                    </div>
+                </div>
+
+                <div class="bg-yellow-100 border-4 border-yellow-500 rounded-xl p-6 text-center">
+                    <div class="text-6xl mb-2"><i class="fas fa-plane text-yellow-600"></i></div>
+                    <div class="text-2xl font-bold text-yellow-700">TIM KUNING</div>
+                    <div class="text-5xl font-bold text-yellow-600 mt-2" id="scoreYellow">0</div>
+                    <div class="text-lg text-gray-600 mt-2">
+                        <span class="text-green-600 font-bold" id="correctYellow">0</span> benar /
+                        <span class="text-red-600 font-bold" id="wrongYellow">0</span> salah
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl p-6 text-center">
+                <div class="text-4xl font-bold text-white">
+                    🏆 JUARA: <span id="winnerName">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Navigator -->
+        <div class="bg-white rounded-3xl shadow-2xl p-8">
+            <div class="flex justify-between items-center mb-6 no-print">
+                <button id="prevBtn"
+                    class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold text-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Sebelumnya
+                </button>
+
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-gray-800">
+                        Soal <span id="currentQuestionNum">1</span> dari <span id="totalQuestions">0</span>
+                    </div>
+                </div>
+
+                <button id="nextBtn"
+                    class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold text-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    Berikutnya<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- Question Display -->
+            <div id="questionDisplay" class="space-y-6">
+                <!-- Question will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-white py-6 no-print">
+        <p class="text-lg">Made with ❤️ by @roezrmdhn</p>
+    </footer>
+
+    <script>
+        let resultsData = null;
+        let currentQuestionIndex = 0;
+
+        // Load results from localStorage
+        function loadResults() {
+            const data = localStorage.getItem('quizzorResults');
+
+            if (!data) {
+                alert('❌ Tidak ada data hasil quiz. Silakan mainkan quiz terlebih dahulu!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            resultsData = JSON.parse(data);
+            displaySummary();
+            displayQuestion(0);
+        }
+
+        // Display summary statistics
+        function displaySummary() {
+            // Scores
+            document.getElementById('scoreRed').textContent = resultsData.finalScores.merah;
+            document.getElementById('scoreBlue').textContent = resultsData.finalScores.biru;
+            document.getElementById('scoreGreen').textContent = resultsData.finalScores.hijau;
+            document.getElementById('scoreYellow').textContent = resultsData.finalScores.kuning;
+
+            // Calculate correct/wrong for each team
+            const stats = {
+                merah: { correct: 0, wrong: 0 },
+                biru: { correct: 0, wrong: 0 },
+                hijau: { correct: 0, wrong: 0 },
+                kuning: { correct: 0, wrong: 0 }
+            };
+
+            resultsData.questionHistory.forEach(q => {
+                Object.keys(q.teamAnswers).forEach(team => {
+                    if (q.teamAnswers[team].isCorrect) {
+                        stats[team].correct++;
+                    } else {
+                        stats[team].wrong++;
+                    }
+                });
+            });
+
+            document.getElementById('correctRed').textContent = stats.merah.correct;
+            document.getElementById('wrongRed').textContent = stats.merah.wrong;
+            document.getElementById('correctBlue').textContent = stats.biru.correct;
+            document.getElementById('wrongBlue').textContent = stats.biru.wrong;
+            document.getElementById('correctGreen').textContent = stats.hijau.correct;
+            document.getElementById('wrongGreen').textContent = stats.hijau.wrong;
+            document.getElementById('correctYellow').textContent = stats.kuning.correct;
+            document.getElementById('wrongYellow').textContent = stats.kuning.wrong;
+
+            // Winner
+            document.getElementById('winnerName').textContent = resultsData.winnerTeam;
+            document.getElementById('totalQuestions').textContent = resultsData.questionHistory.length;
+        }
+
+        // Display specific question
+        function displayQuestion(index) {
+            currentQuestionIndex = index;
+            const question = resultsData.questionHistory[index];
+
+            if (!question) return;
+
+            document.getElementById('currentQuestionNum').textContent = index + 1;
+
+            const optionLabels = ['A', 'B', 'C', 'D'];
+            const correctLabel = optionLabels[question.correctIndex];
+
+            let html = `
+                <div class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl p-6 text-white mb-6">
+                    <div class="text-3xl font-bold mb-4">
+                        ${index + 1}. ${question.question}
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        ${question.options.map((opt, i) => `
+                            <div class="bg-white bg-opacity-20 rounded-lg p-4 text-xl ${i === question.correctIndex ? 'ring-4 ring-green-400' : ''}">
+                                <strong>${optionLabels[i]}.</strong> ${opt}
+                                ${i === question.correctIndex ? '<i class="fas fa-check-circle text-green-400 ml-2"></i>' : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="mt-4 text-xl font-bold bg-green-500 bg-opacity-30 rounded-lg p-3 inline-block">
+                        ✅ Jawaban Benar: ${correctLabel}
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 rounded-xl p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Jawaban Setiap Tim:</h3>
+                    <div class="grid grid-cols-4 gap-4">
+                        ${renderTeamAnswer('MERAH', 'merah', 'fas fa-rocket', '#EF4444', question)}
+                        ${renderTeamAnswer('BIRU', 'biru', 'fas fa-robot', '#3B82F6', question)}
+                        ${renderTeamAnswer('HIJAU', 'hijau', 'fas fa-car', '#10B981', question)}
+                        ${renderTeamAnswer('KUNING', 'kuning', 'fas fa-plane', '#EAB308', question)}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('questionDisplay').innerHTML = html;
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === resultsData.questionHistory.length - 1;
+        }
+
+        // Render team answer
+        function renderTeamAnswer(teamName, teamKey, iconClass, color, question) {
+            const answer = question.teamAnswers[teamKey];
+
+            if (!answer) {
+                return `
+                    <div class="bg-gray-200 rounded-xl p-4 text-center">
+                        <div class="text-4xl mb-2"><i class="${iconClass}" style="color: ${color}"></i></div>
+                        <div class="font-bold text-lg mb-2">${teamName}</div>
+                        <div class="text-gray-500 text-sm">Tidak menjawab</div>
+                    </div>
+                `;
+            }
+
+            const optionLabels = ['A', 'B', 'C', 'D'];
+            const answerLabel = optionLabels[answer.answered];
+            const bgClass = answer.isCorrect ? 'bg-green-100 border-green-500' : 'bg-red-100 border-red-500';
+
+            return `
+                <div class="${bgClass} border-4 rounded-xl p-4 text-center">
+                    <div class="text-4xl mb-2"><i class="${iconClass}" style="color: ${color}"></i></div>
+                    <div class="font-bold text-lg mb-2">${teamName}</div>
+                    <div class="answer-indicator mx-auto ${answer.isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}">
+                        ${answerLabel}
+                    </div>
+                    <div class="mt-2 text-sm font-bold ${answer.isCorrect ? 'text-green-700' : 'text-red-700'}">
+                        ${answer.isCorrect ? '✅ Benar' : '❌ Salah'}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Navigation
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                displayQuestion(currentQuestionIndex - 1);
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentQuestionIndex < resultsData.questionHistory.length - 1) {
+                displayQuestion(currentQuestionIndex + 1);
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                document.getElementById('prevBtn').click();
+            } else if (e.key === 'ArrowRight') {
+                document.getElementById('nextBtn').click();
+            }
+        });
+
+        // Load on page load
+        loadResults();
+    </script>
+</body>
+
+</html>
