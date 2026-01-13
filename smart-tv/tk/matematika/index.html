@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Susun Huruf - TK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            overflow: hidden;
+            user-select: none;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .wrong-shake {
+            animation: shake 0.5s ease-out;
+        }
+
+        .correct-bounce {
+            animation: bounce 0.5s ease-out;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        .control-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .control-btn.muted {
+            background: rgba(200, 200, 200, 0.9);
+        }
+
+        @keyframes countdown-pulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        .countdown-number {
+            font-size: 25vh;
+            font-weight: bold;
+            animation: countdown-pulse 1s ease-out;
+        }
+
+        .letter-btn {
+            width: 70px;
+            height: 70px;
+            transition: all 0.2s;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        .letter-btn:active {
+            cursor: grabbing;
+        }
+
+        .letter-btn.dragging {
+            opacity: 0.5;
+            transform: scale(1.1);
+        }
+
+        .answer-slot {
+            width: 70px;
+            height: 70px;
+            position: relative;
+            border: 3px dashed #9ca3af;
+            background: #f3f4f6;
+            transition: all 0.3s;
+        }
+
+        .answer-slot::before {
+            content: attr(data-hint);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: bold;
+            color: #6b7280;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .answer-slot.drag-over {
+            background: #dbeafe;
+            border-color: #3b82f6;
+            transform: scale(1.05);
+        }
+
+        .answer-slot.filled {
+            border-style: solid;
+            border-color: #10b981;
+            background: #10b981;
+        }
+
+        .answer-slot.filled::before {
+            display: none;
+        }
+
+        .answer-letter {
+            cursor: grab;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .answer-letter:active {
+            cursor: grabbing;
+        }
+
+        .remove-letter-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            z-index: 10;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .remove-letter-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400 min-h-screen">
+
+    <!-- Control Buttons -->
+    <div class="control-buttons">
+        <button id="musicToggle" class="control-btn" title="Toggle Music">
+            <i class="fas fa-volume-up"></i>
+        </button>
+        <button id="fullscreenToggle" class="control-btn" title="Toggle Fullscreen">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="quizMusic" loop>
+        <source src="quiz.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="winnerMusic">
+        <source src="winner.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Lobby Screen -->
+    <div id="lobby" class="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 overflow-y-auto">
+        <h1
+            class="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 md:mb-5 animate-pulse">
+            <i class="fas fa-spell-check mr-2 sm:mr-3"></i>
+            SUSUN HURUF
+        </h1>
+
+        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 max-w-2xl w-full">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-5 text-center">
+                🎮 Pengaturan Permainan
+            </h2>
+
+            <div class="mb-3 sm:mb-4 md:mb-5">
+                <label class="block text-base sm:text-lg md:text-xl font-semibold text-gray-700 mb-2 sm:mb-2.5 md:mb-3">
+                    🎯 Target Skor untuk Menang:
+                </label>
+                <input type="number" id="targetScore" value="5" min="3" max="15"
+                    class="w-full text-xl sm:text-2xl md:text-3xl font-bold text-center px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 border-3 sm:border-4 border-purple-300 rounded-xl focus:outline-none focus:border-purple-500">
+            </div>
+
+            <div class="mb-3 sm:mb-4 md:mb-5">
+                <label class="block text-base sm:text-lg md:text-xl font-semibold text-gray-700 mb-2 sm:mb-2.5 md:mb-3">
+                    📚 Pilih Kategori Soal:
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 mb-2 sm:mb-2.5">
+                    <label
+                        class="flex items-center bg-green-100 p-2 sm:p-3 rounded-lg cursor-pointer hover:bg-green-200 transition-all">
+                        <input type="checkbox" class="category-checkbox w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"
+                            value="hewan-darat" checked>
+                        <span class="text-base sm:text-lg font-semibold">🐕 Hewan Darat</span>
+                    </label>
+                    <label
+                        class="flex items-center bg-blue-100 p-2 sm:p-3 rounded-lg cursor-pointer hover:bg-blue-200 transition-all">
+                        <input type="checkbox" class="category-checkbox w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"
+                            value="hewan-air" checked>
+                        <span class="text-base sm:text-lg font-semibold">🐟 Hewan Air</span>
+                    </label>
+                    <label
+                        class="flex items-center bg-sky-100 p-2 sm:p-3 rounded-lg cursor-pointer hover:bg-sky-200 transition-all">
+                        <input type="checkbox" class="category-checkbox w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"
+                            value="hewan-udara" checked>
+                        <span class="text-base sm:text-lg font-semibold">🦅 Hewan Udara</span>
+                    </label>
+                    <label
+                        class="flex items-center bg-red-100 p-2 sm:p-3 rounded-lg cursor-pointer hover:bg-red-200 transition-all">
+                        <input type="checkbox" class="category-checkbox w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" value="buah"
+                            checked>
+                        <span class="text-base sm:text-lg font-semibold">🍎 Buah</span>
+                    </label>
+                    <label
+                        class="flex items-center bg-yellow-100 p-2 sm:p-3 rounded-lg cursor-pointer hover:bg-yellow-200 transition-all">
+                        <input type="checkbox" class="category-checkbox w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"
+                            value="sayur" checked>
+                        <span class="text-base sm:text-lg font-semibold">🥕 Sayur</span>
+                    </label>
+                    <label
+                        class="flex items-center bg-purple-100 p-2 sm:p-3 rounded-lg cursor-pointer hover:bg-purple-200 transition-all">
+                        <input type="checkbox" class="category-checkbox w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"
+                            value="sekolah" checked>
+                        <span class="text-base sm:text-lg font-semibold">📚 Alat Sekolah</span>
+                    </label>
+                    <label
+                        class="flex items-center bg-pink-100 p-2 sm:p-3 rounded-lg cursor-pointer hover:bg-pink-200 transition-all">
+                        <input type="checkbox" class="category-checkbox w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"
+                            value="rumah" checked>
+                        <span class="text-base sm:text-lg font-semibold">🏠 Alat Rumah</span>
+                    </label>
+                </div>
+                <div class="flex gap-2">
+                    <button id="selectAllBtn"
+                        class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-3 sm:px-4 rounded-lg text-sm sm:text-base md:text-lg transition-all">
+                        ✓ Pilih Semua
+                    </button>
+                    <button id="deselectAllBtn"
+                        class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-3 sm:px-4 rounded-lg text-sm sm:text-base md:text-lg transition-all">
+                        ✗ Hapus Semua
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-lg sm:text-xl md:text-2xl text-center text-gray-600 mb-3 sm:mb-4 md:mb-5 font-semibold">
+                👥 2 Pemain Siap!
+            </p>
+
+            <button id="startBtn"
+                class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 animate-pulse">
+                <i class="fas fa-play mr-2 sm:mr-2.5"></i>
+                MULAI BERMAIN
+            </button>
+        </div>
+
+        <div class="mt-3 sm:mt-4 md:mt-5 grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 w-full max-w-3xl px-4">
+            <div
+                class="bg-blue-500 text-white p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl text-center font-bold text-base sm:text-lg md:text-xl lg:text-2xl shadow-lg">
+                <i class="fas fa-user text-2xl sm:text-3xl md:text-4xl mb-1.5 sm:mb-2"></i>
+                <div>PEMAIN 1</div>
+            </div>
+            <div
+                class="bg-pink-500 text-white p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl text-center font-bold text-base sm:text-lg md:text-xl lg:text-2xl shadow-lg">
+                <i class="fas fa-user text-2xl sm:text-3xl md:text-4xl mb-1.5 sm:mb-2"></i>
+                <div>PEMAIN 2</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-3 sm:mt-4 md:mt-5 mb-4 text-white text-center px-4">
+            <div class="flex items-center justify-center gap-2 sm:gap-3 md:gap-4">
+                <span class="text-sm sm:text-base md:text-lg font-semibold">@roezrmdhn</span>
+                <a href="https://github.com/raisramadhani" target="_blank" class="hover:scale-110 transition-transform"
+                    title="GitHub">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/roezrmdhn/" target="_blank"
+                    class="hover:scale-110 transition-transform" title="Instagram">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Countdown Screen -->
+    <div id="countdownScreen"
+        class="hidden fixed inset-0 bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center z-50">
+        <div id="countdownNumber" class="countdown-number text-white">3</div>
+    </div>
+
+    <!-- Game Area -->
+    <div id="gameArea" class="hidden min-h-screen flex flex-col">
+        <!-- Score Board -->
+        <div class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
+            <button id="homeBtn"
+                class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-bold text-xl transition-all hover:scale-105"
+                title="Kembali ke Home">
+                <i class="fas fa-home mr-2"></i>Home
+            </button>
+            <div class="text-center">
+                <h2 class="text-3xl font-bold mb-2">
+                    <i class="fas fa-spell-check mr-2"></i>
+                    SUSUN HURUF
+                </h2>
+                <div class="text-2xl font-semibold">
+                    Target: <span id="displayTarget" class="text-yellow-300">5</span> Benar
+                </div>
+            </div>
+            <div class="w-32"></div>
+        </div>
+
+        <!-- Game Panels -->
+        <div class="flex-1 grid grid-cols-2 gap-6 p-6">
+            <!-- Player 1 -->
+            <div id="panel-1" class="bg-white rounded-3xl shadow-2xl p-6 flex flex-col overflow-auto">
+                <div class="text-center mb-4">
+                    <h3 class="text-3xl font-bold text-blue-600 mb-2">
+                        <i class="fas fa-user mr-2"></i>PEMAIN 1
+                    </h3>
+                    <div class="flex justify-center gap-8 text-2xl font-bold">
+                        <div class="text-green-600">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Benar: <span id="correct-1">0</span>
+                        </div>
+                        <div class="text-red-600">
+                            <i class="fas fa-times-circle mr-1"></i>
+                            Salah: <span id="wrong-1">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image -->
+                <div class="mb-3 flex items-center justify-center">
+                    <img id="image-1" src="" alt="Gambar"
+                        class="max-h-[300px] max-w-full rounded-2xl shadow-lg object-contain">
+                </div>
+
+                <!-- Answer Area -->
+                <div id="answer-area-1"
+                    class="mb-3 min-h-[80px] flex items-center justify-center gap-2 flex-wrap bg-gray-100 rounded-xl p-3 border-2 border-gray-300">
+                    <!-- Drop zones will appear here -->
+                </div>
+
+                <!-- Letter Buttons -->
+                <div id="letters-1" class="flex flex-wrap justify-center gap-2 mb-3">
+                    <!-- Letter buttons will be inserted here -->
+                </div>
+
+                <!-- Reset Button -->
+                <button id="reset-1"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-xl text-xl transition-all">
+                    <i class="fas fa-undo mr-2"></i>Reset
+                </button>
+
+                <!-- Submit Button -->
+                <button id="submit-1"
+                    class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl text-2xl transition-all">
+                    <i class="fas fa-check mr-2"></i>JAWAB
+                </button>
+            </div>
+
+            <!-- Player 2 -->
+            <div id="panel-2" class="bg-white rounded-3xl shadow-2xl p-6 flex flex-col overflow-auto">
+                <div class="text-center mb-4">
+                    <h3 class="text-3xl font-bold text-pink-600 mb-2">
+                        <i class="fas fa-user mr-2"></i>PEMAIN 2
+                    </h3>
+                    <div class="flex justify-center gap-8 text-2xl font-bold">
+                        <div class="text-green-600">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Benar: <span id="correct-2">0</span>
+                        </div>
+                        <div class="text-red-600">
+                            <i class="fas fa-times-circle mr-1"></i>
+                            Salah: <span id="wrong-2">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image -->
+                <div class="mb-3 flex items-center justify-center">
+                    <img id="image-2" src="" alt="Gambar"
+                        class="max-h-[300px] max-w-full rounded-2xl shadow-lg object-contain">
+                </div>
+
+                <!-- Answer Area -->
+                <div id="answer-area-2"
+                    class="mb-3 min-h-[80px] flex items-center justify-center gap-2 flex-wrap bg-gray-100 rounded-xl p-3 border-2 border-gray-300">
+                    <!-- Drop zones will appear here -->
+                </div>
+
+                <!-- Letter Buttons -->
+                <div id="letters-2" class="flex flex-wrap justify-center gap-2 mb-3">
+                    <!-- Letter buttons will be inserted here -->
+                </div>
+
+                <!-- Reset Button -->
+                <button id="reset-2"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-xl text-xl transition-all">
+                    <i class="fas fa-undo mr-2"></i>Reset
+                </button>
+
+                <!-- Submit Button -->
+                <button id="submit-2"
+                    class="mt-2 bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-xl text-2xl transition-all">
+                    <i class="fas fa-check mr-2"></i>JAWAB
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Winner Modal -->
+    <div id="winnerModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div id="confettiContainer" class="absolute inset-0 pointer-events-none"></div>
+        <div
+            class="bg-white rounded-3xl p-12 max-w-2xl text-center shadow-2xl transform scale-100 transition-transform">
+            <div class="text-8xl mb-6">
+                <i class="fas fa-trophy text-yellow-500"></i>
+            </div>
+            <h2 class="text-6xl font-bold mb-4" id="winnerText">PEMAIN 1 MENANG!</h2>
+            <p class="text-4xl text-gray-600 mb-4">Selamat! 🎉</p>
+            <div id="finalScores" class="text-2xl text-gray-700 mb-8">
+                <!-- Final scores will be inserted here -->
+            </div>
+            <button id="restartBtn"
+                class="bg-gradient-to-r from-purple-500 to-pink-600 text-white text-4xl font-bold px-16 py-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all">
+                <i class="fas fa-redo mr-3"></i>
+                MAIN LAGI
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Questions Data - Kata dengan gambar (by category)
+        const questionsByCategory = {
+            "hewan-darat": [
+                { id: 1, word: "KUCING", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200", category: "hewan-darat" },
+                { id: 2, word: "ANJING", image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1200", category: "hewan-darat" },
+                { id: 3, word: "KELINCI", image: "https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=1200", category: "hewan-darat" },
+                { id: 4, word: "GAJAH", image: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1200", category: "hewan-darat" },
+                { id: 5, word: "BABI", image: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=1200", category: "hewan-darat" },
+                { id: 6, word: "KAMBING", image: "https://images.unsplash.com/photo-1533318087102-b3ad366ed041?w=1200", category: "hewan-darat" },
+                { id: 7, word: "KUDA", image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1200", category: "hewan-darat" },
+                { id: 8, word: "HARIMAU", image: "https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=1200", category: "hewan-darat" },
+                { id: 9, word: "JERAPAH", image: "https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=1200", category: "hewan-darat" },
+                { id: 10, word: "KERBAU", image: "https://images.unsplash.com/photo-1563428956424-5c4d93b0c98f?w=1200", category: "hewan-darat" }
+            ],
+            "hewan-air": [
+                { id: 11, word: "IKAN", image: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=1200", category: "hewan-air" },
+                { id: 12, word: "PAUS", image: "https://images.unsplash.com/photo-1526399175121-4288af1e4bd5?w=1200", category: "hewan-air" },
+                { id: 13, word: "HIU", image: "https://images.unsplash.com/photo-1560275619-4662e36fa65c?w=1200", category: "hewan-air" },
+                { id: 14, word: "LUMBA", image: "https://images.unsplash.com/photo-1570481662006-a3a1374699e8?w=1200", category: "hewan-air" },
+                { id: 15, word: "UBUR", image: "https://images.unsplash.com/photo-1559825481-12a05cc00344?w=1200", category: "hewan-air" },
+                { id: 16, word: "GURITA", image: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=1200", category: "hewan-air" },
+                { id: 17, word: "CUMI", image: "https://images.unsplash.com/photo-1580413685798-ec14b8bd4299?w=1200", category: "hewan-air" },
+                { id: 18, word: "KEPITING", image: "https://images.unsplash.com/photo-1589168442178-3c1c0b66c6c1?w=1200", category: "hewan-air" },
+                { id: 19, word: "UDANG", image: "https://images.unsplash.com/photo-1633222087143-74c4321ed87c?w=1200", category: "hewan-air" },
+                { id: 20, word: "KURA", image: "https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=1200", category: "hewan-air" }
+            ],
+            "hewan-udara": [
+                { id: 21, word: "BURUNG", image: "https://images.unsplash.com/photo-1444464666168-49d633b86797?w=1200", category: "hewan-udara" },
+                { id: 22, word: "ELANG", image: "https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?w=1200", category: "hewan-udara" },
+                { id: 23, word: "BEBEK", image: "https://images.unsplash.com/photo-1586984603070-5d56de10caf1?w=1200", category: "hewan-udara" },
+                { id: 24, word: "MERPATI", image: "https://images.unsplash.com/photo-1517847179766-eabb5c2b6250?w=1200", category: "hewan-udara" },
+                { id: 25, word: "AYAM", image: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=1200", category: "hewan-udara" },
+                { id: 26, word: "ANGSA", image: "https://images.unsplash.com/photo-1568904924466-12709c71de8e?w=1200", category: "hewan-udara" },
+                { id: 27, word: "GAGAK", image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200", category: "hewan-udara" },
+                { id: 28, word: "RAJAWALI", image: "https://images.unsplash.com/photo-1565214975484-3cfa9e56f914?w=1200", category: "hewan-udara" },
+                { id: 29, word: "KAKATUA", image: "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=1200", category: "hewan-udara" },
+                { id: 30, word: "WALET", image: "https://images.unsplash.com/photo-1583785839961-e2f5656e4f8f?w=1200", category: "hewan-udara" }
+            ],
+            "buah": [
+                { id: 31, word: "APEL", image: "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=1200", category: "buah" },
+                { id: 32, word: "PISANG", image: "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?w=1200", category: "buah" },
+                { id: 33, word: "JERUK", image: "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1200", category: "buah" },
+                { id: 34, word: "MANGGA", image: "https://images.unsplash.com/photo-1553279768-865429fa0078?w=1200", category: "buah" },
+                { id: 35, word: "SEMANGKA", image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200", category: "buah" },
+                { id: 36, word: "ANGGUR", image: "https://images.unsplash.com/photo-1601275868399-45bec4f4cd9d?w=1200", category: "buah" },
+                { id: 37, word: "DURIAN", image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=1200", category: "buah" },
+                { id: 38, word: "RAMBUTAN", image: "https://images.unsplash.com/photo-1632661925066-02d90bc96c40?w=1200", category: "buah" },
+                { id: 39, word: "PEPAYA", image: "https://images.unsplash.com/photo-1517282009859-f000ec3b26fe?w=1200", category: "buah" },
+                { id: 40, word: "NANAS", image: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=1200", category: "buah" }
+            ],
+            "sayur": [
+                { id: 41, word: "WORTEL", image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=1200", category: "sayur" },
+                { id: 42, word: "TOMAT", image: "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=1200", category: "sayur" },
+                { id: 43, word: "JAGUNG", image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=1200", category: "sayur" },
+                { id: 44, word: "BAYAM", image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=1200", category: "sayur" },
+                { id: 45, word: "BROKOLI", image: "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=1200", category: "sayur" },
+                { id: 46, word: "KANGKUNG", image: "https://images.unsplash.com/photo-1515424301517-39349b271aee?w=1200", category: "sayur" },
+                { id: 47, word: "TERONG", image: "https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=1200", category: "sayur" },
+                { id: 48, word: "SAWI", image: "https://images.unsplash.com/photo-1609620004833-cc93f3abb1ec?w=1200", category: "sayur" },
+                { id: 49, word: "LABU", image: "https://images.unsplash.com/photo-1570586437263-ab629fccc818?w=1200", category: "sayur" },
+                { id: 50, word: "KENTANG", image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=1200", category: "sayur" }
+            ],
+            "sekolah": [
+                { id: 51, word: "BUKU", image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1200", category: "sekolah" },
+                { id: 52, word: "PENSIL", image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=1200", category: "sekolah" },
+                { id: 53, word: "PENGGARIS", image: "https://images.unsplash.com/photo-1566199263938-13ea14fa8c13?w=1200", category: "sekolah" },
+                { id: 54, word: "PENGHAPUS", image: "https://images.unsplash.com/photo-1565025717985-dd0171e33ef7?w=1200", category: "sekolah" },
+                { id: 55, word: "TAS", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=1200", category: "sekolah" },
+                { id: 56, word: "GUNTING", image: "https://images.unsplash.com/photo-1623184663110-1925cc48502f?w=1200", category: "sekolah" },
+                { id: 57, word: "SPIDOL", image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=1200", category: "sekolah" },
+                { id: 58, word: "KRAYON", image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1200", category: "sekolah" },
+                { id: 59, word: "PAPAN", image: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=1200", category: "sekolah" },
+                { id: 60, word: "PULPEN", image: "https://images.unsplash.com/photo-1585366119957-e9730b6d0f60?w=1200", category: "sekolah" }
+            ],
+            "rumah": [
+                { id: 61, word: "KURSI", image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=1200", category: "rumah" },
+                { id: 62, word: "MEJA", image: "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=1200", category: "rumah" },
+                { id: 63, word: "BOTOL", image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=1200", category: "rumah" },
+                { id: 64, word: "SENDOK", image: "https://images.unsplash.com/photo-1563271897-b0e45eb25889?w=1200", category: "rumah" },
+                { id: 65, word: "GELAS", image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1200", category: "rumah" },
+                { id: 66, word: "LAMPU", image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1200", category: "rumah" },
+                { id: 67, word: "PINTU", image: "https://images.unsplash.com/photo-1520587729032-2c0a71c3d994?w=1200", category: "rumah" },
+                { id: 68, word: "JENDELA", image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200", category: "rumah" },
+                { id: 69, word: "KASUR", image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200", category: "rumah" },
+                { id: 70, word: "LEMARI", image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=1200", category: "rumah" }
+            ]
+        };
+
+        // All questions array (will be filtered based on selection)
+        let questionsData = [];
+
+        // Game State
+        let gameState = {
+            status: 'LOBBY', // LOBBY, PLAYING, FINISHED
+            winningScore: 5,
+            players: [
+                {
+                    id: 1,
+                    name: 'PEMAIN 1',
+                    color: 'blue',
+                    correct: 0,
+                    wrong: 0,
+                    currentQuestion: null,
+                    selectedLetters: [],
+                    scrambledLetters: []
+                },
+                {
+                    id: 2,
+                    name: 'PEMAIN 2',
+                    color: 'pink',
+                    correct: 0,
+                    wrong: 0,
+                    currentQuestion: null,
+                    selectedLetters: [],
+                    scrambledLetters: []
+                }
+            ],
+            questionPool: [...questionsData],
+            usedQuestions: []
+        };
+
+        // DOM Elements
+        const lobby = document.getElementById('lobby');
+        const gameArea = document.getElementById('gameArea');
+        const startBtn = document.getElementById('startBtn');
+        const targetScoreInput = document.getElementById('targetScore');
+        const displayTarget = document.getElementById('displayTarget');
+        const winnerModal = document.getElementById('winnerModal');
+        const winnerText = document.getElementById('winnerText');
+        const finalScores = document.getElementById('finalScores');
+        const restartBtn = document.getElementById('restartBtn');
+        const confettiContainer = document.getElementById('confettiContainer');
+        const countdownScreen = document.getElementById('countdownScreen');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const musicToggle = document.getElementById('musicToggle');
+        const fullscreenToggle = document.getElementById('fullscreenToggle');
+        const homeBtn = document.getElementById('homeBtn');
+        const quizMusic = document.getElementById('quizMusic');
+        const winnerMusic = document.getElementById('winnerMusic');
+
+        // Music state
+        let isMusicEnabled = true;
+
+        // Initialize
+        function init() {
+            startBtn.addEventListener('click', validateAndStart);
+            restartBtn.addEventListener('click', resetGame);
+            musicToggle.addEventListener('click', toggleMusic);
+            fullscreenToggle.addEventListener('click', toggleFullscreen);
+            homeBtn.addEventListener('click', goHome);
+
+            // Category selection buttons
+            document.getElementById('selectAllBtn').addEventListener('click', () => {
+                document.querySelectorAll('.category-checkbox').forEach(cb => cb.checked = true);
+            });
+            document.getElementById('deselectAllBtn').addEventListener('click', () => {
+                document.querySelectorAll('.category-checkbox').forEach(cb => cb.checked = false);
+            });
+
+            // Reset and Submit buttons for each player
+            document.getElementById('reset-1').addEventListener('click', () => resetLetters(1));
+            document.getElementById('reset-2').addEventListener('click', () => resetLetters(2));
+            document.getElementById('submit-1').addEventListener('click', () => submitAnswer(1));
+            document.getElementById('submit-2').addEventListener('click', () => submitAnswer(2));
+        }
+
+        // Validate category selection and start
+        function validateAndStart() {
+            const selectedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.value);
+
+            if (selectedCategories.length === 0) {
+                alert('⚠️ Pilih minimal 1 kategori soal!');
+                return;
+            }
+
+            // Build questions array from selected categories
+            questionsData = [];
+            selectedCategories.forEach(category => {
+                if (questionsByCategory[category]) {
+                    questionsData = questionsData.concat(questionsByCategory[category]);
+                }
+            });
+
+            showCountdown();
+        }
+
+        // Go Home
+        function goHome() {
+            if (confirm('Kembali ke halaman awal? Progress permainan akan hilang.')) {
+                resetGame();
+            }
+        }
+
+        // Toggle Music
+        function toggleMusic() {
+            isMusicEnabled = !isMusicEnabled;
+            if (isMusicEnabled) {
+                musicToggle.classList.remove('muted');
+                musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                if (gameState.status === 'PLAYING') {
+                    quizMusic.play().catch(e => console.log('Music play failed:', e));
+                }
+            } else {
+                musicToggle.classList.add('muted');
+                musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                quizMusic.pause();
+                winnerMusic.pause();
+            }
+        }
+
+        // Toggle Fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(e => {
+                    console.log('Fullscreen failed:', e);
+                });
+                fullscreenToggle.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenToggle.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        }
+
+        // Show Countdown
+        function showCountdown() {
+            lobby.classList.add('hidden');
+            countdownScreen.classList.remove('hidden');
+
+            let count = 3;
+            countdownNumber.textContent = count;
+
+            const countdownInterval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownNumber.textContent = count;
+                    countdownNumber.style.animation = 'none';
+                    setTimeout(() => {
+                        countdownNumber.style.animation = '';
+                    }, 10);
+                } else {
+                    countdownNumber.textContent = 'GO!';
+                    countdownNumber.style.animation = 'none';
+                    setTimeout(() => {
+                        countdownNumber.style.animation = '';
+                    }, 10);
+
+                    setTimeout(() => {
+                        clearInterval(countdownInterval);
+                        countdownScreen.classList.add('hidden');
+                        startGame();
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        // Start Game
+        function startGame() {
+            gameState.winningScore = parseInt(targetScoreInput.value) || 5;
+            displayTarget.textContent = gameState.winningScore;
+
+            // Reset players
+            gameState.players.forEach(player => {
+                player.correct = 0;
+                player.wrong = 0;
+                player.currentQuestion = null;
+                player.selectedLetters = [];
+                player.scrambledLetters = [];
+            });
+
+            gameState.usedQuestions = [];
+            gameState.questionPool = [...questionsData];
+            gameState.status = 'PLAYING';
+
+            // Switch UI
+            lobby.classList.add('hidden');
+            gameArea.classList.remove('hidden');
+
+            // Play quiz music
+            if (isMusicEnabled) {
+                quizMusic.play().catch(e => console.log('Music play failed:', e));
+            }
+
+            // Assign initial questions
+            gameState.players.forEach(player => {
+                assignQuestion(player.id);
+            });
+        }
+
+        // Shuffle array
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Assign Question to Player
+        function assignQuestion(playerId) {
+            const player = gameState.players[playerId - 1];
+
+            if (gameState.questionPool.length === 0) {
+                gameState.questionPool = [...questionsData];
+                gameState.usedQuestions = [];
+            }
+
+            const randomIndex = Math.floor(Math.random() * gameState.questionPool.length);
+            const question = gameState.questionPool[randomIndex];
+
+            player.currentQuestion = question;
+            player.selectedLetters = [];
+            player.scrambledLetters = shuffleArray(question.word.split(''));
+
+            gameState.questionPool.splice(randomIndex, 1);
+            gameState.usedQuestions.push(question);
+
+            displayQuestion(playerId, question);
+        }
+
+        // Display Question
+        function displayQuestion(playerId, question) {
+            const player = gameState.players[playerId - 1];
+
+            // Set image
+            document.getElementById(`image-${playerId}`).src = question.image;
+
+            // Clear and create answer slots
+            const answerArea = document.getElementById(`answer-area-${playerId}`);
+            answerArea.innerHTML = '';
+
+            // Create drop zones for each letter
+            for (let i = 0; i < question.word.length; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'answer-slot rounded-lg flex items-center justify-center';
+                slot.dataset.playerId = playerId;
+                slot.dataset.slotIndex = i;
+                slot.dataset.hint = question.word[i]; // Add hint letter
+                setupDropZone(slot, playerId);
+                answerArea.appendChild(slot);
+            }
+
+            // Create draggable letter buttons
+            const lettersContainer = document.getElementById(`letters-${playerId}`);
+            lettersContainer.innerHTML = '';
+
+            player.scrambledLetters.forEach((letter, index) => {
+                const btn = document.createElement('div');
+                btn.textContent = letter;
+                btn.className = 'letter-btn bg-blue-500 text-white font-bold text-2xl rounded-lg shadow-lg hover:bg-blue-600 flex items-center justify-center';
+                btn.draggable = true;
+                btn.id = `letter-${playerId}-${index}`;
+                btn.dataset.letter = letter;
+                btn.dataset.playerId = playerId;
+                btn.dataset.originalIndex = index;
+                setupDraggable(btn, playerId);
+                lettersContainer.appendChild(btn);
+            });
+        }
+
+        // Setup Draggable Letter
+        function setupDraggable(element, playerId) {
+            element.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', element.innerHTML);
+                e.dataTransfer.setData('letter', element.dataset.letter);
+                e.dataTransfer.setData('playerId', playerId);
+                e.dataTransfer.setData('elementId', element.id);
+                e.dataTransfer.setData('sourceType', element.classList.contains('answer-letter') ? 'answer' : 'letters');
+                if (element.classList.contains('answer-letter')) {
+                    e.dataTransfer.setData('slotIndex', element.parentElement.dataset.slotIndex);
+                }
+                element.classList.add('dragging');
+            });
+
+            element.addEventListener('dragend', (e) => {
+                element.classList.remove('dragging');
+            });
+        }
+
+        // Setup Drop Zone
+        function setupDropZone(slot, playerId) {
+            slot.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                const dragPlayerId = e.dataTransfer.getData('playerId');
+                if (dragPlayerId == playerId) {
+                    slot.classList.add('drag-over');
+                }
+            });
+
+            slot.addEventListener('dragleave', (e) => {
+                slot.classList.remove('drag-over');
+            });
+
+            slot.addEventListener('drop', (e) => {
+                e.preventDefault();
+                slot.classList.remove('drag-over');
+
+                const dragPlayerId = e.dataTransfer.getData('playerId');
+                if (dragPlayerId != playerId) return;
+
+                const letter = e.dataTransfer.getData('letter');
+                const elementId = e.dataTransfer.getData('elementId');
+                const sourceType = e.dataTransfer.getData('sourceType');
+                const sourceSlotIndex = e.dataTransfer.getData('slotIndex');
+
+                // If slot already has a letter, return it to letters container
+                if (slot.firstChild) {
+                    returnLetterToContainer(playerId, slot.firstChild);
+                }
+
+                // If dragging from another slot, clear that slot
+                if (sourceType === 'answer' && sourceSlotIndex !== undefined) {
+                    const sourceSlot = document.querySelector(`[data-player-id="${playerId}"][data-slot-index="${sourceSlotIndex}"]`);
+                    if (sourceSlot) {
+                        sourceSlot.innerHTML = '';
+                        sourceSlot.classList.remove('filled');
+                    }
+                }
+
+                // Create letter in slot
+                const letterElement = document.createElement('div');
+                letterElement.textContent = letter;
+                letterElement.className = 'answer-letter text-white font-bold text-2xl';
+                letterElement.draggable = true;
+                letterElement.dataset.letter = letter;
+                letterElement.dataset.playerId = playerId;
+                letterElement.dataset.elementId = elementId;
+                setupDraggable(letterElement, playerId);
+
+                // Create remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.className = 'remove-letter-btn';
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    removeLetterFromSlot(playerId, slot);
+                };
+
+                slot.innerHTML = '';
+                slot.appendChild(letterElement);
+                slot.appendChild(removeBtn);
+                slot.classList.add('filled');
+
+                // Hide original letter from container
+                const originalElement = document.getElementById(elementId);
+                if (originalElement) {
+                    originalElement.style.display = 'none';
+                }
+
+                updatePlayerAnswer(playerId);
+            });
+        }
+
+        // Return letter to container
+        function returnLetterToContainer(playerId, letterElement) {
+            const elementId = letterElement.dataset.elementId;
+            const originalElement = document.getElementById(elementId);
+            if (originalElement) {
+                originalElement.style.display = 'flex';
+            }
+        }
+
+        // Remove letter from specific slot
+        function removeLetterFromSlot(playerId, slot) {
+            const letterElement = slot.querySelector('.answer-letter');
+            if (letterElement) {
+                // Return letter to container
+                returnLetterToContainer(playerId, letterElement);
+
+                // Clear slot
+                slot.innerHTML = '';
+                slot.classList.remove('filled');
+
+                // Update player answer
+                updatePlayerAnswer(playerId);
+            }
+        }
+
+        // Update player answer from slots
+        function updatePlayerAnswer(playerId) {
+            const player = gameState.players[playerId - 1];
+            const answerArea = document.getElementById(`answer-area-${playerId}`);
+            const slots = answerArea.querySelectorAll('.answer-slot');
+
+            player.selectedLetters = [];
+            slots.forEach((slot, index) => {
+                if (slot.firstChild && slot.firstChild.dataset) {
+                    player.selectedLetters.push({
+                        letter: slot.firstChild.dataset.letter,
+                        slotIndex: index
+                    });
+                }
+            });
+        }
+
+        // Reset Letters
+        function resetLetters(playerId) {
+            const player = gameState.players[playerId - 1];
+            player.selectedLetters = [];
+
+            // Clear all answer slots
+            const answerArea = document.getElementById(`answer-area-${playerId}`);
+            const slots = answerArea.querySelectorAll('.answer-slot');
+            slots.forEach(slot => {
+                slot.innerHTML = '';
+                slot.classList.remove('filled');
+            });
+
+            // Show all letters in container
+            player.scrambledLetters.forEach((letter, index) => {
+                const btn = document.getElementById(`letter-${playerId}-${index}`);
+                if (btn) {
+                    btn.style.display = 'flex';
+                }
+            });
+        }
+
+        // Submit Answer
+        function submitAnswer(playerId) {
+            const player = gameState.players[playerId - 1];
+            const panel = document.getElementById(`panel-${playerId}`);
+
+            // Get answer from slots in order
+            const answerArea = document.getElementById(`answer-area-${playerId}`);
+            const slots = answerArea.querySelectorAll('.answer-slot');
+            let userAnswer = '';
+
+            slots.forEach(slot => {
+                if (slot.firstChild && slot.firstChild.dataset) {
+                    userAnswer += slot.firstChild.dataset.letter;
+                }
+            });
+
+            if (userAnswer.length === 0) {
+                return;
+            }
+
+            const correctAnswer = player.currentQuestion.word;
+
+            if (userAnswer === correctAnswer) {
+                // Correct Answer
+                player.correct++;
+                document.getElementById(`correct-${playerId}`).textContent = player.correct;
+
+                panel.classList.add('correct-bounce');
+                setTimeout(() => panel.classList.remove('correct-bounce'), 500);
+
+                // Check for winner
+                if (player.correct >= gameState.winningScore) {
+                    declareWinner(player);
+                    return;
+                }
+
+                // Assign new question
+                setTimeout(() => assignQuestion(playerId), 500);
+
+            } else {
+                // Wrong Answer
+                player.wrong++;
+                document.getElementById(`wrong-${playerId}`).textContent = player.wrong;
+
+                panel.classList.add('wrong-shake');
+                setTimeout(() => panel.classList.remove('wrong-shake'), 500);
+
+                // Reset for retry
+                setTimeout(() => resetLetters(playerId), 800);
+            }
+        }
+
+        // Declare Winner
+        function declareWinner(player) {
+            gameState.status = 'FINISHED';
+
+            winnerText.textContent = `${player.name} MENANG!`;
+            winnerText.style.color = player.color === 'blue' ? '#2563eb' : '#ec4899';
+
+            // Display final scores
+            finalScores.innerHTML = `
+                <div class="space-y-2">
+                    <div class="text-blue-600">
+                        <i class="fas fa-user mr-2"></i>PEMAIN 1: 
+                        ${gameState.players[0].correct} Benar, ${gameState.players[0].wrong} Salah
+                    </div>
+                    <div class="text-pink-600">
+                        <i class="fas fa-user mr-2"></i>PEMAIN 2: 
+                        ${gameState.players[1].correct} Benar, ${gameState.players[1].wrong} Salah
+                    </div>
+                </div>
+            `;
+
+            // Stop quiz music and play winner music
+            quizMusic.pause();
+            quizMusic.currentTime = 0;
+            if (isMusicEnabled) {
+                winnerMusic.play().catch(e => console.log('Music play failed:', e));
+            }
+
+            // Show confetti
+            createConfetti();
+
+            // Show modal
+            winnerModal.classList.remove('hidden');
+        }
+
+        // Create Confetti
+        function createConfetti() {
+            confettiContainer.innerHTML = '';
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        // Reset Game
+        function resetGame() {
+            winnerModal.classList.add('hidden');
+            gameArea.classList.add('hidden');
+            lobby.classList.remove('hidden');
+
+            // Stop all music
+            quizMusic.pause();
+            quizMusic.currentTime = 0;
+            winnerMusic.pause();
+            winnerMusic.currentTime = 0;
+
+            // Reset scores
+            for (let i = 1; i <= 2; i++) {
+                document.getElementById(`correct-${i}`).textContent = '0';
+                document.getElementById(`wrong-${i}`).textContent = '0';
+            }
+
+            gameState.status = 'LOBBY';
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+
+</html>

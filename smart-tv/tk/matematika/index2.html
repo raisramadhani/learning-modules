@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Soal - Quiz Susun Huruf TK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Review Data Soal Quiz</h1>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-bold text-gray-700">Statistik</h2>
+                <div class="text-right">
+                    <p class="text-lg">Total Kategori: <span id="totalCategories"
+                            class="font-bold text-blue-600">0</span></p>
+                    <p class="text-lg">Total Soal: <span id="totalQuestions" class="font-bold text-green-600">0</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="questionsContainer"></div>
+    </div>
+
+    <script>
+        // Questions Data - Kata dengan gambar (by category)
+        const questionsByCategory = {
+            "hewan-darat": [
+                { id: 1, word: "KUCING", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200", category: "hewan-darat" },
+                { id: 2, word: "ANJING", image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1200", category: "hewan-darat" },
+                { id: 3, word: "KELINCI", image: "https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=1200", category: "hewan-darat" },
+                { id: 4, word: "GAJAH", image: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1200", category: "hewan-darat" },
+                { id: 5, word: "BABI", image: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=1200", category: "hewan-darat" },
+                { id: 6, word: "KAMBING", image: "https://images.unsplash.com/photo-1533318087102-b3ad366ed041?w=1200", category: "hewan-darat" },
+                { id: 7, word: "KUDA", image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1200", category: "hewan-darat" },
+                { id: 8, word: "HARIMAU", image: "https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=1200", category: "hewan-darat" },
+                { id: 9, word: "JERAPAH", image: "https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=1200", category: "hewan-darat" },
+                { id: 10, word: "KERBAU", image: "https://images.unsplash.com/photo-1563428956424-5c4d93b0c98f?w=1200", category: "hewan-darat" }
+            ],
+            "hewan-air": [
+                { id: 11, word: "IKAN", image: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=1200", category: "hewan-air" },
+                { id: 12, word: "PAUS", image: "https://images.unsplash.com/photo-1526399175121-4288af1e4bd5?w=1200", category: "hewan-air" },
+                { id: 13, word: "HIU", image: "https://images.unsplash.com/photo-1560275619-4662e36fa65c?w=1200", category: "hewan-air" },
+                { id: 14, word: "LUMBA", image: "https://images.unsplash.com/photo-1570481662006-a3a1374699e8?w=1200", category: "hewan-air" },
+                { id: 15, word: "UBUR", image: "https://images.unsplash.com/photo-1559825481-12a05cc00344?w=1200", category: "hewan-air" },
+                { id: 16, word: "GURITA", image: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=1200", category: "hewan-air" },
+                { id: 17, word: "CUMI", image: "https://images.unsplash.com/photo-1580413685798-ec14b8bd4299?w=1200", category: "hewan-air" },
+                { id: 18, word: "KEPITING", image: "https://images.unsplash.com/photo-1589168442178-3c1c0b66c6c1?w=1200", category: "hewan-air" },
+                { id: 19, word: "UDANG", image: "https://images.unsplash.com/photo-1633222087143-74c4321ed87c?w=1200", category: "hewan-air" },
+                { id: 20, word: "KURA", image: "https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=1200", category: "hewan-air" }
+            ],
+            "hewan-udara": [
+                { id: 21, word: "BURUNG", image: "https://images.unsplash.com/photo-1444464666168-49d633b86797?w=1200", category: "hewan-udara" },
+                { id: 22, word: "ELANG", image: "https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?w=1200", category: "hewan-udara" },
+                { id: 23, word: "BEBEK", image: "https://images.unsplash.com/photo-1586984603070-5d56de10caf1?w=1200", category: "hewan-udara" },
+                { id: 24, word: "MERPATI", image: "https://images.unsplash.com/photo-1517847179766-eabb5c2b6250?w=1200", category: "hewan-udara" },
+                { id: 25, word: "AYAM", image: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=1200", category: "hewan-udara" },
+                { id: 26, word: "ANGSA", image: "https://images.unsplash.com/photo-1568904924466-12709c71de8e?w=1200", category: "hewan-udara" },
+                { id: 27, word: "GAGAK", image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200", category: "hewan-udara" },
+                { id: 28, word: "RAJAWALI", image: "https://images.unsplash.com/photo-1565214975484-3cfa9e56f914?w=1200", category: "hewan-udara" },
+                { id: 29, word: "KAKATUA", image: "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=1200", category: "hewan-udara" },
+                { id: 30, word: "WALET", image: "https://images.unsplash.com/photo-1583785839961-e2f5656e4f8f?w=1200", category: "hewan-udara" }
+            ],
+            "buah": [
+                { id: 31, word: "APEL", image: "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=1200", category: "buah" },
+                { id: 32, word: "PISANG", image: "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?w=1200", category: "buah" },
+                { id: 33, word: "JERUK", image: "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=1200", category: "buah" },
+                { id: 34, word: "MANGGA", image: "https://images.unsplash.com/photo-1553279768-865429fa0078?w=1200", category: "buah" },
+                { id: 35, word: "SEMANGKA", image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1200", category: "buah" },
+                { id: 36, word: "ANGGUR", image: "https://images.unsplash.com/photo-1601275868399-45bec4f4cd9d?w=1200", category: "buah" },
+                { id: 37, word: "DURIAN", image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=1200", category: "buah" },
+                { id: 38, word: "RAMBUTAN", image: "https://images.unsplash.com/photo-1632661925066-02d90bc96c40?w=1200", category: "buah" },
+                { id: 39, word: "PEPAYA", image: "https://images.unsplash.com/photo-1517282009859-f000ec3b26fe?w=1200", category: "buah" },
+                { id: 40, word: "NANAS", image: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=1200", category: "buah" }
+            ],
+            "sayur": [
+                { id: 41, word: "WORTEL", image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=1200", category: "sayur" },
+                { id: 42, word: "TOMAT", image: "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=1200", category: "sayur" },
+                { id: 43, word: "JAGUNG", image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=1200", category: "sayur" },
+                { id: 44, word: "BAYAM", image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=1200", category: "sayur" },
+                { id: 45, word: "BROKOLI", image: "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=1200", category: "sayur" },
+                { id: 46, word: "KANGKUNG", image: "https://images.unsplash.com/photo-1515424301517-39349b271aee?w=1200", category: "sayur" },
+                { id: 47, word: "TERONG", image: "https://images.unsplash.com/photo-1617347454431-f49d7ff5c3b1?w=1200", category: "sayur" },
+                { id: 48, word: "SAWI", image: "https://images.unsplash.com/photo-1609620004833-cc93f3abb1ec?w=1200", category: "sayur" },
+                { id: 49, word: "LABU", image: "https://images.unsplash.com/photo-1570586437263-ab629fccc818?w=1200", category: "sayur" },
+                { id: 50, word: "KENTANG", image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=1200", category: "sayur" }
+            ],
+            "sekolah": [
+                { id: 51, word: "BUKU", image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1200", category: "sekolah" },
+                { id: 52, word: "PENSIL", image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=1200", category: "sekolah" },
+                { id: 53, word: "PENGGARIS", image: "https://images.unsplash.com/photo-1566199263938-13ea14fa8c13?w=1200", category: "sekolah" },
+                { id: 54, word: "PENGHAPUS", image: "https://images.unsplash.com/photo-1565025717985-dd0171e33ef7?w=1200", category: "sekolah" },
+                { id: 55, word: "TAS", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=1200", category: "sekolah" },
+                { id: 56, word: "GUNTING", image: "https://images.unsplash.com/photo-1623184663110-1925cc48502f?w=1200", category: "sekolah" },
+                { id: 57, word: "SPIDOL", image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=1200", category: "sekolah" },
+                { id: 58, word: "KRAYON", image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1200", category: "sekolah" },
+                { id: 59, word: "PAPAN", image: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=1200", category: "sekolah" },
+                { id: 60, word: "PULPEN", image: "https://images.unsplash.com/photo-1585366119957-e9730b6d0f60?w=1200", category: "sekolah" }
+            ],
+            "rumah": [
+                { id: 61, word: "KURSI", image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=1200", category: "rumah" },
+                { id: 62, word: "MEJA", image: "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=1200", category: "rumah" },
+                { id: 63, word: "BOTOL", image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=1200", category: "rumah" },
+                { id: 64, word: "SENDOK", image: "https://images.unsplash.com/photo-1563271897-b0e45eb25889?w=1200", category: "rumah" },
+                { id: 65, word: "GELAS", image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1200", category: "rumah" },
+                { id: 66, word: "LAMPU", image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1200", category: "rumah" },
+                { id: 67, word: "PINTU", image: "https://images.unsplash.com/photo-1520587729032-2c0a71c3d994?w=1200", category: "rumah" },
+                { id: 68, word: "JENDELA", image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200", category: "rumah" },
+                { id: 69, word: "KASUR", image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200", category: "rumah" },
+                { id: 70, word: "LEMARI", image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=1200", category: "rumah" }
+            ]
+        };
+
+        // Category icons and names
+        const categoryInfo = {
+            "hewan-darat": { name: "🐕 Hewan Darat", color: "green" },
+            "hewan-air": { name: "🐟 Hewan Air", color: "blue" },
+            "hewan-udara": { name: "🦅 Hewan Udara", color: "sky" },
+            "buah": { name: "🍎 Buah", color: "red" },
+            "sayur": { name: "🥕 Sayur", color: "yellow" },
+            "sekolah": { name: "📚 Alat Sekolah", color: "purple" },
+            "rumah": { name: "🏠 Alat Rumah", color: "pink" }
+        };
+
+        // Display statistics
+        const totalCategories = Object.keys(questionsByCategory).length;
+        let totalQuestions = 0;
+        Object.values(questionsByCategory).forEach(questions => {
+            totalQuestions += questions.length;
+        });
+
+        document.getElementById('totalCategories').textContent = totalCategories;
+        document.getElementById('totalQuestions').textContent = totalQuestions;
+
+        // Display all questions by category
+        const container = document.getElementById('questionsContainer');
+
+        Object.keys(questionsByCategory).forEach(categoryKey => {
+            const questions = questionsByCategory[categoryKey];
+            const info = categoryInfo[categoryKey];
+
+            // Create category section
+            const categorySection = document.createElement('div');
+            categorySection.className = 'bg-white rounded-lg shadow-lg p-6 mb-8';
+
+            const categoryHeader = document.createElement('div');
+            categoryHeader.className = `bg-${info.color}-100 border-l-4 border-${info.color}-500 p-4 mb-6 rounded`;
+            categoryHeader.innerHTML = `
+                <h2 class="text-2xl font-bold text-${info.color}-800">${info.name}</h2>
+                <p class="text-${info.color}-600">Jumlah soal: ${questions.length}</p>
+            `;
+            categorySection.appendChild(categoryHeader);
+
+            // Create grid for questions
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6';
+
+            questions.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300';
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${q.image}" alt="${q.word}" 
+                             class="w-full h-48 object-cover"
+                             onerror="this.parentElement.innerHTML='<div class=\\'w-full h-48 bg-red-100 flex items-center justify-center\\'><span class=\\'text-red-600 font-bold\\'>❌ Gambar Error</span></div>'">
+                        <div class="absolute top-2 right-2 bg-white px-2 py-1 rounded shadow text-xs font-mono">
+                            ID: ${q.id}
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-2xl font-bold text-center text-gray-800 mb-2">${q.word}</h3>
+                        <p class="text-sm text-gray-600 text-center mb-2">Kategori: ${q.category}</p>
+                        <div class="bg-gray-100 p-2 rounded">
+                            <p class="text-xs text-gray-500 break-all">
+                                <strong>URL:</strong><br>
+                                <a href="${q.image}" target="_blank" class="text-blue-600 hover:underline">${q.image}</a>
+                            </p>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            categorySection.appendChild(grid);
+            container.appendChild(categorySection);
+        });
+    </script>
+</body>
+
+</html>
