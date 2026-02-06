@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <title>Quizzor Monster Battle - Competitive Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            overflow: hidden;
+            user-select: none;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0) translateY(0);
+            }
+
+            25% {
+                transform: translateX(-10px) translateY(5px);
+            }
+
+            50% {
+                transform: translateX(10px) translateY(-5px);
+            }
+
+            75% {
+                transform: translateX(-10px) translateY(5px);
+            }
+        }
+
+        @keyframes bossHit {
+            0% {
+                filter: brightness(1);
+                transform: scale(1);
+            }
+
+            50% {
+                filter: brightness(10);
+                transform: scale(0.9);
+            }
+
+            100% {
+                filter: brightness(1);
+                transform: scale(1);
+            }
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes countdown-pulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes hpPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(239, 68, 68, 1);
+            }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .boss-hit {
+            animation: bossHit 0.3s ease-out;
+        }
+
+        .boss-shake {
+            animation: shake 0.5s ease-out;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        .control-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .control-btn.muted {
+            background: rgba(200, 200, 200, 0.9);
+        }
+
+        .countdown-number {
+            font-size: 25vh;
+            font-weight: bold;
+            animation: countdown-pulse 1s ease-out;
+        }
+
+        .hp-bar-low {
+            animation: hpPulse 1s ease-in-out infinite;
+        }
+
+        .projectile {
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .projectile-trail {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        @keyframes explosionParticle {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .explosion-particle {
+            position: absolute;
+            animation: explosionParticle 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-purple-600 to-blue-600 min-h-screen">
+
+    <div class="control-buttons">
+        <button id="musicToggle" class="control-btn" title="Toggle Music">
+            <i class="fas fa-volume-up"></i>
+        </button>
+        <button id="fullscreenToggle" class="control-btn" title="Toggle Fullscreen">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+
+    <audio id="quizMusic" loop>
+        <source src="quiz.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="winnerMusic">
+        <source src="winner.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="lobby" class="flex flex-col items-center justify-center min-h-screen p-8">
+        <h1 class="text-6xl font-bold text-white mb-8 animate-pulse">
+            <i class="fas fa-dragon mr-4"></i>
+            Quizzor: Monster Battle Race
+        </h1>
+
+        <div class="bg-white rounded-3xl shadow-2xl p-12 max-w-2xl w-full">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+                Pengaturan Permainan
+            </h2>
+
+            <div class="mb-6">
+                <label class="block text-xl font-semibold text-gray-700 mb-3">
+                    <i class="fas fa-heart text-red-500 mr-2"></i>
+                    Total HP Monster
+                </label>
+                <input type="number" id="bossHP" value="100" min="50" max="200" step="10"
+                    class="w-full text-3xl font-bold text-center py-4 border-4 border-purple-500 rounded-xl focus:outline-none focus:border-purple-700">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-xl font-semibold text-gray-700 mb-3">
+                    <i class="fas fa-book mr-2"></i>
+                    Sumber Pertanyaan
+                </label>
+                <div class="flex gap-6 justify-center mb-4">
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="questionSource" value="default" checked class="mr-2 scale-150">
+                        <span class="text-lg">Pertanyaan Default</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="questionSource" value="import" class="mr-2 scale-150">
+                        <span class="text-lg">Import dari Spreadsheet</span>
+                    </label>
+                </div>
+
+                <div id="importSection" class="hidden mt-4">
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">
+                        URL Google Spreadsheet
+                    </label>
+                    <input type="text" id="spreadsheetURL" placeholder="https://docs.google.com/spreadsheets/d/..."
+                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg mb-3 focus:outline-none focus:border-purple-500">
+                    <button id="loadPreviewBtn"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-all">
+                        <i class="fas fa-eye mr-2"></i>Load & Preview
+                    </button>
+                    <div id="importSuccessIndicator"
+                        class="hidden mt-3 bg-green-100 border-l-4 border-green-500 p-3 rounded">
+                        <p class="text-green-700 font-semibold">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span id="importSuccessText"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-2xl text-center text-gray-600 mb-8 font-semibold">
+                <i class="fas fa-trophy mr-2"></i>
+                Kompetisi 4 Barisan - Kalahkan Monster Duluan!
+            </p>
+
+            <button id="startBtn"
+                class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-4xl font-bold py-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 animate-pulse">
+                <i class="fas fa-play mr-3"></i>
+                MULAI KOMPETISI
+            </button>
+        </div>
+
+        <div class="mt-8 grid grid-cols-4 gap-6 w-full max-w-4xl">
+            <div class="bg-red-500 text-white p-4 rounded-xl text-center font-bold text-2xl">
+                <i class="fas fa-rocket text-4xl mb-2"></i>
+                <div>TIM MERAH</div>
+            </div>
+            <div class="bg-blue-500 text-white p-4 rounded-xl text-center font-bold text-2xl">
+                <i class="fas fa-robot text-4xl mb-2"></i>
+                <div>TIM BIRU</div>
+            </div>
+            <div class="bg-green-500 text-white p-4 rounded-xl text-center font-bold text-2xl">
+                <i class="fas fa-car text-4xl mb-2"></i>
+                <div>TIM HIJAU</div>
+            </div>
+            <div class="bg-yellow-400 text-white p-4 rounded-xl text-center font-bold text-2xl">
+                <i class="fas fa-plane text-4xl mb-2"></i>
+                <div>TIM KUNING</div>
+            </div>
+        </div>
+
+        <footer class="mt-8 text-white text-center">
+            <div class="flex items-center justify-center gap-4">
+                <span class="text-lg font-semibold">@roezrmdhn</span>
+                <a href="https://github.com/raisramadhani" target="_blank" class="hover:scale-110 transition-transform"
+                    title="GitHub">
+                    <i class="fab fa-github text-3xl"></i>
+                </a>
+                <a href="https://www.instagram.com/roezrmdhn/" target="_blank"
+                    class="hover:scale-110 transition-transform" title="Instagram">
+                    <i class="fab fa-instagram text-3xl"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <div id="countdownScreen"
+        class="hidden fixed inset-0 bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center z-50">
+        <div id="countdownNumber" class="countdown-number text-white">3</div>
+    </div>
+
+    <div id="gameArea" class="hidden min-h-screen flex flex-col">
+        <div class="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
+            <button id="homeBtn"
+                class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-bold text-xl transition-all hover:scale-105"
+                title="Kembali ke Home">
+                <i class="fas fa-home mr-2"></i>Home
+            </button>
+            <div class="text-center">
+                <h2 class="text-3xl font-bold mb-2">
+                    <i class="fas fa-crosshairs mr-2"></i>
+                    BALAP MONSTER!
+                </h2>
+                <div class="text-xl font-semibold">
+                    Kompetisi 4 Tim - Siapa Tercepat Kalahkan Monsternya!
+                </div>
+            </div>
+            <div class="w-32"></div>
+        </div>
+
+        <div class="flex-1 grid grid-cols-4 gap-2 p-2 bg-gray-900">
+            <div
+                class="flex flex-col bg-gradient-to-b from-red-900 to-red-950 rounded-xl overflow-hidden border-4 border-red-700 relative">
+                <div class="flex-none p-2 bg-red-800 text-white text-center font-bold text-lg">
+                    <i class="fas fa-rocket mr-2"></i>TIM MERAH
+                </div>
+                <div class="flex-none p-2 bg-red-900">
+                    <div class="relative w-full h-6 bg-gray-700 rounded-full border-2 border-white overflow-hidden">
+                        <div id="monsterHp-1"
+                            class="h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-500 flex items-center justify-center"
+                            style="width: 100%">
+                            <span id="monsterHpText-1"
+                                class="text-white font-bold text-xs drop-shadow-lg z-10 absolute">100</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 relative flex items-center justify-center">
+                    <div id="monsterAvatar-1"
+                        class="animate-float text-9xl cursor-pointer filter drop-shadow-[0_0_30px_rgba(255,0,0,0.8)] transition-all duration-200">
+                        👾
+                    </div>
+                    <div id="rankBadge-1"
+                        class="hidden absolute top-4 right-4 bg-yellow-400 text-gray-900 font-bold text-2xl px-4 py-2 rounded-full border-4 border-yellow-600">
+                        #1
+                    </div>
+                </div>
+                <div id="control-1" class="flex-none bg-red-500 p-3 flex flex-col border-t-4 border-red-700"
+                    style="height: 30vh;">
+                    <div class="text-white text-sm bg-red-700 px-2 py-1 rounded text-center mb-2">
+                        DMG: <span id="damage-1">0</span>
+                    </div>
+                    <div class="text-white font-semibold text-sm mb-2 flex-1 overflow-y-auto" id="question-1">
+                        Menunggu...
+                    </div>
+                    <div class="space-y-1" id="options-1"></div>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col bg-gradient-to-b from-blue-900 to-blue-950 rounded-xl overflow-hidden border-4 border-blue-700 relative">
+                <div class="flex-none p-2 bg-blue-800 text-white text-center font-bold text-lg">
+                    <i class="fas fa-robot mr-2"></i>TIM BIRU
+                </div>
+                <div class="flex-none p-2 bg-blue-900">
+                    <div class="relative w-full h-6 bg-gray-700 rounded-full border-2 border-white overflow-hidden">
+                        <div id="monsterHp-2"
+                            class="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500 flex items-center justify-center"
+                            style="width: 100%">
+                            <span id="monsterHpText-2"
+                                class="text-white font-bold text-xs drop-shadow-lg z-10 absolute">100</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 relative flex items-center justify-center">
+                    <div id="monsterAvatar-2"
+                        class="animate-float text-9xl cursor-pointer filter drop-shadow-[0_0_30px_rgba(59,130,246,0.8)] transition-all duration-200">
+                        👾
+                    </div>
+                    <div id="rankBadge-2"
+                        class="hidden absolute top-4 right-4 bg-yellow-400 text-gray-900 font-bold text-2xl px-4 py-2 rounded-full border-4 border-yellow-600">
+                        #2
+                    </div>
+                </div>
+                <div id="control-2" class="flex-none bg-blue-500 p-3 flex flex-col border-t-4 border-blue-700"
+                    style="height: 30vh;">
+                    <div class="text-white text-sm bg-blue-700 px-2 py-1 rounded text-center mb-2">
+                        DMG: <span id="damage-2">0</span>
+                    </div>
+                    <div class="text-white font-semibold text-sm mb-2 flex-1 overflow-y-auto" id="question-2">
+                        Menunggu...
+                    </div>
+                    <div class="space-y-1" id="options-2"></div>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col bg-gradient-to-b from-green-900 to-green-950 rounded-xl overflow-hidden border-4 border-green-700 relative">
+                <div class="flex-none p-2 bg-green-800 text-white text-center font-bold text-lg">
+                    <i class="fas fa-car mr-2"></i>TIM HIJAU
+                </div>
+                <div class="flex-none p-2 bg-green-900">
+                    <div class="relative w-full h-6 bg-gray-700 rounded-full border-2 border-white overflow-hidden">
+                        <div id="monsterHp-3"
+                            class="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-500 flex items-center justify-center"
+                            style="width: 100%">
+                            <span id="monsterHpText-3"
+                                class="text-white font-bold text-xs drop-shadow-lg z-10 absolute">100</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 relative flex items-center justify-center">
+                    <div id="monsterAvatar-3"
+                        class="animate-float text-9xl cursor-pointer filter drop-shadow-[0_0_30px_rgba(34,197,94,0.8)] transition-all duration-200">
+                        👾
+                    </div>
+                    <div id="rankBadge-3"
+                        class="hidden absolute top-4 right-4 bg-yellow-400 text-gray-900 font-bold text-2xl px-4 py-2 rounded-full border-4 border-yellow-600">
+                        #3
+                    </div>
+                </div>
+                <div id="control-3" class="flex-none bg-green-500 p-3 flex flex-col border-t-4 border-green-700"
+                    style="height: 30vh;">
+                    <div class="text-white text-sm bg-green-700 px-2 py-1 rounded text-center mb-2">
+                        DMG: <span id="damage-3">0</span>
+                    </div>
+                    <div class="text-white font-semibold text-sm mb-2 flex-1 overflow-y-auto" id="question-3">
+                        Menunggu...
+                    </div>
+                    <div class="space-y-1" id="options-3"></div>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col bg-gradient-to-b from-yellow-800 to-yellow-900 rounded-xl overflow-hidden border-4 border-yellow-600 relative">
+                <div class="flex-none p-2 bg-yellow-600 text-gray-900 text-center font-bold text-lg">
+                    <i class="fas fa-plane mr-2"></i>TIM KUNING
+                </div>
+                <div class="flex-none p-2 bg-yellow-700">
+                    <div class="relative w-full h-6 bg-gray-700 rounded-full border-2 border-white overflow-hidden">
+                        <div id="monsterHp-4"
+                            class="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 transition-all duration-500 flex items-center justify-center"
+                            style="width: 100%">
+                            <span id="monsterHpText-4"
+                                class="text-gray-900 font-bold text-xs drop-shadow-lg z-10 absolute">100</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 relative flex items-center justify-center">
+                    <div id="monsterAvatar-4"
+                        class="animate-float text-9xl cursor-pointer filter drop-shadow-[0_0_30px_rgba(234,179,8,0.8)] transition-all duration-200">
+                        👾
+                    </div>
+                    <div id="rankBadge-4"
+                        class="hidden absolute top-4 right-4 bg-yellow-400 text-gray-900 font-bold text-2xl px-4 py-2 rounded-full border-4 border-yellow-600">
+                        #4
+                    </div>
+                </div>
+                <div id="control-4" class="flex-none bg-yellow-400 p-3 flex flex-col border-t-4 border-yellow-600"
+                    style="height: 30vh;">
+                    <div class="text-gray-900 text-sm bg-yellow-500 px-2 py-1 rounded text-center mb-2">
+                        DMG: <span id="damage-4">0</span>
+                    </div>
+                    <div class="text-gray-900 font-semibold text-sm mb-2 flex-1 overflow-y-auto" id="question-4">
+                        Menunggu...
+                    </div>
+                    <div class="space-y-1" id="options-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="previewModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl p-8 max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800">
+                    <i class="fas fa-list-check mr-2"></i>
+                    Preview Pertanyaan (<span id="totalQuestions">0</span>)
+                </h2>
+                <button id="closePreviewBtn" class="text-gray-500 hover:text-gray-700 text-3xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
+                <p class="text-blue-700 font-semibold">
+                    Format: Pertanyaan | Pilihan A | Pilihan B | Pilihan C | Jawaban Benar (A/B/C)
+                </p>
+            </div>
+            <div id="questionsList" class="space-y-4">
+            </div>
+            <button id="useImportedBtn"
+                class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl transition-all">
+                <i class="fas fa-check mr-2"></i>Gunakan Pertanyaan Ini
+            </button>
+        </div>
+    </div>
+
+    <div id="winnerModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div id="confettiContainer" class="absolute inset-0 pointer-events-none"></div>
+        <div
+            class="bg-white rounded-3xl p-12 max-w-4xl text-center shadow-2xl transform scale-100 transition-transform">
+            <div class="text-7xl mb-6">
+                🏆
+            </div>
+            <h2 class="text-5xl font-bold mb-8 text-purple-600">KOMPETISI SELESAI!</h2>
+
+            <div class="grid grid-cols-3 gap-4 mb-8 items-end">
+                <div id="rank2" class="bg-gray-300 rounded-xl p-6 transform translate-y-4">
+                    <div class="text-5xl mb-2">🥈</div>
+                    <div class="text-2xl font-bold">Peringkat 2</div>
+                    <div class="text-xl mt-2" id="rank2Team">-</div>
+                    <div class="text-lg text-gray-600" id="rank2Damage">0 DMG</div>
+                </div>
+
+                <div id="rank1" class="bg-yellow-400 rounded-xl p-8 shadow-2xl">
+                    <div class="text-7xl mb-3 animate-bounce">👑</div>
+                    <div class="text-3xl font-bold">JUARA 1</div>
+                    <div class="text-2xl mt-3 font-bold" id="rank1Team">-</div>
+                    <div class="text-xl text-gray-700" id="rank1Damage">0 DMG</div>
+                </div>
+
+                <div id="rank3" class="bg-orange-400 rounded-xl p-6 transform translate-y-4">
+                    <div class="text-5xl mb-2">🥉</div>
+                    <div class="text-2xl font-bold">Peringkat 3</div>
+                    <div class="text-xl mt-2" id="rank3Team">-</div>
+                    <div class="text-lg text-gray-600" id="rank3Damage">0 DMG</div>
+                </div>
+            </div>
+
+            <div class="bg-gray-100 rounded-xl p-4 mb-6">
+                <div class="text-xl font-bold mb-2">Peringkat 4</div>
+                <div class="text-lg" id="rank4Team">-</div>
+                <div class="text-gray-600" id="rank4Damage">0 DMG</div>
+            </div>
+
+            <div class="flex gap-4 justify-center">
+                <button id="viewResultsBtn"
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold text-2xl px-8 py-4 rounded-xl transition-all hover:scale-105">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    Lihat Hasil
+                </button>
+                <button id="restartBtn"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold text-2xl px-8 py-4 rounded-xl transition-all hover:scale-105">
+                    <i class="fas fa-redo mr-2"></i>
+                    Main Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questionsData = [
+            {
+                question: "Apa ibukota Indonesia?",
+                options: ["Bandung", "Jakarta", "Surabaya"],
+                correctIndex: 1
+            },
+            {
+                question: "Berapa hasil dari 5 x 6?",
+                options: ["25", "35", "30"],
+                correctIndex: 2
+            },
+            {
+                question: "Planet terdekat dengan Matahari?",
+                options: ["Merkurius", "Venus", "Bumi"],
+                correctIndex: 0
+            },
+            {
+                question: "Siapa penemu lampu pijar?",
+                options: ["Einstein", "Newton", "Thomas Edison"],
+                correctIndex: 2
+            },
+            {
+                question: "Apa warna bendera Indonesia?",
+                options: ["Biru-Putih", "Merah-Putih", "Hijau-Putih"],
+                correctIndex: 1
+            },
+            {
+                question: "Berapa jumlah hari dalam 1 minggu?",
+                options: ["5", "7", "10"],
+                correctIndex: 1
+            },
+            {
+                question: "Apa nama ibu kota Jepang?",
+                options: ["Seoul", "Tokyo", "Beijing"],
+                correctIndex: 1
+            },
+            {
+                question: "Hewan tercepat di darat?",
+                options: ["Cheetah", "Singa", "Harimau"],
+                correctIndex: 0
+            },
+            {
+                question: "Berapa hasil 100 - 25?",
+                options: ["75", "80", "70"],
+                correctIndex: 0
+            },
+            {
+                question: "Apa bahasa pemrograman untuk web?",
+                options: ["Python", "JavaScript", "C++"],
+                correctIndex: 1
+            },
+            {
+                question: "Siapa presiden pertama RI?",
+                options: ["Soeharto", "Soekarno", "Habibie"],
+                correctIndex: 1
+            },
+            {
+                question: "Berapa sisi segitiga?",
+                options: ["2", "4", "3"],
+                correctIndex: 2
+            },
+            {
+                question: "Apa singkatan HTML?",
+                options: ["Hyper Tool Markup Language", "HyperText Markup Language", "High Text Modern Language"],
+                correctIndex: 1
+            },
+            {
+                question: "Benua terbesar di dunia?",
+                options: ["Afrika", "Asia", "Amerika"],
+                correctIndex: 1
+            },
+            {
+                question: "Negara terluas di dunia?",
+                options: ["China", "Rusia", "Amerika"],
+                correctIndex: 1
+            },
+            {
+                question: "Warna daun pada umumnya?",
+                options: ["Hijau", "Merah", "Kuning"],
+                correctIndex: 0
+            },
+            {
+                question: "Apa nama satelit alami Bumi?",
+                options: ["Mars", "Bulan", "Venus"],
+                correctIndex: 1
+            },
+            {
+                question: "Berapa hasil 12 / 4?",
+                options: ["2", "3", "4"],
+                correctIndex: 1
+            },
+            {
+                question: "Organ yang memompa darah?",
+                options: ["Paru-paru", "Jantung", "Ginjal"],
+                correctIndex: 1
+            },
+            {
+                question: "Negara dengan Menara Eiffel?",
+                options: ["Italia", "Prancis", "Spanyol"],
+                correctIndex: 1
+            }
+        ];
+
+        let gameState = {
+            status: 'LOBBY',
+            monsterMaxHp: 100,
+            damagePerHit: 10,
+            monsters: [
+                { id: 1, currentHp: 100, defeated: false, rank: null },
+                { id: 2, currentHp: 100, defeated: false, rank: null },
+                { id: 3, currentHp: 100, defeated: false, rank: null },
+                { id: 4, currentHp: 100, defeated: false, rank: null }
+            ],
+            teams: [
+                { id: 1, color: 'red', name: 'MERAH', damage: 0, locked: false, currentQuestion: null, answerHistory: [] },
+                { id: 2, color: 'blue', name: 'BIRU', damage: 0, locked: false, currentQuestion: null, answerHistory: [] },
+                { id: 3, color: 'green', name: 'HIJAU', damage: 0, locked: false, currentQuestion: null, answerHistory: [] },
+                { id: 4, color: 'yellow', name: 'KUNING', damage: 0, locked: false, currentQuestion: null, answerHistory: [] }
+            ],
+            finishOrder: [],
+            questionPool: [...questionsData],
+            usedQuestions: [],
+            questionHistory: []
+        };
+
+        const lobby = document.getElementById('lobby');
+        const gameArea = document.getElementById('gameArea');
+        const startBtn = document.getElementById('startBtn');
+        const bossHPInput = document.getElementById('bossHP');
+        const winnerModal = document.getElementById('winnerModal');
+        const restartBtn = document.getElementById('restartBtn');
+        const confettiContainer = document.getElementById('confettiContainer');
+        const countdownScreen = document.getElementById('countdownScreen');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const musicToggle = document.getElementById('musicToggle');
+        const fullscreenToggle = document.getElementById('fullscreenToggle');
+        const homeBtn = document.getElementById('homeBtn');
+        const quizMusic = document.getElementById('quizMusic');
+        const winnerMusic = document.getElementById('winnerMusic');
+
+        let isMusicEnabled = true;
+        let importedQuestions = null;
+        let isUsingImportedQuestions = false;
+
+        const questionSourceRadios = document.querySelectorAll('input[name="questionSource"]');
+        const importSection = document.getElementById('importSection');
+        const spreadsheetURL = document.getElementById('spreadsheetURL');
+        const loadPreviewBtn = document.getElementById('loadPreviewBtn');
+        const previewModal = document.getElementById('previewModal');
+        const closePreviewBtn = document.getElementById('closePreviewBtn');
+        const totalQuestionsEl = document.getElementById('totalQuestions');
+        const questionsList = document.getElementById('questionsList');
+        const useImportedBtn = document.getElementById('useImportedBtn');
+
+        function init() {
+            startBtn.addEventListener('click', showCountdown);
+            restartBtn.addEventListener('click', resetGame);
+            document.getElementById('viewResultsBtn').addEventListener('click', viewResults);
+            musicToggle.addEventListener('click', toggleMusic);
+            fullscreenToggle.addEventListener('click', toggleFullscreen);
+            homeBtn.addEventListener('click', goHome);
+
+            questionSourceRadios.forEach(radio => {
+                radio.addEventListener('change', handleSourceChange);
+            });
+            loadPreviewBtn.addEventListener('click', loadAndPreviewQuestions);
+            closePreviewBtn.addEventListener('click', () => previewModal.classList.add('hidden'));
+            useImportedBtn.addEventListener('click', confirmImportedQuestions);
+        }
+
+        function handleSourceChange(e) {
+            if (e.target.value === 'import') {
+                importSection.classList.remove('hidden');
+            } else {
+                importSection.classList.add('hidden');
+            }
+        }
+
+        function convertToCSVUrl(url) {
+            try {
+                const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                if (!match) throw new Error('Invalid spreadsheet URL');
+                const spreadsheetId = match[1];
+                const gidMatch = url.match(/gid=([0-9]+)/);
+                const gid = gidMatch ? gidMatch[1] : '0';
+                return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=${gid}`;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const questions = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                const parts = [];
+                let current = '';
+                let inQuotes = false;
+
+                for (let char of line) {
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        parts.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                parts.push(current.trim());
+
+                if (parts.length >= 5) {
+                    const question = parts[0].replace(/^"|"$/g, '');
+                    const optA = parts[1].replace(/^"|"$/g, '');
+                    const optB = parts[2].replace(/^"|"$/g, '');
+                    const optC = parts[3].replace(/^"|"$/g, '');
+                    const answer = parts[4].replace(/^"|"$/g, '').toUpperCase();
+
+                    const correctIndex = answer === 'A' ? 0 : answer === 'B' ? 1 : 2;
+
+                    questions.push({
+                        question: question,
+                        options: [optA, optB, optC],
+                        correctIndex: correctIndex
+                    });
+                }
+            }
+
+            return questions;
+        }
+
+        async function loadAndPreviewQuestions() {
+            const url = spreadsheetURL.value.trim();
+
+            if (!url) {
+                alert('Masukkan URL spreadsheet terlebih dahulu!');
+                return;
+            }
+
+            const csvUrl = convertToCSVUrl(url);
+            if (!csvUrl) {
+                alert('Format URL tidak valid. Gunakan URL Google Spreadsheet yang benar.');
+                return;
+            }
+
+            loadPreviewBtn.disabled = true;
+            loadPreviewBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
+
+            try {
+                const response = await fetch(csvUrl);
+                if (!response.ok) throw new Error('Gagal mengambil data. Pastikan spreadsheet sudah dipublish!');
+
+                const csvText = await response.text();
+                const questions = parseCSV(csvText);
+
+                if (questions.length === 0) {
+                    throw new Error('Tidak ada pertanyaan valid yang ditemukan!');
+                }
+
+                importedQuestions = questions;
+                showPreview(questions);
+
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            } finally {
+                loadPreviewBtn.disabled = false;
+                loadPreviewBtn.innerHTML = '<i class="fas fa-eye mr-2"></i>Load & Preview';
+            }
+        }
+
+        function showPreview(questions) {
+            totalQuestionsEl.textContent = questions.length;
+            questionsList.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-gray-100 p-4 rounded-lg';
+                div.innerHTML = `
+                    <div class="font-bold text-lg mb-2">${index + 1}. ${q.question}</div>
+                    <div class="text-sm text-gray-700 ml-4">
+                        A. ${q.options[0]}<br>
+                        B. ${q.options[1]}<br>
+                        C. ${q.options[2]}
+                    </div>
+                    <div class="mt-2 text-green-600 font-semibold">Jawaban: ${['A', 'B', 'C'][q.correctIndex]}</div>
+                `;
+                questionsList.appendChild(div);
+            });
+
+            previewModal.classList.remove('hidden');
+        }
+
+        function confirmImportedQuestions() {
+            isUsingImportedQuestions = true;
+            previewModal.classList.add('hidden');
+
+            const indicator = document.getElementById('importSuccessIndicator');
+            const successText = document.getElementById('importSuccessText');
+            successText.textContent = `Berhasil! ${importedQuestions.length} soal siap digunakan.`;
+            indicator.classList.remove('hidden');
+
+            indicator.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function goHome() {
+            if (confirm('Kembali ke halaman awal? Progress permainan akan hilang.')) {
+                resetGame();
+            }
+        }
+
+        function toggleMusic() {
+            isMusicEnabled = !isMusicEnabled;
+            if (isMusicEnabled) {
+                musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                musicToggle.classList.remove('muted');
+                if (gameState.status === 'RACING') quizMusic.play();
+            } else {
+                musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                musicToggle.classList.add('muted');
+                quizMusic.pause();
+                winnerMusic.pause();
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                fullscreenToggle.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenToggle.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        }
+
+        function showCountdown() {
+            lobby.classList.add('hidden');
+            countdownScreen.classList.remove('hidden');
+
+            let count = 3;
+            countdownNumber.textContent = count;
+
+            const countdownInterval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownNumber.textContent = count;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownScreen.classList.add('hidden');
+                    startGame();
+                }
+            }, 1000);
+        }
+
+        function startGame() {
+            const sourceRadio = document.querySelector('input[name="questionSource"]:checked');
+            if (sourceRadio.value === 'import' && !isUsingImportedQuestions) {
+                alert('Silakan load dan konfirmasi pertanyaan import terlebih dahulu!');
+                lobby.classList.remove('hidden');
+                return;
+            }
+
+            gameState.monsterMaxHp = parseInt(bossHPInput.value) || 100;
+            gameState.finishOrder = [];
+
+            gameState.monsters.forEach(monster => {
+                monster.currentHp = gameState.monsterMaxHp;
+                monster.defeated = false;
+                monster.rank = null;
+            });
+
+            gameState.teams.forEach(team => {
+                team.damage = 0;
+                team.locked = false;
+                team.currentQuestion = null;
+                team.answerHistory = [];
+            });
+
+            gameState.usedQuestions = [];
+            gameState.questionHistory = [];
+            const questionsToUse = isUsingImportedQuestions ? importedQuestions : questionsData;
+            gameState.questionPool = [...questionsToUse];
+            gameState.status = 'RACING';
+
+            lobby.classList.add('hidden');
+            gameArea.classList.remove('hidden');
+
+            for (let i = 1; i <= 4; i++) {
+                updateMonsterVisuals(i);
+            }
+
+            if (isMusicEnabled) {
+                quizMusic.play();
+            }
+
+            gameState.teams.forEach(team => {
+                assignQuestion(team.id);
+            });
+        }
+
+        function assignQuestion(teamId) {
+            const team = gameState.teams[teamId - 1];
+
+            if (gameState.questionPool.length === 0) {
+                gameState.questionPool = [...gameState.usedQuestions];
+                gameState.usedQuestions = [];
+            }
+
+            const randomIndex = Math.floor(Math.random() * gameState.questionPool.length);
+            const question = gameState.questionPool[randomIndex];
+
+            team.currentQuestion = question;
+
+            gameState.questionPool.splice(randomIndex, 1);
+            gameState.usedQuestions.push(question);
+
+            displayQuestion(teamId, question);
+        }
+
+        function displayQuestion(teamId, question) {
+            const questionEl = document.getElementById(`question-${teamId}`);
+            const optionsEl = document.getElementById(`options-${teamId}`);
+
+            questionEl.textContent = question.question;
+            optionsEl.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                const textColorClass = teamId === 4 ? 'text-gray-900' : 'text-white';
+                btn.className = `w-full bg-white bg-opacity-30 hover:bg-opacity-50 ${textColorClass} font-bold py-2 px-3 rounded-lg transition-all text-sm`;
+                btn.textContent = option;
+                btn.onclick = () => checkAnswer(teamId, index);
+                optionsEl.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(teamId, selectedIndex) {
+            const team = gameState.teams[teamId - 1];
+
+            if (team.locked || gameState.status !== 'RACING') return;
+
+            const question = team.currentQuestion;
+            const controlEl = document.getElementById(`control-${teamId}`);
+            const damageEl = document.getElementById(`damage-${teamId}`);
+
+            const isCorrect = selectedIndex === question.correctIndex;
+
+            team.answerHistory.push({
+                question: question.question,
+                selectedIndex: selectedIndex,
+                isCorrect: isCorrect
+            });
+
+            if (!gameState.questionHistory.find(q => q.id === question.id)) {
+                gameState.questionHistory.push({
+                    ...question,
+                    id: question.question,
+                    teams: []
+                });
+            }
+
+            const qHistory = gameState.questionHistory.find(q => q.id === question.id);
+            if (qHistory) {
+                qHistory.teams.push({
+                    teamId: team.id,
+                    teamName: team.name,
+                    isCorrect: isCorrect
+                });
+            }
+
+            if (isCorrect) {
+                team.locked = true;
+                controlEl.style.opacity = '0.6';
+
+                attackMonster(teamId);
+
+                setTimeout(() => {
+                    const monster = gameState.monsters[teamId - 1];
+                    if (!monster.defeated) {
+                        team.locked = false;
+                        controlEl.style.opacity = '1';
+                        assignQuestion(teamId);
+                    }
+                }, 1500);
+
+            } else {
+                const optionsEl = document.getElementById(`options-${teamId}`);
+                optionsEl.classList.add('boss-shake');
+
+                setTimeout(() => {
+                    optionsEl.classList.remove('boss-shake');
+                    assignQuestion(teamId);
+                }, 500);
+            }
+        }
+
+        function attackMonster(teamId) {
+            const team = gameState.teams[teamId - 1];
+            const monster = gameState.monsters[teamId - 1];
+            const damage = gameState.damagePerHit;
+
+            team.damage += damage;
+            document.getElementById(`damage-${teamId}`).textContent = team.damage;
+
+            fireProjectile(teamId, () => {
+                monster.currentHp = Math.max(0, monster.currentHp - damage);
+                updateMonsterVisuals(teamId);
+
+                if (monster.currentHp <= 0 && !monster.defeated) {
+                    monster.defeated = true;
+                    const rank = gameState.finishOrder.length + 1;
+                    monster.rank = rank;
+                    gameState.finishOrder.push(teamId);
+
+                    const rankBadge = document.getElementById(`rankBadge-${teamId}`);
+                    rankBadge.textContent = `#${rank}`;
+                    rankBadge.classList.remove('hidden');
+
+                    const monsterAvatar = document.getElementById(`monsterAvatar-${teamId}`);
+                    monsterAvatar.textContent = '💀';
+                    monsterAvatar.classList.add('boss-shake');
+
+                    if (gameState.finishOrder.length === 4) {
+                        setTimeout(() => showRanking(), 1000);
+                    }
+                }
+            });
+        }
+
+        function fireProjectile(teamId, onHitCallback) {
+            const controlEl = document.getElementById(`control-${teamId}`);
+            const monsterAvatar = document.getElementById(`monsterAvatar-${teamId}`);
+            const controlRect = controlEl.getBoundingClientRect();
+            const monsterRect = monsterAvatar.getBoundingClientRect();
+
+            const startX = controlRect.left + controlRect.width / 2;
+            const startY = controlRect.top + controlRect.height / 2;
+            const endX = monsterRect.left + monsterRect.width / 2;
+            const endY = monsterRect.top + monsterRect.height / 2;
+
+            const colors = { 1: '#ef4444', 2: '#3b82f6', 3: '#22c55e', 4: '#eab308' };
+            const emojis = { 1: '🔥', 2: '🔥', 3: '🔥', 4: '🔥' };
+
+            const projectile = document.createElement('div');
+            projectile.className = 'projectile';
+            projectile.style.left = startX + 'px';
+            projectile.style.top = startY + 'px';
+            projectile.style.fontSize = '40px';
+            projectile.innerHTML = emojis[teamId];
+            document.body.appendChild(projectile);
+
+            const trailCount = 5;
+            const trails = [];
+            for (let i = 0; i < trailCount; i++) {
+                const trail = document.createElement('div');
+                trail.className = 'projectile-trail';
+                trail.style.width = '20px';
+                trail.style.height = '20px';
+                trail.style.backgroundColor = colors[teamId];
+                trail.style.left = startX + 'px';
+                trail.style.top = startY + 'px';
+                document.body.appendChild(trail);
+                trails.push(trail);
+            }
+
+            const duration = 700;
+            const startTime = Date.now();
+
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+                const currentX = startX + (endX - startX) * easeProgress;
+                const currentY = startY + (endY - startY) * easeProgress;
+
+                projectile.style.left = currentX + 'px';
+                projectile.style.top = currentY + 'px';
+
+                trails.forEach((trail, index) => {
+                    const trailDelay = (index + 1) * 0.1;
+                    const trailProgress = Math.max(0, progress - trailDelay);
+                    const trailX = startX + (endX - startX) * trailProgress;
+                    const trailY = startY + (endY - startY) * trailProgress;
+                    trail.style.left = trailX + 'px';
+                    trail.style.top = trailY + 'px';
+                    trail.style.opacity = (1 - progress) * 0.6;
+                });
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    projectile.remove();
+                    trails.forEach(t => t.remove());
+                    createExplosion(endX, endY, colors[teamId]);
+                    if (onHitCallback) onHitCallback();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        function createExplosion(x, y, color) {
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'explosion-particle';
+                particle.style.width = '10px';
+                particle.style.height = '10px';
+                particle.style.borderRadius = '50%';
+                particle.style.backgroundColor = color;
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+
+                const angle = (i / 12) * Math.PI * 2;
+                const distance = 50 + Math.random() * 50;
+                const finalX = x + Math.cos(angle) * distance;
+                const finalY = y + Math.sin(angle) * distance;
+
+                particle.style.transform = `translate(${finalX - x}px, ${finalY - y}px) scale(0)`;
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 500);
+            }
+        }
+
+        function updateMonsterVisuals(teamId) {
+            const monster = gameState.monsters[teamId - 1];
+            const hpBar = document.getElementById(`monsterHp-${teamId}`);
+            const hpText = document.getElementById(`monsterHpText-${teamId}`);
+            const monsterAvatar = document.getElementById(`monsterAvatar-${teamId}`);
+
+            const hpPercent = (monster.currentHp / gameState.monsterMaxHp) * 100;
+            hpBar.style.width = hpPercent + '%';
+            hpText.textContent = monster.currentHp;
+
+            if (!monster.defeated) {
+                monsterAvatar.classList.add('boss-hit');
+                setTimeout(() => monsterAvatar.classList.remove('boss-hit'), 300);
+
+                if (hpPercent < 30) {
+                    monsterAvatar.textContent = '👹';
+                    hpBar.classList.add('hp-bar-low');
+                } else if (hpPercent < 60) {
+                    monsterAvatar.textContent = '😡';
+                }
+            }
+        }
+
+        function showRanking() {
+            gameState.status = 'FINISHED';
+
+            quizMusic.pause();
+            quizMusic.currentTime = 0;
+            if (isMusicEnabled) {
+                winnerMusic.play();
+            }
+
+            createConfetti();
+
+            const rankData = gameState.finishOrder.map(teamId => {
+                const team = gameState.teams[teamId - 1];
+                return {
+                    teamId: teamId,
+                    name: team.name,
+                    color: team.color,
+                    damage: team.damage
+                };
+            });
+
+            for (let i = 0; i < 4; i++) {
+                const rank = i + 1;
+                const data = rankData[i];
+                const teamEl = document.getElementById(`rank${rank}Team`);
+                const damageEl = document.getElementById(`rank${rank}Damage`);
+
+                const teamColors = {
+                    red: '🚀 TIM MERAH',
+                    blue: '🤖 TIM BIRU',
+                    green: '🚗 TIM HIJAU',
+                    yellow: '✈️ TIM KUNING'
+                };
+
+                teamEl.textContent = teamColors[data.color];
+                teamEl.style.color = data.color === 'yellow' ? '#EAB308' : data.color;
+                damageEl.textContent = `${data.damage} DMG`;
+            }
+
+            winnerModal.classList.remove('hidden');
+        }
+
+        function viewResults() {
+            const resultsData = {
+                mode: 'monster-race',
+                monsterMaxHp: gameState.monsterMaxHp,
+                ranking: gameState.finishOrder.map((teamId, index) => {
+                    const team = gameState.teams[teamId - 1];
+                    return {
+                        rank: index + 1,
+                        teamId: teamId,
+                        name: team.name,
+                        color: team.color,
+                        damage: team.damage
+                    };
+                }),
+                teams: gameState.teams.map(t => ({
+                    name: t.name,
+                    color: t.color,
+                    damage: t.damage,
+                    answerHistory: t.answerHistory
+                })),
+                questionHistory: gameState.questionHistory,
+                timestamp: new Date().toISOString()
+            };
+
+            localStorage.setItem('quizzorResults', JSON.stringify(resultsData));
+            window.location.href = 'results.html';
+        }
+
+        function createConfetti() {
+            confettiContainer.innerHTML = '';
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        function resetGame() {
+            winnerModal.classList.add('hidden');
+            gameArea.classList.add('hidden');
+            lobby.classList.remove('hidden');
+
+            quizMusic.pause();
+            quizMusic.currentTime = 0;
+            winnerMusic.pause();
+            winnerMusic.currentTime = 0;
+
+            isUsingImportedQuestions = false;
+            document.querySelector('input[name="questionSource"][value="default"]').checked = true;
+            importSection.classList.add('hidden');
+
+            for (let i = 1; i <= 4; i++) {
+                const monsterAvatar = document.getElementById(`monsterAvatar-${i}`);
+                const rankBadge = document.getElementById(`rankBadge-${i}`);
+                monsterAvatar.textContent = '👾';
+                monsterAvatar.classList.remove('boss-shake');
+                rankBadge.classList.add('hidden');
+            }
+
+            gameState.status = 'LOBBY';
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
