@@ -768,40 +768,46 @@
             const lines = csv.split('\n');
             const questions = [];
 
+            // Skip header row
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
 
-                const parts = [];
+                // Parse CSV (handle quoted values)
+                const columns = [];
                 let current = '';
                 let inQuotes = false;
 
-                for (let char of line) {
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
                     if (char === '"') {
                         inQuotes = !inQuotes;
                     } else if (char === ',' && !inQuotes) {
-                        parts.push(current.trim());
+                        columns.push(current.trim());
                         current = '';
                     } else {
                         current += char;
                     }
                 }
-                parts.push(current.trim());
+                columns.push(current.trim());
 
-                if (parts.length >= 5) {
-                    const question = parts[0].replace(/^"|"$/g, '');
-                    const optA = parts[1].replace(/^"|"$/g, '');
-                    const optB = parts[2].replace(/^"|"$/g, '');
-                    const optC = parts[3].replace(/^"|"$/g, '');
-                    const answer = parts[4].replace(/^"|"$/g, '').toUpperCase();
+                if (columns.length >= 7) {
+                    const id = parseInt(columns[0]);
+                    const question = columns[1];
+                    const options = [columns[2], columns[3], columns[4], columns[5]];
+                    const correctLetter = columns[6].toUpperCase();
 
-                    const correctIndex = answer === 'A' ? 0 : answer === 'B' ? 1 : 2;
+                    // Convert letter to index (A=0, B=1, C=2, D=3)
+                    const correctIndex = correctLetter.charCodeAt(0) - 65;
 
-                    questions.push({
-                        question: question,
-                        options: [optA, optB, optC],
-                        correctIndex: correctIndex
-                    });
+                    if (question && options.every(opt => opt) && correctIndex >= 0 && correctIndex <= 3) {
+                        questions.push({
+                            id: id || questions.length + 1,
+                            question,
+                            options,
+                            correctIndex
+                        });
+                    }
                 }
             }
 
