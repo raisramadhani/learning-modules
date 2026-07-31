@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Interaktif: Jago Excel Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes pop {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-pop {
+            animation: pop 0.4s ease-out forwards;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .animate-shake {
+            animation: shake 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <!-- Header -->
+    <header class="bg-emerald-600 text-white p-6 shadow-md rounded-b-3xl mb-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-3xl font-bold mb-2"><i class="fas fa-file-excel mr-2"></i> Modul Jago Excel Dasar</h1>
+            <p class="text-emerald-100">Halo Sobat Data! Yuk pelajari rahasia Excel tanpa harus buka aplikasinya!</p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pb-12 space-y-12">
+
+        <!-- Bagian 1: Anatomi Tabel -->
+        <section class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200">
+            <div class="flex items-center mb-4 text-emerald-600">
+                <i class="fas fa-border-all text-2xl mr-3"></i>
+                <h2 class="text-2xl font-bold">Misi 1: Mengenal Anatomi Tabel</h2>
+            </div>
+            <p class="mb-6 text-gray-600">Di Excel, tempat kamu mengetik disebut <strong>Sel (Cell)</strong>. Sel adalah
+                gabungan dari <strong>Kolom (Huruf)</strong> dan <strong>Baris (Angka)</strong>. Coba klik kotak-kotak
+                di bawah ini!</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-center border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 w-12 text-gray-500"></th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700 font-bold w-1/4">A</th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700 font-bold w-1/4">B</th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700 font-bold w-1/4">C</th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700 font-bold w-1/4">D</th>
+                        </tr>
+                    </thead>
+                    <tbody id="anatomy-table">
+                        <!-- Generate via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="cell-result"
+                class="mt-6 p-4 bg-emerald-50 rounded-xl border-2 border-emerald-200 text-center text-lg font-medium text-emerald-800 h-20 flex items-center justify-center transition-all">
+                Pilih salah satu kotak di atas untuk melihat namanya! 👇
+            </div>
+        </section>
+
+        <!-- Bagian Pemanasan: Studi Kasus 3 Contoh -->
+        <section class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200">
+            <div class="flex items-center mb-4 text-orange-600">
+                <i class="fas fa-lightbulb text-2xl mr-3"></i>
+                <h2 class="text-2xl font-bold">Pemanasan: Cara Membaca Rumus</h2>
+            </div>
+            <p class="mb-6 text-gray-600">Sebelum merakit rumus sendiri, yuk pelajari cara kerjanya lewat data
+                <strong>Uang Kas Kelas</strong> berikut ini.
+            </p>
+
+            <!-- Tabel Studi Kasus (Warna Standar) -->
+            <div class="overflow-x-auto mb-6 max-w-2xl mx-auto">
+                <table class="w-full text-center border-collapse bg-white">
+                    <thead>
+                        <tr>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-500 w-12"></th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700">A (Nama)</th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700">B (Bayar Kas)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border-2 border-gray-300 bg-gray-100 font-bold text-gray-600">1</td>
+                            <td class="border-2 border-gray-300 font-bold bg-gray-50">Nama</td>
+                            <td class="border-2 border-gray-300 font-bold bg-gray-50">Nominal</td>
+                        </tr>
+                        <tr>
+                            <td class="border-2 border-gray-300 bg-gray-100 font-bold text-gray-600">2</td>
+                            <td class="border-2 border-gray-300">Andi</td>
+                            <td class="border-2 border-gray-300 font-mono text-gray-600">5000</td>
+                        </tr>
+                        <tr>
+                            <td class="border-2 border-gray-300 bg-gray-100 font-bold text-gray-600">3</td>
+                            <td class="border-2 border-gray-300">Budi</td>
+                            <td class="border-2 border-gray-300 font-mono text-gray-600">5000</td>
+                        </tr>
+                        <tr>
+                            <td class="border-2 border-gray-300 bg-gray-100 font-bold text-gray-600">4</td>
+                            <td class="border-2 border-gray-300">Cika</td>
+                            <td class="border-2 border-gray-300 font-mono text-gray-600">2000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="space-y-4">
+                <p class="text-orange-900 font-bold mb-2">Perhatikan 3 contoh penggunaan rumus di bawah ini:</p>
+
+                <!-- Contoh 1: SUM -->
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-200">
+                    <h3 class="font-bold text-orange-800 mb-2">1. Menghitung Total (SUM)</h3>
+                    <div class="flex items-center gap-2 text-lg font-mono mb-2">
+                        <span class="bg-blue-600 text-white px-3 py-1 rounded shadow">=SUM(B2:B4)</span>
+                    </div>
+                    <p class="text-sm text-gray-700"><strong>Penjelasan:</strong> Tanda <strong>=</strong> wajib ada di
+                        awal. <strong>SUM</strong> memerintahkan Excel untuk menjumlahkan. <strong>(B2:B4)</strong>
+                        artinya data yang dihitung mulai dari sel B2 sampai B4.</p>
+                </div>
+
+                <!-- Contoh 2: MAX -->
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-200">
+                    <h3 class="font-bold text-orange-800 mb-2">2. Mencari Uang Kas Terbesar (MAX)</h3>
+                    <div class="flex items-center gap-2 text-lg font-mono mb-2">
+                        <span class="bg-blue-600 text-white px-3 py-1 rounded shadow">=MAX(B2:B4)</span>
+                    </div>
+                    <p class="text-sm text-gray-700"><strong>Penjelasan:</strong> Fungsi <strong>MAX</strong> bertugas
+                        mencari nilai atau angka yang paling tinggi di antara rentang sel B2 sampai B4.</p>
+                </div>
+
+                <!-- Contoh 3: AVERAGE -->
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-200">
+                    <h3 class="font-bold text-orange-800 mb-2">3. Menghitung Rata-rata Kas (AVERAGE)</h3>
+                    <div class="flex items-center gap-2 text-lg font-mono mb-2">
+                        <span class="bg-blue-600 text-white px-3 py-1 rounded shadow">=AVERAGE(B2:B4)</span>
+                    </div>
+                    <p class="text-sm text-gray-700"><strong>Penjelasan:</strong> Fungsi <strong>AVERAGE</strong>
+                        otomatis menjumlahkan semua angka lalu membaginya dengan jumlah orangnya untuk menemukan nilai
+                        rata-rata.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 2: Fungsi Dasar (6 Soal Ditampilkan Semua) -->
+        <section class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200">
+            <div class="flex items-center mb-4 text-blue-600">
+                <i class="fas fa-magic text-2xl mr-3"></i>
+                <h2 class="text-2xl font-bold">Misi 2: Lembar Kerja Sihir Fungsi Dasar</h2>
+            </div>
+
+            <p class="mb-6 text-gray-600">Susunlah rumus yang tepat menggunakan tombol-tombol yang tersedia pada
+                masing-masing soal. Selesaikan semuanya secara berurutan!</p>
+
+            <!-- Tabel Data Ujian (Warna Standar) -->
+            <div class="bg-gray-800 text-white text-sm py-1 px-4 rounded-t-lg inline-block">Daftar Nilai Ujian Siswa
+            </div>
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full text-center border-collapse bg-white">
+                    <thead>
+                        <tr>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-500 w-12"></th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700">A (Nama)</th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700">B (Matematika)</th>
+                            <th class="border-2 border-gray-300 bg-gray-100 p-2 text-gray-700">C (IPA)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border-2 border-gray-300 bg-gray-100 font-bold text-gray-600">1</td>
+                            <td class="border-2 border-gray-300 font-bold bg-gray-50">Nama</td>
+                            <td class="border-2 border-gray-300 font-bold bg-gray-50">Matematika</td>
+                            <td class="border-2 border-gray-300 font-bold bg-gray-50">IPA</td>
+                        </tr>
+                        <tr>
+                            <td class="border-2 border-gray-300 bg-gray-100 font-bold text-gray-600">2</td>
+                            <td class="border-2 border-gray-300">Budi</td>
+                            <td class="border-2 border-gray-300">80</td>
+                            <td class="border-2 border-gray-300">90</td>
+                        </tr>
+                        <tr>
+                            <td class="border-2 border-gray-300 bg-gray-100 font-bold text-gray-600">3</td>
+                            <td class="border-2 border-gray-300">Siti</td>
+                            <td class="border-2 border-gray-300">95</td>
+                            <td class="border-2 border-gray-300">85</td>
+                        </tr>
+                        <tr>
+                            <td class="border-2 border-gray-300 bg-gray-100 font-bold text-gray-600">4</td>
+                            <td class="border-2 border-gray-300">Joko</td>
+                            <td class="border-2 border-gray-300">75</td>
+                            <td class="border-2 border-gray-300">88</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Area Lembar Kerja 6 Soal (Diisi oleh JavaScript) -->
+            <div id="misi2-container" class="space-y-6">
+                <!-- Konten digenerate dari JS -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        // --- LOGIKA BAGIAN 1: ANATOMI TABEL ---
+        const tableBody = document.getElementById('anatomy-table');
+        const cols = ['A', 'B', 'C', 'D'];
+        for (let row = 1; row <= 4; row++) {
+            let tr = document.createElement('tr');
+            let th = document.createElement('th');
+            th.className = "border-2 border-gray-300 bg-gray-100 p-2 font-bold text-gray-500";
+            th.innerText = row;
+            tr.appendChild(th);
+            cols.forEach(col => {
+                let td = document.createElement('td');
+                td.className = "border-2 border-gray-300 p-3 cursor-pointer hover:bg-emerald-100 transition-colors duration-200 text-transparent hover:text-emerald-400";
+                td.innerText = col + row;
+                td.onclick = () => showCellInfo(col, row);
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        }
+
+        function showCellInfo(col, row) {
+            const resultBox = document.getElementById('cell-result');
+            resultBox.innerHTML = `Kamu memilih Sel <span class="bg-emerald-600 text-white px-3 py-1 rounded-lg mx-2 text-xl shadow-sm animate-pop inline-block">${col}${row}</span> !<br><span class="text-sm font-normal text-emerald-700 mt-1 block">(${col} adalah Kolom, ${row} adalah Baris)</span>`;
+            resultBox.classList.add('bg-emerald-100', 'border-emerald-400');
+            setTimeout(() => {
+                const badge = resultBox.querySelector('span');
+                if (badge) badge.classList.remove('animate-pop');
+            }, 500);
+        }
+
+        // --- LOGIKA BAGIAN 2: 6 SOAL LEMBAR KERJA ---
+        const levels = [
+            { desc: "1. Susun rumus untuk mencari <strong>Total (jumlah) Nilai Matematika</strong> dari Budi, Siti, dan Joko!", target: "=SUM(B2:B4)" },
+            { desc: "2. Susun rumus untuk menghitung <strong>Rata-rata Nilai IPA</strong> dari mereka bertiga!", target: "=AVERAGE(C2:C4)" },
+            { desc: "3. Susun rumus untuk mencari <strong>Nilai Matematika Paling Tinggi</strong> di kelas ini!", target: "=MAX(B2:B4)" },
+            { desc: "4. Susun rumus untuk mencari <strong>Nilai IPA Paling Rendah</strong>!", target: "=MIN(C2:C4)" },
+            { desc: "5. Susun rumus untuk menghitung <strong>Banyaknya Siswa</strong> yang ada di daftar Matematika!", target: "=COUNT(B2:B4)" },
+            { desc: "6. Terakhir, susun rumus untuk mencari <strong>Total (jumlah) Nilai IPA</strong>!", target: "=SUM(C2:C4)" }
+        ];
+
+        // Buat state array untuk menyimpan rumus setiap soal (0 sampai 5)
+        let userFormulas = [[], [], [], [], [], []];
+        const buttonsOptions = ['=', '(', ')', 'SUM', 'AVERAGE', 'MAX', 'MIN', 'COUNT', 'B2:B4', 'C2:C4'];
+
+        function initLembarKerja() {
+            const container = document.getElementById('misi2-container');
+            container.innerHTML = ''; // bersihkan kontainer
+
+            levels.forEach((lvl, index) => {
+                // Generate tombol-tombol berwarna SAMA (biru seragam)
+                let btnHTML = buttonsOptions.map(btn =>
+                    `<button onclick="addFormula(${index}, '${btn}')" class="px-3 py-1.5 m-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow-sm border-b-2 border-blue-800 active:translate-y-0.5 active:border-b-0 text-sm transition-all">${btn}</button>`
+                ).join('');
+
+                // Template card untuk masing-masing soal
+                let card = `
+                <div class="bg-blue-50 p-4 md:p-6 rounded-xl border border-blue-200 shadow-sm">
+                    <p class="text-blue-900 text-lg mb-4">${lvl.desc}</p>
+                    
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="bg-gray-200 font-bold text-gray-600 px-3 py-2 rounded-lg border border-gray-300">fx</div>
+                        <div id="display-${index}" class="flex-1 bg-white border-2 border-blue-300 rounded-lg p-2 min-h-[48px] flex flex-wrap items-center gap-1 shadow-inner font-mono text-lg text-blue-900">
+                        </div>
+                        <button onclick="undoFormula(${index})" class="bg-red-100 hover:bg-red-200 text-red-600 p-2 md:p-3 rounded-lg border border-red-300 transition-colors" title="Hapus satu blok">
+                            <i class="fas fa-backspace"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex flex-wrap justify-center bg-white p-3 rounded-lg border border-blue-100 mb-4">
+                        ${btnHTML}
+                    </div>
+
+                    <button onclick="checkLevel(${index})" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 md:py-3 rounded-lg transition-colors shadow-sm active:scale-95 transform text-lg">
+                        Cek Jawaban
+                    </button>
+                    
+                    <div id="result-${index}" class="mt-4"></div>
+                </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // Fungsi menambah blok rumus spesifik ke soal tertentu
+        function addFormula(soalIndex, text) {
+            userFormulas[soalIndex].push(text);
+            renderFormulaDisplay(soalIndex);
+        }
+
+        // Fungsi menghapus blok terakhir pada soal tertentu
+        function undoFormula(soalIndex) {
+            if (userFormulas[soalIndex].length > 0) {
+                userFormulas[soalIndex].pop();
+                renderFormulaDisplay(soalIndex);
+            }
+        }
+
+        // Fungsi merender tampilan layar rumus pada soal tertentu
+        function renderFormulaDisplay(soalIndex) {
+            const display = document.getElementById(`display-${soalIndex}`);
+            const formulaArray = userFormulas[soalIndex];
+
+            if (formulaArray.length === 0) {
+                display.innerHTML = ''; // Kosongkan
+            } else {
+                display.innerHTML = formulaArray.map(item =>
+                    `<span class="bg-blue-100 px-2 py-0.5 rounded border border-blue-200 shadow-sm mx-0.5 animate-pop inline-block">${item}</span>`
+                ).join('');
+            }
+        }
+
+        // Fungsi mengecek kebenaran jawaban pada soal tertentu
+        function checkLevel(soalIndex) {
+            const resultString = userFormulas[soalIndex].join('');
+            const resultBox = document.getElementById(`result-${soalIndex}`);
+            const targetFormula = levels[soalIndex].target;
+
+            if (userFormulas[soalIndex].length === 0) {
+                resultBox.innerHTML = `<div class="p-3 bg-gray-100 text-gray-800 rounded-xl border border-gray-400 animate-shake text-sm md:text-base"><i class="fas fa-hand-pointer mr-2"></i> Susun rumusnya dulu ya menggunakan tombol di atas.</div>`;
+                return;
+            }
+
+            if (resultString === targetFormula) {
+                resultBox.innerHTML = `
+                    <div class="p-3 bg-green-100 text-green-800 rounded-xl border border-green-400 animate-pop text-sm md:text-base">
+                        <i class="fas fa-check-circle text-xl mr-2 align-middle"></i> <strong>Benar!</strong> Hebat, rumusmu sudah tepat.
+                    </div>`;
+            } else {
+                resultBox.innerHTML = `
+                    <div class="p-3 bg-red-100 text-red-800 rounded-xl border border-red-400 animate-shake text-sm md:text-base">
+                        <i class="fas fa-times-circle text-xl mr-2 align-middle"></i> <strong>Oops, Kurang Tepat!</strong><br>
+                        <span class="text-xs md:text-sm block mt-1">Coba ingat formatnya: <strong>=</strong> kemudian <strong>FUNGSI</strong> kemudian <strong>(</strong> <strong>RENTANG SEL</strong> <strong>)</strong></span>
+                    </div>`;
+            }
+        }
+
+        // Panggil fungsi untuk menggambar semua soal saat halaman pertama kali dimuat
+        initLembarKerja();
+    </script>
+</body>
+
+</html>
